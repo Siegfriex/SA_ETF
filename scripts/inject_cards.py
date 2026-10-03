@@ -11,6 +11,7 @@ usage: python scripts/inject_cards.py [--card-ref origin/claude-a/eda-analysis-v
 """
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+import os
 import json
 import re
 import subprocess
@@ -34,13 +35,16 @@ DD_WORDS = ("max_dd", "drawdown", "회복", "낙폭", "dd ")
 
 # section → [(profile column, 한국어 이름, 형식, 높은 순 순위면 True)]
 METRICS = {
-    "01": [("n_obs", "관측일수", "{:,.0f}", True)],
+    "01": [("n_ohlc_violation", "OHLC 논리 위반일(ohlc_close_gt_high)", "{:,.0f}", True),
+           ("n_jump_gt15pct", "|일간 수익률|>15% 점프일", "{:,.0f}", True), ("n_dq_rows", "dq_flags 행 수", "{:,.0f}", True)],
+    "02": [("cum_ret", "기간 누적 가격 변화(2019-01-02→최종일, 조정가격 추정)", "{:+.1%}", True)],
     "03": [("ann_vol", "연환산 변동성", "{:.1%}", True), ("ex_kurt", "초과첨도(full)", "{:.1f}", True),
            ("ex_kurt_trim3", "초과첨도(상위 |r| 3일 제외)", "{:.1f}", True), ("skew", "왜도", "{:+.2f}", True),
            ("p01", "일간 로그수익률 1% 분위", "{:+.2%}", False), ("p99", "일간 로그수익률 99% 분위", "{:+.2%}", True)],
     "04": [("acf_absret_lag1", "|r| lag1 자기상관(변동성 군집)", "{:.3f}", True),
            ("vol_of_vol", "vol-of-vol", "{:.3f}", True)],
-    "05": [("zero_vol_ratio", "거래량 0 일 비율", "{:.2%}", True)],
+    "05": [("med_turnover_bn", "일 거래대금 중앙값(Close×Volume, 억원)", "{:,.1f}", True),
+           ("med_volume", "일 거래량 중앙값(주)", "{:,.0f}", True)],
     "06": [("max_dd", "최대 낙폭", "{:.1%}", False), ("recovery_days", "최대 낙폭 회복일수", "{:,.0f}", True)],
     "07": [("n_abs_z3", "|z|≥3 후보일(shift(1) 20D vol 기준)", "{:,.0f}", True),
            ("n_pos_z3", "z≥+3 후보일", "{:,.0f}", True), ("n_neg_z3", "z≤−3 후보일", "{:,.0f}", True)],
@@ -80,8 +84,12 @@ def rank_sentence(prof, t, col, label, fmt, high_first):
     s = pd.to_numeric(prof[col], errors="coerce")
     v = s.get(t, np.nan)
     if pd.isna(v):
+        if col == "recovery_days" and pd.notna(prof.at[t, "max_dd"]):
+            return f"- **{label}: 미회복** — 최대 낙폭 저점({prof.at[t, 'max_dd_date']}) 이후 최종일까지 직전 고점 미회복."
         return f"- {label}: 값 없음 (해당 없음 또는 계산 불가)."
     n = int(s.notna().sum())
+    if s.dropna().nunique() <= 1:
+        return f"- **{label} {fmt.format(v)}** — {n}종 모두 동일, 순위 해당 없음."
     rk = int(s.rank(ascending=not high_first, method="min")[t])
     pct = (s <= v).mean() * 100 if high_first else (s >= v).mean() * 100
     order = "높은 순" if high_first else "낮은(더 극단) 순"
@@ -90,8 +98,13 @@ def rank_sentence(prof, t, col, label, fmt, high_first):
     if t != REF and pd.notna(ref) and ref not in (0,) and np.sign(ref) == np.sign(v):
         rel = f", {REF} 의 {v / ref:.2f}배"
     med = s.median()
-    return (f"- **{label} {fmt.format(v)}** — {n}종 중 {rk}위({order}), 백분위 {pct:.0f}%{rel} "
-            f"(universe 중앙값 {fmt.format(med)}).")
+    proxy = ""
+    if col in ("corr_vs_benchmark", "beta_vs_benchmark") and "benchmark_proxy_ticker" in prof.columns:
+        proxy = f" [proxy {prof.at[t, 'benchmark_proxy_ticker']} 기준 — ETF 마다 비교 대상이 다르므로 순위는 참고용]"
+    ties = int((s == v).sum())
+    rk_txt = f"공동 {rk}위({ties}종 동률)" if ties > 1 else f"{rk}위"
+    return (f"- **{label} {fmt.format(v)}** — {n}종 중 {rk_txt}({order}), 백분위 {pct:.0f}%{rel} "
+            f"(universe 중앙값 {fmt.format(med)}).{proxy}")
 
 
 def dq_note(dq, t):
@@ -107,6 +120,22 @@ def dq_note(dq, t):
                   "spike_reversal_candidate": "고립 급등-반전 후보, DQ 미확정 — 실제 사건일 수 있음"}.get(cls, "")
         parts.append(f"- **DQ 각주 · {cls}** ({len(dates)}일): {shown}. {policy}")
     return "\n".join(parts)
+
+
+def extra_metrics(tickers, dq):
+    """profile 에 없는, ETF 간에 실제로 다른 수치 (raw/validation 에서 결정적 계산)."""
+    shared = Path(os.environ.get("ETF_SHARED_DATA", "/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data"))
+    val = pd.read_csv(ROOT / "reports" / "raw_validation.csv", dtype={"ticker": str}).set_index("ticker")
+    close = pd.read_csv(shared / "interim" / "panel_close.csv", index_col=0)
+    rows = {}
+    for t in tickers:
+        raw = pd.read_csv(shared / "raw" / f"{t}.csv")
+        rows[t] = {"n_ohlc_violation": val.at[t, "n_ohlc_violation"], "n_jump_gt15pct": val.at[t, "n_jump_gt15pct"],
+                   "n_dq_rows": int((dq["ticker"] == t).sum()),
+                   "cum_ret": close[t].iloc[-1] / close[t].iloc[0] - 1,
+                   "med_turnover_bn": float((raw["Close"] * raw["Volume"]).median() / 1e8),
+                   "med_volume": float(raw["Volume"].median())}
+    return pd.DataFrame.from_dict(rows, orient="index")
 
 
 def md_cell(text, sec):
@@ -134,6 +163,8 @@ def main():
     u = pd.read_csv(ROOT / "config" / "universe.csv", dtype=str, keep_default_na=False).set_index("ticker")
     dqp = ROOT / "reports" / "dq_flags.csv"
     dq = pd.read_csv(dqp, dtype=str, keep_default_na=False) if dqp.exists() else pd.DataFrame(columns=["ticker", "date", "dq_class"])
+    prof = prof.join(extra_metrics(u.index, dq), how="left")
+    prof["benchmark_proxy_ticker"] = u["benchmark_proxy_ticker"]
     card_sha, cards = load_cards()
     log = []
     for t, row in u.iterrows():
@@ -146,7 +177,7 @@ def main():
         anchors = {}
         for i, c in enumerate(nb.cells):
             src = c.source if isinstance(c.source, str) else "".join(c.source)
-            m = re.match(r'cap\("(\d\d)"', src.strip())
+            m = re.search(r'\bcap\("(\d\d)"', src)
             if c.cell_type == "code" and m:
                 if m.group(1) == "03" and "03" in anchors:  # 03b 가 두 번째 cap("03") → 뒤쪽(변형표) 뒤에 둔다
                     anchors["03"] = i

@@ -11,6 +11,7 @@ usage: python scripts/run_notebooks.py [ticker ...]   (인자 없으면 universe
 """
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+import os
 import hashlib
 import json
 import platform
@@ -22,8 +23,8 @@ from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-SHARED = Path("/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD")
-RAW_DIR = SHARED / "data" / "raw"
+SHARED_DATA = Path(os.environ.get("ETF_SHARED_DATA", "/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data"))
+RAW_DIR = Path(os.environ.get("ETF_RAW_DIR", SHARED_DATA / "raw"))
 VENV = Path("/home/sieg/projects-wsl/hongik_univ_26_2/.venv/bin")
 NB_DIR = ROOT / "notebooks" / "00_raw_eda"
 PROFILE_DIR = ROOT / "data" / "interim" / "profiles"

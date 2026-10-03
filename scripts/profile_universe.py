@@ -17,7 +17,8 @@ def main():
     rows = []
     for _, r in u.iterrows():
         p = PROFILE_DIR / f"{r['ticker']}.json"
-        base = {"slot": int(r["slot"]), "ticker": r["ticker"], "name": r["name"]}
+        base = {"slot": int(r["slot"]), "ticker": r["ticker"], "name": r["name"],
+                "benchmark_proxy_ticker": r.get("benchmark_proxy_ticker", "")}  # corr/beta_vs_benchmark 의 비교 대상
         if not p.exists():
             rows.append(base | {"profile_status": "MISSING"})
             continue

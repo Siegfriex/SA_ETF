@@ -8,6 +8,7 @@ usage: python scripts/collect_raw.py [--force]
 """
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+import os
 import hashlib
 import sys
 
@@ -15,7 +16,7 @@ import pandas as pd
 import FinanceDataReader as fdr
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_DIR = Path("/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data/raw")
+RAW_DIR = Path(os.environ.get("ETF_RAW_DIR", os.environ.get("ETF_SHARED_DATA", "/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data") + "/raw"))
 START = "2019-01-01"
 KST = timezone(timedelta(hours=9))
 ADJUSTED_POLICY = ("FDR Close 는 분배 소급조정으로 추정(069500/KS200 누적비 1.155 ≈ TR 1.163), "
