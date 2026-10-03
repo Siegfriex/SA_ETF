@@ -1,0 +1,25 @@
+# local-only control plane
+.agent_bus/
+.worktrees/
+# raw / scratch data (track manifests only)
+data/raw/*
+data/00_raw/*
+data/interim/*
+data/processed/*
+!data/**/.gitkeep
+!data/raw/MANIFEST*.csv
+!data/raw/MANIFEST*.json
+# runtime
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.cache/
+*.log
+logs/
+tmp/
+scratch/
+*_failed.ipynb
+*.tmp.html
+.venv/
+venv/
+.env

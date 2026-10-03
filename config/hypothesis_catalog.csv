@@ -1,0 +1,11 @@
+﻿key,short_name,rq,h0,h1,use_for
+H01,Relative surge,이 ETF의 극단 수익률은 절대수익률보다 자기 자신의 rolling volatility/percentile 기준으로 더 안정적으로 정의되는가?,절대수익률 threshold와 상대 기준 간 event set 차이가 작다.,상대 기준이 더 일관된 event set과 낮은 threshold sensitivity를 보인다.,ETF별 변동성 이질성/급등 라벨 기초
+H02,Volume confirmation,극단 수익률 구간에서 거래량·거래대금의 비정상 증가가 함께 나타나는가?,극단 수익률일과 일반일의 volume-z/turnover 분포 차이가 없다.,극단 수익률일에서 volume-z/turnover가 유의하게 높다.,시장 움직임과 거래활동의 결합
+H03,Benchmark-adjusted move,해당 ETF의 큰 움직임은 broad benchmark를 제거한 뒤에도 남는가?,ETF 대형 움직임은 benchmark 움직임으로 대부분 설명된다.,benchmark-adjusted residual/abnormal return이 반복적으로 크게 남는다.,섹터·테마 ETF의 고유 움직임
+H04,Persistence vs reversal,큰 양(+)의 움직임 이후 단기적으로 추세 지속과 되돌림 중 어느 쪽이 더 우세한가?,극단 상승 이후 forward return은 평시와 다르지 않다.,극단 상승 이후 특정 horizon에서 지속 또는 반전 패턴이 존재한다.,급등 '시작'과 하루짜리 spike 구분
+H05,Volatility clustering,큰 움직임 전후로 변동성이 군집하는가?,제곱수익률/절대수익률의 자기상관이 없다.,제곱수익률/절대수익률에 유의한 자기상관과 clustering이 존재한다.,평시 vs 전환구간 구분 근거
+H06,Drawdown asymmetry,상승충격과 하락충격 이후 회복/되돌림 속도가 비대칭적인가?,양·음 극단수익률 이후 경로의 분포가 대칭적이다.,양·음 충격 이후 drawdown/recovery 경로가 체계적으로 다르다.,상승/꺾임 label 분리 가능성
+H07,Peer coupling,동일 peer group ETF와의 동조화가 평시와 극단 구간에서 달라지는가?,rolling correlation/relative return 구조가 평시와 극단구간에서 동일하다.,극단구간에서 peer correlation 또는 dispersion이 구조적으로 달라진다.,ETF 간 관계/군집
+H08,Tail heaviness,이 ETF의 수익률 tail이 정규 근사보다 두꺼워 단순 z-threshold가 왜곡될 가능성이 있는가?,수익률 tail은 정규근사와 크게 다르지 않다.,fat-tail/왜도/첨도 때문에 percentile 또는 robust scaling이 더 적합하다.,정규화 방법 결정
+H09,Liquidity-state dependence,거래활동 수준에 따라 수익률 분포와 변동성이 달라지는가?,저/중/고 거래활동 상태의 수익률·변동성 분포가 같다.,거래활동 상태에 따라 수익률·변동성 분포가 다르다.,volume normalization / state interaction
+H10,Multivariate state,수익률·거래활동·변동성·drawdown·range를 함께 보면 1~2개 잠재축으로 raw state를 압축할 수 있는가?,표준화 feature 간 공분산 구조가 약해 PCA 축이 설명력을 갖지 못한다.,소수 PCA 축이 유의미한 분산을 설명하고 특정 기간이 분리된다.,차원축소 필요성 판단
