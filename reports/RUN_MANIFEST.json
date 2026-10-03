@@ -249,5 +249,115 @@
       ],
       "status": "PASS_WITH_LIMITATION"
     }
-  ]
+  ],
+  "inject": {
+    "at": "2026-10-03T21:11:41+09:00",
+    "script": "scripts/inject_cards.py",
+    "card_ref": "origin/claude-a/eda-analysis-v1",
+    "card_sha": "efada2e",
+    "rerun": false,
+    "cards_present": 20,
+    "per_etf": [
+      {
+        "ticker": "069500",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "102110",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "229200",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "122630",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "114800",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "091230",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "091170",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "091180",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "305540",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "143860",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "117680",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "161510",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "219480",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "133690",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "192090",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "148070",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "153130",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "132030",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "261220",
+        "card": "present",
+        "n_injected": 11
+      },
+      {
+        "ticker": "261240",
+        "card": "present",
+        "n_injected": 11
+      }
+    ]
+  }
 }

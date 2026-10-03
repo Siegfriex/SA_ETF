@@ -11,13 +11,14 @@ usage: python scripts/build_universe.py   → config/universe.csv, data/raw/list
 """
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+import os
 import sys
 
 import pandas as pd
 import FinanceDataReader as fdr
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_DIR = Path("/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data/raw")
+RAW_DIR = Path(os.environ.get("ETF_RAW_DIR", os.environ.get("ETF_SHARED_DATA", "/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data") + "/raw"))
 KST = timezone(timedelta(hours=9))
 
 # FDR ETF/KR Category 코드 — 종목명으로 검증한 의미 (B 0004 bus 기록)

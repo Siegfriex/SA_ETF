@@ -10,12 +10,13 @@ usage: python scripts/validate_raw.py
 """
 from pathlib import Path
 
+import os
 import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-SHARED = Path("/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD")
-RAW_DIR = SHARED / "data" / "raw"
+SHARED_DATA = Path(os.environ.get("ETF_SHARED_DATA", "/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data"))
+RAW_DIR = Path(os.environ.get("ETF_RAW_DIR", SHARED_DATA / "raw"))
 JUMP = 0.15
 
 
@@ -132,7 +133,7 @@ def main():
     (ROOT / "reports").mkdir(exist_ok=True)
     rep.to_csv(ROOT / "reports" / "raw_validation.csv", index=False)
     common = close.dropna()
-    out = SHARED / "data" / "interim"
+    out = SHARED_DATA / "interim"
     out.mkdir(parents=True, exist_ok=True)
     common.to_csv(out / "panel_close.csv")
     np.log(common).diff().dropna().to_csv(out / "panel_logret.csv")

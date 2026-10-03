@@ -1,0 +1,6 @@
+scope,n_etf,k,n_days,part_rate,n_same,n_opp,dir_score
+domestic_equity,12,5,61,0.556,405,2,0.99
+foreign_equity,3,5,61,0.306,54,2,0.929
+bond,2,5,61,0.139,8,9,-0.059
+commodity,2,5,61,0.295,30,6,0.667
+fx,1,5,61,0.262,0,16,-1.0
