@@ -1,0 +1,9 @@
+ticker,date,flag,detail,pair_start,action
+219480,2025-04-08,isolated_spike_reversal,r_t=+0.0521 r_t+1=-0.0456 robust_sd=0.0085 universe_med_abs=0.0069,2025-04-08,flag_only_raw_unchanged
+219480,2025-04-09,isolated_spike_reversal,r_t=+0.0521 r_t+1=-0.0456 robust_sd=0.0085 universe_med_abs=0.0069,2025-04-08,flag_only_raw_unchanged
+192090,2024-10-07,isolated_spike_reversal,r_t=+0.0592 r_t+1=-0.0700 robust_sd=0.0086 universe_med_abs=0.0152,2024-10-07,flag_only_raw_unchanged
+192090,2024-10-08,isolated_spike_reversal,r_t=+0.0592 r_t+1=-0.0700 robust_sd=0.0086 universe_med_abs=0.0152,2024-10-07,flag_only_raw_unchanged
+153130,2024-01-30,isolated_spike_reversal,r_t=-0.0047 r_t+1=+0.0050 robust_sd=0.0001 universe_med_abs=0.0047,2024-01-30,flag_only_raw_unchanged
+153130,2024-01-31,isolated_spike_reversal,r_t=-0.0047 r_t+1=+0.0050 robust_sd=0.0001 universe_med_abs=0.0047,2024-01-30,flag_only_raw_unchanged
+261240,2019-03-14,isolated_spike_reversal,r_t=+0.1987 r_t+1=-0.1946 robust_sd=0.0027 universe_med_abs=0.0082,2019-03-14,flag_only_raw_unchanged
+261240,2019-03-15,isolated_spike_reversal,r_t=+0.1987 r_t+1=-0.1946 robust_sd=0.0027 universe_med_abs=0.0082,2019-03-14,flag_only_raw_unchanged

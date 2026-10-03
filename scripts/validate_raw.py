@@ -19,6 +19,39 @@ RAW_DIR = SHARED / "data" / "raw"
 JUMP = 0.15
 
 
+def spike_reversal_flags(close, k=6.0, reversal=0.7, window=60, market_k=1.0):
+    """단일 ETF 고립 spike-reversal (C-0007, A-F01): raw 수정 없이 flag 만.
+
+    조건 (모두 충족):
+    - |r_t| > k · robust sd_t   (robust sd = 1.4826·MAD, r_{t-window..t-1} — shift(1), 당일 제외)
+    - r_{t+1} 이 반대 부호이고 |r_{t+1}| >= reversal · |r_t|
+    - 같은 날 universe 의 median |r| 이 그 날짜 기준 market_k · (universe median |r| 의 shift(1) rolling median) 이하
+      → 시장 공통 충격이 아닌 고립 사건
+    """
+    lr = np.log(close).diff()
+    med = lr.shift(1).rolling(window, min_periods=20).median()
+    mad = (lr.shift(1) - med).abs().rolling(window, min_periods=20).median()
+    rsd = 1.4826 * mad.replace(0, np.nan)
+    uni_abs = lr.abs().median(axis=1)
+    uni_base = uni_abs.shift(1).rolling(window, min_periods=20).median()
+    quiet_market = uni_abs <= market_k * 3 * uni_base  # 그날 universe 전체가 평시의 3배 이내
+    nxt = lr.shift(-1)
+    recs = []
+    for t in close.columns:
+        big = (lr[t] - med[t]).abs() > k * rsd[t]
+        rev = (np.sign(nxt[t]) == -np.sign(lr[t])) & (nxt[t].abs() >= reversal * lr[t].abs())
+        hit = big & rev & quiet_market
+        for d in lr.index[hit.fillna(False)]:
+            i = lr.index.get_loc(d)
+            d2 = lr.index[i + 1]
+            detail = (f"r_t={lr.at[d, t]:+.4f} r_t+1={lr.at[d2, t]:+.4f} robust_sd={rsd.at[d, t]:.4f} "
+                      f"universe_med_abs={uni_abs.at[d]:.4f}")
+            for dd in (d, d2):
+                recs.append({"ticker": t, "date": dd.date().isoformat(), "flag": "isolated_spike_reversal",
+                             "detail": detail, "pair_start": d.date().isoformat(), "action": "flag_only_raw_unchanged"})
+    return pd.DataFrame(recs, columns=["ticker", "date", "flag", "detail", "pair_start", "action"])
+
+
 def main():
     u = pd.read_csv(ROOT / "config" / "universe.csv", dtype=str, keep_default_na=False)
     frames, recs = {}, []
@@ -67,6 +100,13 @@ def main():
         frames[t] = d.set_index("Date")["Close"]
     rep = pd.DataFrame(recs)
     close = pd.DataFrame(frames)
+    (ROOT / "reports").mkdir(exist_ok=True)
+    dq = spike_reversal_flags(close)
+    dq.to_csv(ROOT / "reports" / "dq_flags.csv", index=False)
+    rep["n_dq_spike_reversal"] = [int((dq["ticker"] == t).sum()) for t in rep["ticker"]]
+    print(f"dq_flags (isolated spike-reversal): {len(dq)} rows → reports/dq_flags.csv")
+    if len(dq):
+        print(dq.to_string(index=False))
     all_dates = close.index
     rep["n_missing_vs_union_calendar"] = [int(close[t].isna().sum()) if t in close else -1 for t in rep["ticker"]]
     (ROOT / "reports").mkdir(exist_ok=True)
