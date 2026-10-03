@@ -11,6 +11,7 @@ usage: python scripts/inject_cards.py [--card-ref origin/claude-a/eda-analysis-v
 """
 from pathlib import Path
 from datetime import datetime, timezone, timedelta
+import os
 import json
 import re
 import subprocess
@@ -123,7 +124,7 @@ def dq_note(dq, t):
 
 def extra_metrics(tickers, dq):
     """profile 에 없는, ETF 간에 실제로 다른 수치 (raw/validation 에서 결정적 계산)."""
-    shared = Path("/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data")
+    shared = Path(os.environ.get("ETF_SHARED_DATA", "/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data"))
     val = pd.read_csv(ROOT / "reports" / "raw_validation.csv", dtype={"ticker": str}).set_index("ticker")
     close = pd.read_csv(shared / "interim" / "panel_close.csv", index_col=0)
     rows = {}
