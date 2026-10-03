@@ -1,0 +1,253 @@
+{
+  "generated_at": "2026-10-03T21:05:45+09:00",
+  "started_at": "2026-10-03T21:04:26+09:00",
+  "git_sha_at_run": "61feb3ae2197099bd5545118db91061f1ad7ba94",
+  "universe_status": "PROVISIONAL",
+  "kernel": "hongik_26_2",
+  "python": "3.12.3",
+  "packages": {
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "matplotlib": "3.11.0",
+    "scipy": "1.18.0",
+    "statsmodels": "0.14.6",
+    "scikit-learn": "1.9.0",
+    "finance-datareader": "0.9.202",
+    "pykrx": "1.0.51",
+    "nbconvert": "7.17.1",
+    "nbformat": "5.10.4",
+    "ipykernel": "7.3.0"
+  },
+  "raw_dir": "/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data/raw",
+  "UNIVERSE_LIMITATIONS": {
+    "adjusted_close_estimated": "FDR Close 분배 소급조정 추정(069500/KS200 1.155 vs TR 1.163), O/H/L 조정 일관성 미보장 — 전 ETF 공통 (C-0012 DEC-3)"
+  },
+  "counts": {
+    "PASS": 19,
+    "PASS_WITH_LIMITATION": 1
+  },
+  "runs": [
+    {
+      "slot": 1,
+      "ticker": "069500",
+      "name": "KODEX 200",
+      "notebook": "notebooks/00_raw_eda/00_01_069500_raw_eda.ipynb",
+      "raw_sha256": "0d713905f11a6d03f7be0772d600764de9375ddcc75dceb641b61c2095bbc038",
+      "seconds": 7.0,
+      "notebook_bytes": 749826,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 2,
+      "ticker": "102110",
+      "name": "TIGER 200",
+      "notebook": "notebooks/00_raw_eda/00_02_102110_raw_eda.ipynb",
+      "raw_sha256": "cfd991acc95fc91ea7b641811a78843a2ece096e36ff7bcdea38654f39580908",
+      "seconds": 7.1,
+      "notebook_bytes": 773146,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 3,
+      "ticker": "229200",
+      "name": "KODEX 코스닥150",
+      "notebook": "notebooks/00_raw_eda/00_03_229200_raw_eda.ipynb",
+      "raw_sha256": "03af091003ef5380320196a3efb2aea4d4b15c0553439e1c3e911cdf542cae52",
+      "seconds": 6.8,
+      "notebook_bytes": 817627,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 4,
+      "ticker": "122630",
+      "name": "KODEX 레버리지",
+      "notebook": "notebooks/00_raw_eda/00_04_122630_raw_eda.ipynb",
+      "raw_sha256": "197a3f16f3856ea6653e630b3ab6b3e992806d6116839eb7e645b807eefb9d50",
+      "seconds": 6.8,
+      "notebook_bytes": 766776,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 5,
+      "ticker": "114800",
+      "name": "KODEX 인버스",
+      "notebook": "notebooks/00_raw_eda/00_05_114800_raw_eda.ipynb",
+      "raw_sha256": "6ff7c2f8d4099935cd6087653e8d8fd2d14aee501c4b0c4bd740e3210948d648",
+      "seconds": 6.8,
+      "notebook_bytes": 702281,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 6,
+      "ticker": "091230",
+      "name": "TIGER 반도체",
+      "notebook": "notebooks/00_raw_eda/00_06_091230_raw_eda.ipynb",
+      "raw_sha256": "948af4cbd349aaffd9cb68bacbb6bb685f7cc739ab284a9949f699c451e7ce6a",
+      "seconds": 6.9,
+      "notebook_bytes": 785533,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 7,
+      "ticker": "091170",
+      "name": "KODEX 은행",
+      "notebook": "notebooks/00_raw_eda/00_07_091170_raw_eda.ipynb",
+      "raw_sha256": "4e1606a5972ae5605994048914f271071d249093b1b4d82e34d52b9eb52cd57c",
+      "seconds": 7.1,
+      "notebook_bytes": 820717,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 8,
+      "ticker": "091180",
+      "name": "KODEX 자동차",
+      "notebook": "notebooks/00_raw_eda/00_08_091180_raw_eda.ipynb",
+      "raw_sha256": "070064c20bd88e76a1edb06d228d9b67a95499d2f5ea2a35d5c1d702d68a9a78",
+      "seconds": 7.1,
+      "notebook_bytes": 778831,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 9,
+      "ticker": "305540",
+      "name": "TIGER 2차전지테마",
+      "notebook": "notebooks/00_raw_eda/00_09_305540_raw_eda.ipynb",
+      "raw_sha256": "434f524d083a211380f0c1bcd18cf91c69f26f5cb1423c6c2cbb45e17d429728",
+      "seconds": 10.6,
+      "notebook_bytes": 815727,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 10,
+      "ticker": "143860",
+      "name": "TIGER 헬스케어",
+      "notebook": "notebooks/00_raw_eda/00_10_143860_raw_eda.ipynb",
+      "raw_sha256": "0cc0b8f34411d59d5c6e9df358cb35b3211bf88eb0120e2e4f340a2957591e27",
+      "seconds": 10.7,
+      "notebook_bytes": 824836,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 11,
+      "ticker": "117680",
+      "name": "KODEX 철강",
+      "notebook": "notebooks/00_raw_eda/00_11_117680_raw_eda.ipynb",
+      "raw_sha256": "ed3ccb44c33c34adb34318691b89d10b4775b791ea4ccead04c0c16d3d30288c",
+      "seconds": 7.5,
+      "notebook_bytes": 786811,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 12,
+      "ticker": "161510",
+      "name": "PLUS 고배당주",
+      "notebook": "notebooks/00_raw_eda/00_12_161510_raw_eda.ipynb",
+      "raw_sha256": "2ef6e1a22bba769a5c6d4dfb095c10cc365b3687e0a8343e92f7243e228e9641",
+      "seconds": 7.3,
+      "notebook_bytes": 752710,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 13,
+      "ticker": "219480",
+      "name": "KODEX 미국S&P500선물(H)",
+      "notebook": "notebooks/00_raw_eda/00_13_219480_raw_eda.ipynb",
+      "raw_sha256": "1bdf43da31536365dc198219f1c9321f0aaf0f1454e39031640c00d816af3a56",
+      "seconds": 7.4,
+      "notebook_bytes": 766482,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 14,
+      "ticker": "133690",
+      "name": "TIGER 미국나스닥100",
+      "notebook": "notebooks/00_raw_eda/00_14_133690_raw_eda.ipynb",
+      "raw_sha256": "eba87cd89d56acb15281eab78b6fdb5b30a5e6db2680b01e4ac5fadd2e2dabec",
+      "seconds": 7.4,
+      "notebook_bytes": 789666,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 15,
+      "ticker": "192090",
+      "name": "TIGER 차이나CSI300",
+      "notebook": "notebooks/00_raw_eda/00_15_192090_raw_eda.ipynb",
+      "raw_sha256": "442c91b25e9c23efab019cbb2012b02b2cd2c9ca737242b30cf938d8de3aa40b",
+      "seconds": 7.5,
+      "notebook_bytes": 782996,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 16,
+      "ticker": "148070",
+      "name": "KIWOOM 국고채10년",
+      "notebook": "notebooks/00_raw_eda/00_16_148070_raw_eda.ipynb",
+      "raw_sha256": "ac30cf49a4d81abef1cf658ed1ed1314ab3631ad5c4d4e39e6d5ecd73f1b3c0c",
+      "seconds": 7.6,
+      "notebook_bytes": 781124,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 17,
+      "ticker": "153130",
+      "name": "KODEX 단기채권",
+      "notebook": "notebooks/00_raw_eda/00_17_153130_raw_eda.ipynb",
+      "raw_sha256": "39317553f42f5e4f6d64a035448f9dc3cb7baf405d051ead26a31d1bfa291a92",
+      "seconds": 11.3,
+      "notebook_bytes": 636631,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 18,
+      "ticker": "132030",
+      "name": "KODEX 골드선물(H)",
+      "notebook": "notebooks/00_raw_eda/00_18_132030_raw_eda.ipynb",
+      "raw_sha256": "53c34a0cc67e5269828fe48f70fa23357f29871ad37d814c5e2d4587d4076d19",
+      "seconds": 11.0,
+      "notebook_bytes": 656829,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 19,
+      "ticker": "261220",
+      "name": "KODEX WTI원유선물(H)",
+      "notebook": "notebooks/00_raw_eda/00_19_261220_raw_eda.ipynb",
+      "raw_sha256": "92909274b68241662f42532f12237e4c01e0148d112309e9e3c9c3e87893bcf8",
+      "seconds": 7.2,
+      "notebook_bytes": 648553,
+      "limitations": [],
+      "status": "PASS"
+    },
+    {
+      "slot": 20,
+      "ticker": "261240",
+      "name": "KODEX 미국달러선물",
+      "notebook": "notebooks/00_raw_eda/00_20_261240_raw_eda.ipynb",
+      "raw_sha256": "edf762b461961a6ff5549f7af75beca00ee8ffcc47c1c16f8b80ca0b3a632ea0",
+      "seconds": 7.1,
+      "notebook_bytes": 620903,
+      "limitations": [
+        "dq_flagged_dates"
+      ],
+      "status": "PASS_WITH_LIMITATION"
+    }
+  ]
+}

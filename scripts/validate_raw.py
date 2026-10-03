@@ -52,6 +52,21 @@ def spike_reversal_flags(close, k=6.0, reversal=0.7, window=60, market_k=1.0):
     return pd.DataFrame(recs, columns=["ticker", "date", "flag", "detail", "pair_start", "action"])
 
 
+def ohlc_flags(raw_dir, tickers):
+    """OHLC 논리 위반일 → dq_class=ohlc_close_gt_high (C-0014, 원인 UNRESOLVED, clip 금지)."""
+    recs = []
+    for t in tickers:
+        d = pd.read_csv(raw_dir / f"{t}.csv", parse_dates=["Date"])
+        hi = d[["Open", "Close"]].max(axis=1) - d["High"]
+        lo = d["Low"] - d[["Open", "Close"]].min(axis=1)
+        for i in d.index[(hi > 0) | (lo > 0) | (d["High"] < d["Low"])]:
+            recs.append({"ticker": t, "date": d.at[i, "Date"].date().isoformat(), "flag": "ohlc_violation",
+                         "detail": f"O={d.at[i,'Open']} H={d.at[i,'High']} L={d.at[i,'Low']} C={d.at[i,'Close']}",
+                         "pair_start": "", "action": "flag_only_raw_unchanged_no_clip",
+                         "dq_class": "ohlc_close_gt_high"})
+    return pd.DataFrame(recs)
+
+
 def main():
     u = pd.read_csv(ROOT / "config" / "universe.csv", dtype=str, keep_default_na=False)
     frames, recs = {}, []
@@ -102,6 +117,11 @@ def main():
     close = pd.DataFrame(frames)
     (ROOT / "reports").mkdir(exist_ok=True)
     dq = spike_reversal_flags(close)
+    # C-0012 DEC-1 → C-0014 FACT_CORRECTION: 확인된 사례는 price_anomaly_unverified, 나머지 spike-reversal 은 candidate
+    confirmed = {("261240", "2019-03-14"), ("261240", "2019-03-15")}
+    dq["dq_class"] = ["price_anomaly_unverified" if (t, d) in confirmed else "spike_reversal_candidate"
+                      for t, d in zip(dq["ticker"], dq["date"])]
+    dq = pd.concat([dq, ohlc_flags(RAW_DIR, list(close.columns))], ignore_index=True)
     dq.to_csv(ROOT / "reports" / "dq_flags.csv", index=False)
     rep["n_dq_spike_reversal"] = [int((dq["ticker"] == t).sum()) for t in rep["ticker"]]
     print(f"dq_flags (isolated spike-reversal): {len(dq)} rows → reports/dq_flags.csv")

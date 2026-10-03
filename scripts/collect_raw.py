@@ -18,7 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = Path("/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data/raw")
 START = "2019-01-01"
 KST = timezone(timedelta(hours=9))
-ADJUSTED_POLICY = "FDR Close, 분배 미조정 추정(가격수익률) — Adj Close 미제공, 분배락·분할 의심 점프는 flag 만"
+ADJUSTED_POLICY = ("FDR Close 는 분배 소급조정으로 추정(069500/KS200 누적비 1.155 ≈ TR 1.163), "
+                   "O/H/L 조정 일관성 미보장, 과거 값은 수집일에 묶임 — C-0012 DEC-3")
 
 
 def sha256(path):
