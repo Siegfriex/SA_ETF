@@ -1,0 +1,10 @@
+axis,k,n_common_days
+abs_z,3,99
+abs_z,5,52
+abs_z,8,32
+same_sign_raw,3,78
+same_sign_raw,5,44
+same_sign_raw,8,25
+same_sign_adj,3,85
+same_sign_adj,5,48
+same_sign_adj,8,27
