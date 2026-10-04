@@ -56,3 +56,11 @@ C (Research Director) · 2026-10-04 · branch `integration/eda-hour1` · referen
 - 해외 ETF 는 KRX 와 거래시간이 달라 동일일 상관이 과소 추정될 수 있다 (CL-15).
 - benchmark 기초지수 데이터가 없어 ETF proxy 를 쓴다. 추적오차는 측정하지 않았다.
 - 00_raw_eda notebook(Phase 00)은 보존한다. C-0022 카드 재주입은 final notebook 이 카드를 직접 참조하므로 SUPERSEDED.
+- `notebooks/universe/universe_eda.ipynb` 는 commit 된 notebook 자체가 원본이다. 재실행은 되지만 생성기 스크립트는 repo 에 없다. 20 final notebook 은 `scripts/build_final_notebooks.py` 로 다시 만들어진다.
+- fig16 (rolling 60D β): β 가 크게 튀는 시점은 anchor 일이 창에 들어오고 나가는 날과 겹친다. 이를 해석하지 않는다 (단일 극단일이 창을 지배한 결과).
+- fig08 Pearson 평균상관의 계단도 단일 극단일 효과다. Spearman 선을 병기했고, 수준 차이 결론은 60/120/250 × Pearson/Spearman 에서 유지된다 (D 0122).
+- 2026-07-31 캡션은 KOSPI200 계열 4종과 일부 국내 ETF 에만 있다. 나머지 국내 7종은 backlog 로 넘긴다. 사소한 그림 여백·범례 4건(A 0131)도 backlog 로 넘긴다.
+- PCA 는 상관행렬 기준이다 (cov 0.565 / rank 0.430). cluster 는 k=5 에서 leave-one-ETF-out ARI ≥0.98 로 ROBUST, k=8 에서 0.40 으로 FRAGILE 이다.
+
+## 6. 검수 이력 (요약)
+D 0103 (74 test) → D 0120 (07-31 SUPPORT, vol ratio 버그 발견) → A 0121 (P0 3 · P1 10 · P2 3) → 재작업 C2-A2 · B headline → A 0131 재검수 16/16 해소 → D 0122 (window/LOETF) · D 0123 (notebook 정적 검사) → freeze e9a6880 → clean 재현.

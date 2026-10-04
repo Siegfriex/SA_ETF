@@ -14,7 +14,16 @@ step() { echo "STEP $1 exit=$2"; [ "$2" -eq 0 ] || exit "$2"; }
 
 ls notebooks/final_eda/*_final_eda.ipynb | xargs -P "$JOBS" -I{} "$JUPYTER" nbconvert --to notebook --execute --inplace \
   --ExecutePreprocessor.kernel_name=hongik_26_2 --ExecutePreprocessor.timeout=900 {} --log-level=WARN
-step execute_final_notebooks $?
+rc=$?
+if [ $rc -ne 0 ]; then  # 병렬 kernel 기동 ZMQ 포트 race(Address already in use) 대비: 순차 1회 재시도 (sa-ae 0113)
+  echo "WARN parallel execute rc=$rc → sequential retry"
+  for nb in notebooks/final_eda/*_final_eda.ipynb; do
+    "$JUPYTER" nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=hongik_26_2 \
+      --ExecutePreprocessor.timeout=900 "$nb" --log-level=WARN || { rc=1; break; }
+    rc=0
+  done
+fi
+step execute_final_notebooks $rc
 n=$(ls notebooks/final_eda/*_final_eda.ipynb | wc -l); echo "final notebooks: $n"; [ "$n" -eq 20 ] || step count_20 1
 
 if [ -f analysis/scripts/universe_final.py ]; then "$PY" analysis/scripts/universe_final.py; step universe_final $?; else echo "SKIP universe_final.py (없음)"; fi

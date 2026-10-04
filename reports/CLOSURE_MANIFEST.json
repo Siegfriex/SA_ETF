@@ -1,0 +1,73 @@
+{
+  "phase": "00.5 EDA Evidence Closure",
+  "generated_at": "2026-10-04T12:44:30+09:00",
+  "branch": "integration/eda-hour1",
+  "verified_freeze_sha": "e9a6880",
+  "post_freeze_changes": [
+    "scripts/run_all_final.sh: 병렬 실행 실패 시 순차 1회 재시도 (출력 무영향)",
+    "reports/EDA_EVIDENCE_CLOSURE.md, CLOSURE_MANIFEST.json"
+  ],
+  "gate": {
+    "etf_notebooks": "20/20 (각 11 figure, error 0)",
+    "failures": 0,
+    "korean_font": "PASS — Noto Sans CJK KR, missing glyph 0 (41/41 nb)",
+    "figures": 243,
+    "relation_map": "reports/ETF_RELATION_MAP_FINAL.md COMPLETE (A 0131 재검수 16/16)",
+    "shock_map": "reports/SHOCK_MAP_FINAL.md COMPLETE",
+    "claim_evidence_matrix": "16 claims, PENDING 0",
+    "robustness": "74 tests + 5 addendum; CONTRADICTED 0",
+    "clean_rerun": "PASS — e9a6880 detached worktree, run_all_final 1m23s, tables 29/29 max|Δ|=0, csv·png 바이트 동일, nb 41/41 출력 동일 (sa-ae 0113)",
+    "unsupported_causal_claims": "none (anchor label 은 날짜 식별용으로 명시)",
+    "hidden_blockers": "none",
+    "status": "CLOSED"
+  },
+  "claim_outcomes": {
+    "CONFIRMED": 10,
+    "CONFIRMED_WITH_LIMITATION": 2,
+    "REVISED": 2,
+    "CORRECTED": 1,
+    "DOWNGRADED": 1
+  },
+  "robustness_verdicts": {
+    "ROBUST": 57,
+    "DEFINITION_DEPENDENT": 12,
+    "FRAGILE": 5
+  },
+  "reproducibility_notes": [
+    "시도 1 은 xargs -P6 병렬 kernel 기동 ZMQ 포트 race 로 FAIL(infra) → 재시도 PASS. run_all_final.sh 에 순차 재시도 추가",
+    "notebook 실행 metadata(시각)만 비결정적, 출력·csv·png 는 바이트 동일",
+    "raw 는 git 밖: ETF_RAW_DIR 로 바인딩 (data/raw/MANIFEST.csv sha256)"
+  ],
+  "limitations": "reports/EDA_EVIDENCE_CLOSURE.md §5",
+  "out_of_scope": [
+    "news",
+    "PELT",
+    "XGBoost",
+    "forecasting",
+    "trading agent",
+    "portfolio"
+  ],
+  "artifacts": [
+    "notebooks/final_eda/ (20)",
+    "notebooks/universe/universe_eda.ipynb",
+    "figures/etf/<ticker>/ (220)",
+    "figures/universe/ (18)",
+    "figures/robustness/ (5)",
+    "reports/STATE_RECONSTRUCTION.md",
+    "reports/GAP_MATRIX.csv",
+    "reports/CLAIM_EVIDENCE_MATRIX.csv",
+    "reports/ETF_RELATION_MAP_FINAL.md",
+    "reports/SHOCK_MAP_FINAL.md",
+    "reports/ROBUSTNESS_MATRIX.csv",
+    "reports/ROBUSTNESS_MATRIX_C_ADDENDUM.csv",
+    "reports/VISUAL_INDEX.md",
+    "reports/EDA_EVIDENCE_CLOSURE.md",
+    "reports/CLOSURE_MANIFEST.json",
+    "scripts/run_all_final.sh"
+  ],
+  "agents": {
+    "A": "C subagent C2-A1/A2 + sa-e6 review 0121/0131",
+    "B": "C subagent C2-B1 + sa-ae repro 0111/0113",
+    "D": "C subagent C2-D1 + sa-56 audit 0120/0122/0123"
+  }
+}
