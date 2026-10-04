@@ -1,5 +1,6 @@
 anchor_id,start,end,label,source,status
-A1,2020-03-19,2020-03-24,COVID-19 급락·반등,D-011 robust-z co-occurrence (C-0012 DEC-5),DATA_DERIVED_TO_VERIFY(A4 참여 ETF 수)
-A2,2024-08-05,2024-08-05,엔캐리 청산 급락,D-011 robust-z co-occurrence (C-0012 DEC-5),DATA_DERIVED_TO_VERIFY(A4 참여 ETF 수)
-A3,2026-03-04,2026-03-04,2026-03 동시 충격,D-011 robust-z co-occurrence (C-0012 DEC-5),DATA_DERIVED_TO_VERIFY(A4 참여 ETF 수)
-A4,2026-07-28,2026-08-03,2026-07말 급락·+24% 반등 창,D-011 robust-z co-occurrence (C-0012 DEC-5) · D-009,DATA_DERIVED_TO_VERIFY(A4 참여 ETF 수)
+A1,2020-03-19,2020-03-24,COVID-19 급락·반등,D-011 robust-z co-occurrence (C-0012 DEC-5),CONFIRMED_DATA(A 65b3f51 SHOCK_MAP; 정의3×k3×dedup 생존 CL-10)
+A2,2024-08-05,2024-08-05,엔캐리 청산 급락,D-011 robust-z co-occurrence (C-0012 DEC-5),CONFIRMED_DATA(A 65b3f51 SHOCK_MAP; 정의3×k3×dedup 생존 CL-10)
+A3,2026-03-04,2026-03-04,2026-03 동시 충격,D-011 robust-z co-occurrence (C-0012 DEC-5),CONFIRMED_DATA(A 65b3f51 SHOCK_MAP; 정의3×k3×dedup 생존 CL-10)
+A4,2026-07-28,2026-08-03,2026-07말 급락·+24% 반등 창,D-011 robust-z co-occurrence (C-0012 DEC-5) · D-009,DOMESTIC_REGIME(abs3 만 k=8 생존 · universe 공통 아님 CL-24)
+A5,2025-04-07,2025-04-10,2025-04 급락·반등 창 (날짜 식별용 label · 원인 미귀속),D-026 (v1 findings/0033) · CL-33,FRAGILE(rz3·abs3 k=8+dedup 생존 / q99 4종 탈락)

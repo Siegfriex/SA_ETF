@@ -1,0 +1,17 @@
+claim_id,claim,current_source,current_stat,current_figure,missing_figure,missing_stat,final_status
+DX-01,ETF별 변동성 scale 175배 차 (0.32%~56.65%),universe_profile.csv ann_vol,153130 0.0032 / 122630 0.566,—,vol ranking·ETF×year heatmap·Q interval,—,PENDING
+DX-02,"KODEX200–TIGER200 ρ≈0.999, 일간차 sd≈8bp",card 01/02,0.999,—,scatter·차이 분포,bootstrap CI,PENDING
+DX-03,레버리지 beta≈1.99,card 04,1.99 / ρ 0.998,—,benchmark scatter+rolling beta,block bootstrap CI,PENDING
+DX-04,인버스 beta≈−1.02,card 05,−1.02 / ρ −0.996,—,benchmark scatter+rolling beta,block bootstrap CI,PENDING
+DX-05,헬스케어는 KOSDAQ150 과 더 가깝다 (≈0.76),"RELATION_MAP, card 10",ρ 0.76 vs 0.508,—,corr heatmap·rolling corr 2-line,ρ차이 CI·기간별,PENDING
+DX-06,고배당은 은행과 높은 관계 (≈0.83),card 07/12,0.83 vs 0.655,—,corr heatmap·dendrogram,ρ차이 CI,PENDING
+DX-07,statistical cluster ≠ economic taxonomy (114800+261240 부호 artifact),"CL-11/14, taxonomy_vs_cluster.csv",ARI·k grid,—,dendrogram·taxonomy 대조,linkage/기간/rank ARI,PENDING
+DX-08,2026 vol 확대는 국내주식 집중,CL-30 D-024,"KOSPI200계열 3.3배, 해외 0.73~0.94",—,2026/전체 ratio bar·year heatmap,ratio CI·Brown–Forsythe,PENDING
+DX-09,shock day count 는 operational definition 에 민감 (52/22/175),CL-20/32,52(D식)/61(A식)/22/175,—,definition grid heatmap,정의×k×dedup 재계산,PENDING
+DX-10,단기채·달러 kurtosis 는 극단치 영향,"CL-06, D-011","323→6.1, 300→2.4 (DOCX 3.9 별도 제거법)",—,kurtosis 처리별 비교,trim/anomaly 제거/winsor,PENDING
+DX-11,cross-ETF corr 자체가 time-varying state,rolling_corr_120.csv,—,relation_rolling_corr.png(v1),rolling 평균 corr+dispersion·period diff,Fisher z 기간 차,PENDING
+DX-12,공통충격 anchor 3개 정의 생존 + 2025-04 FRAGILE,"CL-10/33, anchors.csv",생존 표,shock_timeline.png(v1),participation·sign matrix·breadth,정의 grid,PENDING
+DX-13,달러선물이 유일한 일관 반대방향 자산 (폭락일 86% 상승),CL-27 D-020,86% vs 34일 0.91,—,crash-day bar,폭락일 정의별 hit rate,PENDING
+DX-14,148070 corr 0.100 / beta 1.87,DOCX card 16,proxy=153130 기준,—,benchmark scatter (069500 병기),재계산,SUSPECT_ARTIFACT
+DX-15,305540 은 일부 기간 철강에 더 가깝다,CL-17 HOLD,2019-21 역전,—,rolling corr 2-line,기간별,PENDING
+DX-16,WTI–주식 상관 2026 부호 반전,CL-31,+0.12~0.48 → −0.36,—,period-diff corr,Fisher z,PENDING

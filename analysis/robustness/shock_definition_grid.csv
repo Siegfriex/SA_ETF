@@ -1,0 +1,25 @@
+definition,k,dedup_k200,n_days
+"rz3 (D식 MAD: 잔차 rolling median, mp20)",3,False,99
+"rz3 (D식 MAD: 잔차 rolling median, mp20)",3,True,91
+"rz3 (D식 MAD: 잔차 rolling median, mp20)",5,False,52
+"rz3 (D식 MAD: 잔차 rolling median, mp20)",5,True,40
+"rz3 (D식 MAD: 잔차 rolling median, mp20)",8,False,32
+"rz3 (D식 MAD: 잔차 rolling median, mp20)",8,True,20
+"rz3 (A식 MAD: 창내 MAD, mp40)",3,False,111
+"rz3 (A식 MAD: 창내 MAD, mp40)",3,True,102
+"rz3 (A식 MAD: 창내 MAD, mp40)",5,False,61
+"rz3 (A식 MAD: 창내 MAD, mp40)",5,True,45
+"rz3 (A식 MAD: 창내 MAD, mp40)",8,False,34
+"rz3 (A식 MAD: 창내 MAD, mp40)",8,True,18
+q99 (ETF별 전체기간 |r|),3,False,35
+q99 (ETF별 전체기간 |r|),3,True,30
+q99 (ETF별 전체기간 |r|),5,False,22
+q99 (ETF별 전체기간 |r|),5,True,15
+q99 (ETF별 전체기간 |r|),8,False,10
+q99 (ETF별 전체기간 |r|),8,True,7
+abs3 (|단순수익률|≥3%),3,False,339
+abs3 (|단순수익률|≥3%),3,True,327
+abs3 (|단순수익률|≥3%),5,False,175
+abs3 (|단순수익률|≥3%),5,True,136
+abs3 (|단순수익률|≥3%),8,False,78
+abs3 (|단순수익률|≥3%),8,True,49

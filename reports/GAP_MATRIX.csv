@@ -1,0 +1,15 @@
+gap_id,gap,status_at_t0,owner,ticket,target_artifact,priority
+G01,"20 ETF final notebook (≥8 fig, 4섹션 해석)",MISSING,B,C2-B1,notebooks/final_eda/,P0
+G02,Universe EDA notebook (지도형),MISSING,A,C2-A1,notebooks/universe/universe_eda.ipynb,P0
+G03,Visualization atlas / VISUAL_INDEX,MISSING,C,C2-C,reports/VISUAL_INDEX.md,P0
+G04,"Claim별 CI·검정 (beta, ρ차이, vol ratio)",MISSING,D,C2-D1,reports/ROBUSTNESS_MATRIX.csv,P0
+G05,"ETF_RELATION_MAP_FINAL (period diff, dedup, 깨짐 국면)",PARTIAL,A,C2-A1,reports/ETF_RELATION_MAP_FINAL.md,P1
+G06,"SHOCK_MAP_FINAL (2025-04 FRAGILE, sign/breadth)",PARTIAL,A,C2-A1,reports/SHOCK_MAP_FINAL.md,P1
+G07,idio 기준 0.75/1.25 민감도,MISSING,D,C2-D1,analysis/robustness/,P1
+G08,shock count 정의 grid 재현 (52/61/22/175),PARTIAL,D,C2-D1,analysis/robustness/,P1
+G09,clean clone/worktree 재현 + numerical parity,MISSING,C+B,C2-B1 run_all_final,reports/CLOSURE_MANIFEST.json,P1
+G10,C-0022 카드 6장 notebook 재주입,SUPERSEDED,B,—,final notebook 이 카드 직접 참조 → 00_raw_eda 재주입 불필요,P3
+G11,event_anchors 2025-04 FRAGILE 추가,CLOSED,C,—,config/event_anchors.csv A5,P2
+G12,148070/153130 benchmark artifact 정정,MISSING,B+D,C2-B1/C2-D1,etf_final_stats.csv,P1
+G13,한글 폰트 고정,CLOSED,C,—,src/kfont.py,P0
+G14,HYPOTHESIS_BACKLOG curation,OPEN,C,—,범위 밖(Phase 01)으로 이월,P3
