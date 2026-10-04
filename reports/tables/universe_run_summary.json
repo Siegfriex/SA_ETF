@@ -1,0 +1,105 @@
+{
+ "figures": [
+  "figures/universe/01_vol_ranking.png",
+  "figures/universe/02_vol_year_heatmap.png",
+  "figures/universe/03_quantile_interval.png",
+  "figures/universe/04_distribution_standardized.png",
+  "figures/universe/05_corr_spearman_clustered.png",
+  "figures/universe/06_dendrogram.png",
+  "figures/universe/07_period_diff_corr.png",
+  "figures/universe/08_rolling_corr_dispersion.png",
+  "figures/universe/09_pca_scree_loading.png",
+  "figures/universe/10_shock_definition_sensitivity_dedup.png",
+  "figures/universe/11_breadth_timeline.png",
+  "figures/universe/12_shock_participation_sign.png",
+  "figures/universe/13_shock_participation_scatter.png",
+  "figures/universe/14_empirical_peer_rolling.png",
+  "figures/universe/15_wti_equity_sign_flip.png"
+ ],
+ "tables": [
+  "reports/tables/universe_vol_rank.csv",
+  "reports/tables/universe_vol_by_year.csv",
+  "reports/tables/universe_vol_ratio_2026.csv",
+  "reports/tables/universe_quantiles.csv",
+  "reports/tables/universe_corr_spearman.csv",
+  "reports/tables/universe_corr_pearson.csv",
+  "reports/tables/universe_clusters.csv",
+  "reports/tables/universe_corr_period_diff.csv",
+  "reports/tables/universe_rolling_state.csv",
+  "reports/tables/universe_pca_evr.csv",
+  "reports/tables/universe_pca_loadings.csv",
+  "reports/tables/universe_shock_definition_sensitivity.csv",
+  "reports/tables/universe_shock_def_jaccard_k5dedup.csv",
+  "reports/tables/universe_breadth_daily.csv",
+  "reports/tables/universe_shock_anchor_survival.csv",
+  "reports/tables/universe_shock_participation_by_etf.csv",
+  "reports/tables/universe_claim_checks.csv",
+  "reports/tables/universe_claim_bootstrap_ci.csv"
+ ],
+ "checks": {
+  "vol_max_min_ratio": 174.62783044820125,
+  "vol_ratio_2026": {
+   "069500": 3.3,
+   "102110": 3.32,
+   "229200": 2.2,
+   "122630": 3.32,
+   "114800": 3.29,
+   "091230": 2.55,
+   "091170": 1.48,
+   "091180": 2.12,
+   "305540": 1.67,
+   "143860": 1.7,
+   "117680": 1.74,
+   "161510": 1.73,
+   "219480": 0.73,
+   "133690": 0.87,
+   "192090": 0.94,
+   "148070": 1.15,
+   "153130": 0.66,
+   "132030": 2.21,
+   "261220": 1.5,
+   "261240": 0.8
+  },
+  "p_absrz_gt5_normal": 5.733031437583866e-07,
+  "cluster_abs_k5_114800_with_069500": true,
+  "cluster_signed_k5_114800_with_261240": true,
+  "n_pairs_absz_gt_3.4": 60,
+  "corr_rc_eq_vs_mktvol": 0.5978711451672559,
+  "pca_pc1": {
+   "all20": 0.457,
+   "dedup17": 0.393,
+   "nondomestic8+069500": 0.312
+  },
+  "shock_k5": {
+   "rz3_D": [
+    52,
+    40
+   ],
+   "rz3_A": [
+    61,
+    45
+   ],
+   "q99": [
+    22,
+    15
+   ],
+   "abs3": [
+    177,
+    139
+   ]
+  },
+  "n_common_days_rz3D_dedup5": 40,
+  "bootstrap_ci": {
+   "rho(143860,229200)-rho(143860,069500)": {
+    "ci_lo": 0.231,
+    "median": 0.277,
+    "ci_hi": 0.32
+   },
+   "rho(161510,091170)-rho(161510,069500)": {
+    "ci_lo": 0.179,
+    "median": 0.221,
+    "ci_hi": 0.265
+   }
+  }
+ }
+}
