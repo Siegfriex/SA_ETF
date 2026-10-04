@@ -19,7 +19,8 @@
     "clean_rerun": "PASS — e9a6880 detached worktree, run_all_final 1m23s, tables 29/29 max|Δ|=0, csv·png 바이트 동일, nb 41/41 출력 동일 (sa-ae 0113)",
     "unsupported_causal_claims": "none (anchor label 은 날짜 식별용으로 명시)",
     "hidden_blockers": "none",
-    "status": "CLOSED"
+    "status": "CLOSED",
+    "clean_rerun_final": "PASS — 840f8e8 detached worktree (C), run_all_final 83s, STEP 7/7 exit 0, 비-ipynb 변경 0 (csv·png 바이트 동일), notebook 21 metadata 만 변경"
   },
   "claim_outcomes": {
     "CONFIRMED": 10,
@@ -69,5 +70,7 @@
     "A": "C subagent C2-A1/A2 + sa-e6 review 0121/0131",
     "B": "C subagent C2-B1 + sa-ae repro 0111/0113",
     "D": "C subagent C2-D1 + sa-56 audit 0120/0122/0123"
-  }
+  },
+  "final_verified_sha": "840f8e8",
+  "main_promotion": "origin/main(042cf2d) 가 HEAD 의 조상 → fast-forward promotion"
 }
