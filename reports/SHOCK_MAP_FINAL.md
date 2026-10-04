@@ -9,12 +9,12 @@ Supersedes `reports/SHOCK_MAP.md` (65b3f51, G3 ACCEPTED). 생성: `analysis/scri
 | rz3_D | \|r − med60\| / (1.4826·MAD60) > 3, MAD = \|r−trailing median\| 의 rolling median, min_periods 20 | D 식 |
 | rz3_A | 창 내부 median/MAD, min_periods 40 | A 식 (CL-32) |
 | q99 | ETF별 전체기간 \|r\| 99% 분위 초과 | look-ahead 포함, 서술용 |
-| abs3 | \|log r\| > 3% | D 표는 단순수익률 ≥3% → 175 (본 표 177) |
+| abs3 | \|log r\| > 3% (**로그수익률**) | D 표(ROBUSTNESS_MATRIX DOCX-11)는 \|단순수익률\| ≥3% → 175, 본 표 177 |
 | dedup | KOSPI200 4종(069500·102110·122630·114800) → 1 | CL-23 |
 공정 비교를 위해 rz3_A warm-up(≥15종 유효) 이후 날만 집계.
 
 ## 2. 정의 민감도 (`10_shock_definition_sensitivity_dedup.png`, `universe_shock_definition_sensitivity.csv`)
-| k | rz3_D raw/dedup | rz3_A | q99 | abs3 |
+| k | rz3_D raw/dedup | rz3_A raw/dedup | q99 raw/dedup | abs3 (log r) raw/dedup |
 |---|---|---|---|---|
 | ≥5 | **52 / 40** | 61 / 45 | 22 / 15 | 177 / 139 |
 - 같은 'rz3' 라도 MAD 식만 바꾸면 52→61 (+17%). 정의 간 최대 8배 (D: 4정의 max/min 7.95).
@@ -34,8 +34,8 @@ Supersedes `reports/SHOCK_MAP.md` (65b3f51, G3 ACCEPTED). 생성: `analysis/scri
 | F1 | 2025-04-07 | −5.9% | 17 (14) | 17 | **4** | 16 | 16/3 | **FRAGILE** — q99 에서 k≥5 탈락 (CL-33) |
 | F1 | 2025-04-10 | +6.0% | 16 (13) | 16 | **4** | 16 | 17/2 | **FRAGILE** |
 (같은부호/반대: \|r\|<0.1% 는 0 처리. 반대 고정 = 114800 기계적 + 261240 달러; 2024-08-05 는 148070 국고채 +0.9% 반대.)
-- A1~A3 는 네 정의 모두 k≥5 생존 → `config/event_anchors.csv` 확정 anchor 유지. F1 은 FRAGILE 로 **추가 필요** (C 소유 config).
-- 2026-07-28~08-03 은 universe 공통이 아니라 국내주식 국면 충격 (abs3 만 생존, CL-24) — anchor 아님. `11_breadth_timeline.png` 하단에서 2026 하반기 abs3 밀집, 상단 rz3_D 미반응(CL-21)으로 확인.
+- A1~A3 는 네 정의 모두 k≥5 생존 → `config/event_anchors.csv` 확정 anchor 유지. F1 은 FRAGILE 로 **추가됨 (A5, 58da731)**.
+- 2026-07-28~08-03 은 universe 공통이 아니라 국내주식 국면 충격 (abs3 만 생존, CL-24) — anchor 아님. `11_breadth_timeline.png` 하단 주황 음영(2026-07-28~08-03)에서 abs3 밀집, 상단 rz3_D 미반응(CL-21)으로 확인.
 
 ## 4. 참여·부호 구조 (`13_shock_participation_scatter.png`, `universe_shock_participation_by_etf.csv`; 공통일 = rz3_D dedup≥5, n=40)
 | 그룹 | 참여율 | 069500 과 같은 부호 | 하락 공통일 평균 r |

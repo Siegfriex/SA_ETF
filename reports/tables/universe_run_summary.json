@@ -14,7 +14,9 @@
   "figures/universe/12_shock_participation_sign.png",
   "figures/universe/13_shock_participation_scatter.png",
   "figures/universe/14_empirical_peer_rolling.png",
-  "figures/universe/15_wti_equity_sign_flip.png"
+  "figures/universe/15_wti_equity_sign_flip.png",
+  "figures/universe/16_rolling_beta_geared.png",
+  "figures/universe/17_empirical_peer_scatter.png"
  ],
  "tables": [
   "reports/tables/universe_vol_rank.csv",
@@ -34,7 +36,10 @@
   "reports/tables/universe_shock_anchor_survival.csv",
   "reports/tables/universe_shock_participation_by_etf.csv",
   "reports/tables/universe_claim_checks.csv",
-  "reports/tables/universe_claim_bootstrap_ci.csv"
+  "reports/tables/universe_claim_bootstrap_ci.csv",
+  "reports/tables/universe_rolling_beta60.csv",
+  "reports/tables/universe_peer_stability.csv",
+  "reports/tables/universe_fx_pairs_by_period.csv"
  ],
  "checks": {
   "vol_max_min_ratio": 174.62783044820125,
@@ -58,12 +63,18 @@
    "153130": 0.66,
    "132030": 2.21,
    "261220": 1.5,
-   "261240": 0.8
+   "261240": 1.26
   },
+  "vol_ratio_2026_069500_ex_own_top3": 2.9026588044940094,
   "p_absrz_gt5_normal": 5.733031437583866e-07,
   "cluster_abs_k5_114800_with_069500": true,
   "cluster_signed_k5_114800_with_261240": true,
   "n_pairs_absz_gt_3.4": 60,
+  "n_pairs_absz_gt_3.4_dedup": "44/136",
+  "sig_pairs_sign_pos_neg": [
+   36,
+   24
+  ],
   "corr_rc_eq_vs_mktvol": 0.5978711451672559,
   "pca_pc1": {
    "all20": 0.457,
@@ -99,6 +110,85 @@
     "ci_lo": 0.179,
     "median": 0.221,
     "ci_hi": 0.265
+   }
+  },
+  "beta60_range": {
+   "122630": [
+    1.8868682257718106,
+    2.054541106483682,
+    "2024-11-05"
+   ],
+   "114800": [
+    -1.0615101847361503,
+    -0.9599995189435636,
+    "2026-03-04"
+   ]
+  },
+  "peer_scatter_rho_beta": {
+   "143860~069500": [
+    0.481,
+    0.55
+   ],
+   "143860~229200": [
+    0.756,
+    0.724
+   ],
+   "161510~069500": [
+    0.603,
+    0.487
+   ],
+   "161510~091170": [
+    0.83,
+    0.666
+   ]
+  },
+  "peer_stability": {
+   "143860:229200_vs_069500:60d": {
+    "share_delta_pos": 0.9638814016172507,
+    "min": -0.20947164172829819,
+    "min_date": "2023-08-30"
+   },
+   "143860:229200_vs_069500:120d": {
+    "share_delta_pos": 0.945213060320974,
+    "min": -0.06972799242383138,
+    "min_date": "2023-08-01"
+   },
+   "161510:091170_vs_069500:60d": {
+    "share_delta_pos": 0.952021563342318,
+    "min": -0.16194018750333106,
+    "min_date": "2019-03-15"
+   },
+   "161510:091170_vs_069500:120d": {
+    "share_delta_pos": 0.9701162147205312,
+    "min": -0.0982751179056014,
+    "min_date": "2019-05-31"
+   },
+   "305540:117680_vs_091230:60d": {
+    "share_delta_pos": 0.5309973045822103,
+    "min": -0.5148173106921969,
+    "min_date": "2021-07-30"
+   },
+   "305540:117680_vs_091230:120d": {
+    "share_delta_pos": 0.5329275041505257,
+    "min": -0.4430745964286673,
+    "min_date": "2021-08-09"
+   }
+  },
+  "fx_pairs_by_period": {
+   "2019_21": {
+    "sp_114800_261240": 0.6247327895474922,
+    "sp_069500_261240": -0.6276404273590155,
+    "pe_261220_261240": -0.2950360002094656
+   },
+   "2022_25": {
+    "sp_114800_261240": 0.49070525980348395,
+    "sp_069500_261240": -0.49046920464653115,
+    "pe_261220_261240": -0.08390837425641752
+   },
+   "2026": {
+    "sp_114800_261240": 0.43709518262849323,
+    "sp_069500_261240": -0.4332328551551977,
+    "pe_261220_261240": 0.40172668436138204
    }
   }
  }

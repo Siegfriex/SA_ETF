@@ -1,0 +1,6 @@
+claim_id,claim,test,variant,statistic,ci_low,ci_high,n,verdict,figure,note
+DOCX-09,cross-ETF corr 은 time-varying state,rolling avg pairwise corr 2026 vs 2025 수준차·vol 동조,window 60/120/250 × Pearson/Spearman/ex-top2,,,,,ROBUST,figures/universe/08_rolling_corr_dispersion.png,"D 0122 (sa-56); analysis/robustness/d0122/rolling_corr_window_estimator_summary.csv. fig08 Pearson 계단은 단일 극단일 효과(2024-08-05 +0.136 vs Spearman +0.014) → VISUAL_RISK MED, Spearman 병기"
+CL-13,PC1 비중은 universe 구성·scale 종속,PCA leave-one-ETF-out,"corr matrix, 20 drops",0.024,,,,ROBUST,,D 0122: PC1 ±0.024. scaler 의존: corr 0.457 / rank 0.430 / cov 0.565 → 상관행렬 기준 명시
+DOCX-12,statistical cluster ≠ taxonomy,cluster leave-one-ETF-out ARI,k=5,0.98,,,,ROBUST,figures/robustness/cluster_ari_heatmap.png,D 0122 min ARI
+DOCX-12,statistical cluster ≠ taxonomy,cluster leave-one-ETF-out ARI,k=8,0.4,,,,FRAGILE,figures/robustness/cluster_ari_heatmap.png,D 0122 min ARI
+DOCX-07,2026 vol 확대는 국내주식 집중,σ2026/σ2019-25 leave-out,069500 full / ex 07-31 / ex top3,2.9,,,,ROBUST,figures/robustness/vol_ratio_2026.png,"D 0120: 3.30→3.07→2.90; 국내 12/12>1, MW p=0.0022 불변. '3.3× (top3 제외 2.9×)' 표기"

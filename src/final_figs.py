@@ -169,7 +169,8 @@ def compute(tk, close=None, vol=None, R=None):
     if tk == "261240":  # price_anomaly_unverified 2019-03-14/15 trim 버전
         rt = r.drop(pd.to_datetime(["2019-03-14", "2019-03-15"]), errors="ignore")
         S["trim_anom"] = {"ann_vol": float(rt.std() * ANN), "ex_kurt": float(rt.kurt()),
-                          "mkt_corr": float(rt.corr(R[market].reindex(rt.index)))}
+                          "mkt_corr": float(rt.corr(R[market].reindex(rt.index))),
+                          "vol_ratio_26": float(rt[rt.index.year == 2026].std() / rt[rt.index.year < 2026].std())}
     return S
 
 

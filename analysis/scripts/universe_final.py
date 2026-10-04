@@ -62,7 +62,8 @@ fig, ax = plt.subplots(figsize=(9, 7))
 ax.barh([LAB[t] for t in v.index], v.ann_vol * 100, color=[SC_COL[SCOPE[t]] for t in v.index])
 ax.set_xscale("log"); ax.set_xlabel("연환산 변동성 (%, 로그축) — std(일간 로그수익률)×√252, 2019-01-03~2026-10-02")
 for i, (t, x) in enumerate(v.ann_vol.items()):
-    ax.text(x * 100 * 1.05, i, f"{x*100:.2f}%", va="center", fontsize=8)
+    extra = f"  (DQ 2일 제외 {v.ann_vol_trimdq[t]*100:.1f}%)" if abs(v.ann_vol_trimdq[t] - x) > 1e-4 else ""
+    ax.text(x * 100 * 1.05, i, f"{x*100:.2f}%{extra}", va="center", fontsize=8, color="r" if extra else "k")
 for k, c in SC_COL.items():
     ax.bar(0, 0, color=c, label=SC_KO[k])
 ax.legend(loc="lower right"); ax.set_title(f"변동성 스케일: 최대/최소 = {v.ann_vol.max()/v.ann_vol.min():.0f}배")
@@ -70,7 +71,7 @@ save(fig, "01_vol_ranking.png")
 OUT["checks"]["vol_max_min_ratio"] = float(v.ann_vol.max() / v.ann_vol.min())
 
 # ---------- 2. ETF x year vol heatmap ----------
-vy = (R.groupby(year).std() * np.sqrt(252)).T
+vy = (Rt.groupby(year).std() * np.sqrt(252)).T  # 261240 DQ 2일 제외
 order_scope = sorted(TK, key=lambda t: (list(SC_COL).index(SCOPE[t]), TK.index(t)))
 vy = vy.loc[order_scope]
 tsave(vy, "universe_vol_by_year.csv")
@@ -86,9 +87,11 @@ for ax, M, ttl, fmt, cm in [(axs[0], vy * 100, "연도별 연환산 변동성 (%
             ax.text(j, i, fmt.format(M.values[i, j]), ha="center", va="center", fontsize=7, color="k" if cm == "RdBu_r" else "w")
     ax.set_title(ttl); ax.grid(False); fig.colorbar(im, ax=ax, shrink=.7)
 save(fig, "02_vol_year_heatmap.png")
-v26 = (R[year == 2026].std() / R[year < 2026].std()).rename("vol_ratio_2026_vs_2019_25")
+v26 = (Rt[year == 2026].std() / Rt[year < 2026].std()).rename("vol_ratio_2026_vs_2019_25")  # DQ trim (D 0120: R 사용 시 261240 0.80 오류)
 tsave(v26.to_frame().assign(asset_scope=lambda d: d.index.map(SCOPE)), "universe_vol_ratio_2026.csv")
 OUT["checks"]["vol_ratio_2026"] = v26.round(2).to_dict()
+_x = Rt["069500"]; _p = _x[year == 2026]; _p = _p.drop(_p.abs().nlargest(3).index)
+OUT["checks"]["vol_ratio_2026_069500_ex_own_top3"] = float(_p.std() / _x[year < 2026].std())
 
 # ---------- 3. Q01-Q99 interval ----------
 q = R.quantile([.01, .05, .25, .5, .75, .95, .99]).T
@@ -189,34 +192,42 @@ pd_tab = pd.DataFrame({"a": [TK[i] for i in iu[0]], "b": [TK[j] for j in iu[1]],
 pd_tab = pd_tab.reindex(pd_tab.fisher_z_stat.abs().sort_values(ascending=False).index)
 tsave(pd_tab, "universe_corr_period_diff.csv", index=False)
 OUT["checks"]["n_pairs_absz_gt_3.4"] = int((pd_tab.fisher_z_stat.abs() > 3.4).sum())
+_dd = pd_tab[~pd_tab.a.isin(["102110", "122630", "114800"]) & ~pd_tab.b.isin(["102110", "122630", "114800"])]
+OUT["checks"]["n_pairs_absz_gt_3.4_dedup"] = f"{int((_dd.fisher_z_stat.abs() > 3.4).sum())}/{len(_dd)}"
+_sig = pd_tab[pd_tab.fisher_z_stat.abs() > 3.4]; OUT["checks"]["sig_pairs_sign_pos_neg"] = [int((_sig.fisher_z_stat > 0).sum()), int((_sig.fisher_z_stat < 0).sum())]
 
 # ---------- 8. rolling avg pairwise corr + dispersion ----------
 EQ = [t for t in TK if SCOPE[t] == "domestic_equity" and t not in ("102110", "122630", "114800")]
 ALLD = [t for t in TK if t not in ("102110", "122630", "114800")]
-def avg_pair(cols, w=120):
+def avg_pair(cols, w=120, method="pearson"):
     X = Rt[cols]
     out = []
     idx = X.index
     for i in range(w - 1, len(X)):
-        c = X.iloc[i - w + 1:i + 1].corr().values
+        c = X.iloc[i - w + 1:i + 1].corr(method=method).values
         out.append(np.nanmean(c[np.triu_indices(len(cols), 1)]))
     return pd.Series(out, index=idx[w - 1:])
-rc_eq = avg_pair(EQ); rc_all = avg_pair(ALLD)
+rc_eq = avg_pair(EQ); rc_all = avg_pair(ALLD); rc_eq_sp = avg_pair(EQ, method="spearman")
 Zv = Rt[EQ] / Rt[EQ].rolling(250, min_periods=120).std().shift(1)
 disp = Zv.std(axis=1).rolling(20).mean()
 mkt_vol = R["069500"].rolling(20).std() * np.sqrt(252)
-roll = pd.DataFrame({"avgcorr_domeq9_120d": rc_eq, "avgcorr_dedup17_120d": rc_all, "xs_disp_volnorm_20d": disp, "vol20_069500": mkt_vol})
+roll = pd.DataFrame({"avgcorr_domeq9_120d": rc_eq, "avgcorr_domeq9_120d_spearman": rc_eq_sp, "avgcorr_dedup17_120d": rc_all, "xs_disp_volnorm_20d": disp, "vol20_069500": mkt_vol})
 tsave(roll, "universe_rolling_state.csv")
 fig, axs = plt.subplots(3, 1, figsize=(14, 9), sharex=True)
 axs[0].plot(rc_eq, label="국내주식 9종(KOSPI200 중복 제외) 평균 pairwise ρ", c="#2a6fdb")
+axs[0].plot(rc_eq_sp, label="국내주식 9종 평균 Spearman ρ (극단일 영향 작음)", c="#2a6fdb", ls="--", lw=1)
 axs[0].plot(rc_all, label="전체 17종(K200 dedup) 평균 pairwise ρ", c="#6b7280")
 axs[0].set_ylabel("120일 평균 ρ"); axs[0].legend(fontsize=8)
-axs[1].plot(disp, c="#b5179e"); axs[1].set_ylabel("vol-정규화 횡단면\n분산 (20일 평균)")
+axs[1].plot(disp, c="#b5179e"); axs[1].set_ylabel("횡단면 분산\n(vol정규화, 20일)", fontsize=9)
 axs[2].plot(mkt_vol * 100, c="k"); axs[2].set_ylabel("069500 20일\n연환산 vol (%)")
 for ax in axs:
     for s, e in [("2020-03-19", "2020-03-24"), ("2024-08-05", "2024-08-05"), ("2026-03-04", "2026-03-04"), ("2025-04-07", "2025-04-10")]:
         ax.axvspan(pd.Timestamp(s) - pd.Timedelta(days=2), pd.Timestamp(e) + pd.Timedelta(days=2), color="r", alpha=.25)
-axs[0].set_title("관계는 상태변수: 평균 상관·횡단면 분산·시장 변동성 (빨강 = shock anchor)")
+for ax in axs:
+    ax.axvspan(pd.Timestamp("2026-07-28"), pd.Timestamp("2026-08-03"), color="orange", alpha=.3)
+    ax.axvline(pd.Timestamp("2026-07-31"), c="#b35c00", lw=.8, ls=":")
+axs[2].annotate("주황 = 2026-07-28~08-03 국내 국면 (CL-24, anchor 아님) · 점선 = 2026-07-31 표본 최대일", (pd.Timestamp("2026-07-20"), mkt_vol.max() * 100 * .9), fontsize=8, ha="right", color="#b35c00")
+axs[0].set_title("관계는 상태변수: 평균 상관·횡단면 분산·시장 변동성 (빨강 = shock anchor) · Pearson 계단 = 극단일 1개의 창 진입/이탈")
 save(fig, "08_rolling_corr_dispersion.png")
 OUT["checks"]["corr_rc_eq_vs_mktvol"] = float(pd.concat([rc_eq, mkt_vol.rolling(120).mean()], axis=1).dropna().corr(method="spearman").iloc[0, 1])
 
@@ -237,7 +248,7 @@ tsave(pcs, "universe_pca_evr.csv"); tsave(L_all.join(L_d, rsuffix="_dedup"), "un
 fig, axs = plt.subplots(1, 2, figsize=(15, 6.5))
 for c, m in zip(pcs.columns, ["o", "s", "^"]):
     axs[0].plot(range(1, 7), pcs[c] * 100, marker=m, label=f"{c} (PC1 {pcs[c].iloc[0]*100:.1f}%)")
-axs[0].set_xlabel("주성분"); axs[0].set_ylabel("설명분산 비중 (%)"); axs[0].legend(); axs[0].set_title("PCA scree: universe 구성에 따라 PC1 비중이 바뀐다 (CL-13)")
+axs[0].set_xlabel("주성분"); axs[0].set_ylabel("설명분산 비중 (%)"); axs[0].legend(); axs[0].set_title("PCA scree (상관행렬 = 표준화 수익률 기준): 구성에 따라 PC1 비중이 바뀐다 (CL-13)", fontsize=10)
 o2 = L_all.sort_values("PC1").index
 axs[1].barh([LAB[t] for t in o2], L_all.loc[o2, "PC1"], color=[SC_COL[SCOPE[t]] for t in o2], alpha=.85, label="PC1 (all20)")
 axs[1].scatter(L_all.loc[o2, "PC2"], range(20), c="k", marker="x", label="PC2 (all20)")
@@ -300,7 +311,10 @@ axs[0].axhline(5, c="r", ls="--", lw=.8, label="k=5"); axs[0].legend(fontsize=8,
 axs[1].vlines(br.index, 0, br.n_abs3_dedup, color="#e07b00", lw=.8, label="abs3 dedup"); axs[1].axhline(5, c="r", ls="--", lw=.8)
 axs[1].legend(fontsize=8); axs[1].set_ylabel("동반 ETF 수")
 for d0, txt in [("2020-03-19", "2020-03"), ("2024-08-05", "2024-08-05"), ("2025-04-07", "2025-04-07/10\n(FRAGILE)"), ("2026-03-04", "2026-03-04")]:
-    axs[0].annotate(txt, (pd.Timestamp(d0), 17), fontsize=8, ha="center", color="r")
+    axs[0].annotate(txt, (pd.Timestamp(d0), 13), fontsize=8, ha="center", color="r")
+axs[0].set_ylim(0, 18)
+axs[1].axvspan(pd.Timestamp("2026-07-28"), pd.Timestamp("2026-08-03"), color="orange", alpha=.35, label="2026-07-28~08-03 국내 국면 (CL-24)")
+axs[1].legend(fontsize=8)
 axs[0].set_title("Shock breadth timeline: rz3(D식)는 고변동 국면에서 기준선이 넓어져 2026 후반을 과소계수 (CL-21) · abs3 는 2026 에 몰림")
 save(fig, "11_breadth_timeline.png")
 
@@ -326,14 +340,17 @@ for i in range(len(ad)):
         txt = f"{rr.iloc[i][t]:.1f}" + ("*" if part.iloc[i][t] else "")
         axs[0].text(j, i, txt, ha="center", va="center", fontsize=6.5, color="w" if abs(rr.iloc[i][t]) > 6 else "k")
 axs[0].set_title("anchor일 ETF별 로그수익률 (%) · * = |rz_D|>3 참여", fontsize=10)
-im2 = axs[1].imshow(sign[ox].values, cmap="PiYG", vmin=-1, vmax=1, aspect="auto")
+from matplotlib.colors import ListedColormap
+from matplotlib.patches import Patch
+im2 = axs[1].imshow(sign[ox].values, cmap=ListedColormap(["#c2185b", "#f2f2f2", "#2e7d32"]), vmin=-1.5, vmax=1.5, aspect="auto")
+axs[1].legend(handles=[Patch(color="#2e7d32", label="069500 과 같은 방향"), Patch(color="#c2185b", label="반대 방향"), Patch(color="#f2f2f2", label="|r|<0.1% (0)")], loc="upper center", bbox_to_anchor=(.5, -.42), ncol=3, fontsize=8)
 axs[1].set_title("부호 행렬: 069500 과 같은 방향(+1) / 반대(−1) / |r|<0.1% = 0(흰색)", fontsize=10)
 for ax in axs:
     ax.set_xticks(range(20)); ax.set_xticklabels([LAB[t] for t in ox], rotation=90, fontsize=7)
     ax.set_yticks(range(len(ad))); ax.set_yticklabels([f"{d.date()} {anchors[str(d.date())]}" for d in ad], fontsize=8); ax.grid(False)
     for lab in ax.get_xticklabels():
         lab.set_color(SC_COL[SCOPE[lab.get_text()[:6]]])
-fig.colorbar(im, ax=axs[0], shrink=.7); fig.colorbar(im2, ax=axs[1], shrink=.7)
+fig.colorbar(im, ax=axs[0], shrink=.7)
 save(fig, "12_shock_participation_sign.png")
 
 # participation rate by ETF on top common days (rz3_D dedup>=5)
@@ -342,9 +359,16 @@ pr = pd.DataFrame({"participation_rate": (RZD.loc[topd].abs() > 3).mean(), "same
                    "mean_r_pct_on_down_days": Rt.loc[topd][Rt.loc[topd, "069500"] < 0].mean() * 100})
 pr["asset_scope"] = pr.index.map(SCOPE); tsave(pr, "universe_shock_participation_by_etf.csv")
 fig, ax = plt.subplots(figsize=(10, 6))
+_top = pr[pr.same_sign_rate_vs_069500 >= .97].sort_values("participation_rate").index.tolist()
 for t, rw in pr.iterrows():
-    ax.scatter(rw.participation_rate, rw.same_sign_rate_vs_069500, s=60, c=SC_COL[SCOPE[t]])
-    ax.annotate(LAB[t], (rw.participation_rate, rw.same_sign_rate_vs_069500), fontsize=7, xytext=(3, 3), textcoords="offset points")
+    yy = rw.same_sign_rate_vs_069500
+    ax.scatter(rw.participation_rate, yy, s=60, c=SC_COL[SCOPE[t]])
+    if t in _top:  # y≈1 그룹: 라벨을 위쪽 계단식 offset (jitter 아님, 점 위치는 실제값)
+        k = _top.index(t)
+        ax.annotate(LAB[t], (rw.participation_rate, yy), xytext=(rw.participation_rate, 1.05 + .045 * (k % 6)), fontsize=7, arrowprops=dict(arrowstyle="-", lw=.4, color="#999"))
+    else:
+        ax.annotate(LAB[t], (rw.participation_rate, yy), fontsize=7, xytext=(3, 3), textcoords="offset points")
+ax.set_ylim(-.05, 1.35)
 ax.axhline(.5, c="k", lw=.5); ax.set_xlabel(f"참여율: 공통충격일(rz3_D dedup≥5, n={len(topd)}) 중 |rz|>3 비율"); ax.set_ylabel("069500 과 같은 부호 비율")
 ax.set_title("누가 공통충격에 참여하고, 어느 방향인가")
 save(fig, "13_shock_participation_scatter.png")
@@ -398,6 +422,59 @@ for b_, c_ in [("069500", "#2a6fdb"), ("219480", "#e07b00"), ("261240", "#6b7280
     ax.plot(Rt["261220"].rolling(120, min_periods=100).corr(Rt[b_]), c=c_, label=f"ρ(WTI 261220, {LAB[b_]})")
 ax.axhline(0, c="k", lw=.6); ax.legend(fontsize=8); ax.set_title("관계가 깨지는 때: WTI–주식 상관의 부호 반전 (CL-31) · 120일 rolling")
 save(fig, "15_wti_equity_sign_flip.png")
+
+# ---------- 16. rolling 60D beta (구조 안정성) ----------
+def rbeta(a, b="069500", w=60):
+    return Rt[a].rolling(w, min_periods=50).cov(Rt[b]) / Rt[b].rolling(w, min_periods=50).var()
+b2, b1 = rbeta("122630"), rbeta("114800")
+tsave(pd.DataFrame({"beta60_122630": b2, "beta60_114800": b1}), "universe_rolling_beta60.csv")
+fig, axs = plt.subplots(2, 1, figsize=(14, 6.5), sharex=True)
+for ax, bb, tgt, nm in [(axs[0], b2, 2.0, "122630 레버리지"), (axs[1], b1, -1.0, "114800 인버스")]:
+    ax.plot(bb, c="#2a6fdb", lw=1); ax.axhline(tgt, c="k", lw=.8)
+    ax.axhspan(tgt - abs(tgt) * .05, tgt + abs(tgt) * .05, color="g", alpha=.12, label=f"목표 {tgt:+.0f} ±5%")
+    for d0 in ["2020-03-19", "2024-08-05", "2025-04-07", "2026-03-04"]:
+        ax.axvline(pd.Timestamp(d0), c="r", lw=.7, ls="--")
+    ax.set_ylabel(f"60일 β ({nm})"); ax.legend(fontsize=8, loc="lower left")
+    ax.set_title(f"{nm}: β 범위 [{bb.min():.3f}, {bb.max():.3f}] · 최저 {bb.idxmin().date()} · 최고 {bb.idxmax().date()}", fontsize=10)
+fig.suptitle("상품 구조는 국면에 관계없이 유지되는가 — rolling 60일 OLS β (r_ETF ~ r_069500), 빨강 = anchor", y=1.01)
+save(fig, "16_rolling_beta_geared.png")
+OUT["checks"]["beta60_range"] = {"122630": [float(b2.min()), float(b2.max()), str(b2.idxmin().date())], "114800": [float(b1.min()), float(b1.max()), str(b1.idxmax().date())]}
+
+# ---------- 17. empirical-peer scatter ----------
+fig, axs = plt.subplots(2, 2, figsize=(12, 11), sharex=True, sharey=True)
+m26 = Rt.index.year == 2026
+sc_out = {}
+for row, (y_, xs_) in enumerate([("143860", ["069500", "229200"]), ("161510", ["069500", "091170"])]):
+    for col, x_ in enumerate(xs_):
+        ax = axs[row, col]; d = Rt[[x_, y_]].dropna(); m = d.index.year == 2026
+        ax.scatter(d.loc[~m, x_] * 100, d.loc[~m, y_] * 100, s=5, alpha=.2, c="#6b7280", label="2019-25")
+        ax.scatter(d.loc[m, x_] * 100, d.loc[m, y_] * 100, s=8, alpha=.5, c="#e07b00", label="2026")
+        rho = d.corr("spearman").iloc[0, 1]; bt = np.cov(d.values.T)[0, 1] / d[x_].var()
+        xx = np.linspace(-10, 10, 2); ax.plot(xx, bt * xx, c="k", lw=1)
+        ax.text(.03, .95, f"Spearman ρ = {rho:.3f}\nOLS β = {bt:.2f}\nn = {len(d)}", transform=ax.transAxes, va="top", fontsize=9, bbox=dict(fc="w", alpha=.8))
+        ax.set_xlim(-10, 10); ax.set_ylim(-10, 10); ax.axhline(0, c="k", lw=.3); ax.axvline(0, c="k", lw=.3)
+        ax.set_xlabel(f"r {LAB[x_]} (%)"); ax.set_ylabel(f"r {LAB[y_]} (%)"); ax.legend(fontsize=8, loc="lower right")
+        sc_out[f"{y_}~{x_}"] = [round(float(rho), 3), round(float(bt), 3)]
+fig.suptitle("어느 factor 에 더 촘촘히 붙는가 — 라벨 benchmark(왼쪽) vs 경험적 peer(오른쪽), 축 ±10% 절단", y=1.0)
+save(fig, "17_empirical_peer_scatter.png")
+OUT["checks"]["peer_scatter_rho_beta"] = sc_out
+
+# peer stability (Δ>0 비율)
+stab = {}
+for a, b, c in [("143860", "229200", "069500"), ("161510", "091170", "069500"), ("305540", "117680", "091230")]:
+    for w in (60, 120):
+        dlt = (Rt[a].rolling(w, min_periods=int(w * .8)).corr(Rt[b]) - Rt[a].rolling(w, min_periods=int(w * .8)).corr(Rt[c])).dropna()
+        stab[f"{a}:{b}_vs_{c}:{w}d"] = {"share_delta_pos": float((dlt > 0).mean()), "min": float(dlt.min()), "min_date": str(dlt.idxmin().date())}
+tsave(pd.DataFrame(stab).T, "universe_peer_stability.csv")
+OUT["checks"]["peer_stability"] = stab
+# 114800-261240 / 069500-261240 / 261220-261240 by period
+per = {}
+for lab_, m in [("2019_21", year <= 2021), ("2022_25", (year >= 2022) & (year <= 2025)), ("2026", year == 2026)]:
+    per[lab_] = {"sp_114800_261240": float(Rt.loc[m, ["114800", "261240"]].corr("spearman").iloc[0, 1]),
+                 "sp_069500_261240": float(Rt.loc[m, ["069500", "261240"]].corr("spearman").iloc[0, 1]),
+                 "pe_261220_261240": float(Rt.loc[m, ["261220", "261240"]].corr().iloc[0, 1])}
+tsave(pd.DataFrame(per), "universe_fx_pairs_by_period.csv")
+OUT["checks"]["fx_pairs_by_period"] = per
 
 json.dump(OUT, open(TAB / "universe_run_summary.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1, default=str)
 print(json.dumps(OUT["checks"], ensure_ascii=False, indent=1, default=str))

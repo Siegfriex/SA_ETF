@@ -78,7 +78,7 @@ def limitations(tk, row, S, card_txt, dq):
         t = S["trim_anom"]
         L["anom"] = (f"2019-03-14/15 ±20% 는 USD/KRW(+0.21%)와 무관한 price_anomaly_unverified (CL-05). 이 2일 제거 시 "
                      f"ann_vol {pct(S['ann_vol'])}→{pct(t['ann_vol'])}, ex_kurt {f2(S['ex_kurt'],1)}→{f2(t['ex_kurt'],1)}, "
-                     f"069500 상관 {f2(S['mkt_corr'],3)}→{f2(t['mkt_corr'],3)} (DOCX 의 '쌍 제외 kurt≈3.9' 와 trim3 {f2(S['ex_kurt_trim3'],1)} 은 제거 방식이 다르다).")
+                     f"069500 상관 {f2(S['mkt_corr'],3)}→{f2(t['mkt_corr'],3)}, 2026/2019-25 vol 비율 {f2(S['vol_ratio_26'],2)}×→{f2(t['vol_ratio_26'],2)}× (기준기간 σ 를 2일이 부풀려 축소처럼 보이지만 제거 시 확대 — D 0120) (DOCX 의 '쌍 제외 kurt≈3.9' 와 trim3 {f2(S['ex_kurt_trim3'],1)} 은 제거 방식이 다르다).")
     if tk == "148070":
         L["proxyart"] = (f"universe.csv 의 benchmark proxy 가 153130(단기채)이라 proxy β={f2(S['proxy_beta'])}, ρ={f2(S['proxy_corr'],3)} 이 나온다. "
                          "DOCX 카드의 'corr 0.100 · beta 1.87' 은 이 proxy 산출물이다. β 는 분모(153130 분산, 연 0.32%)가 극히 작아 불안정한 artifact 다: "
@@ -112,7 +112,18 @@ def build(tk, slot, row, S, dq):
               "(reports/ROBUSTNESS_MATRIX.csv). 다만 국내 지수형(≈3×)과 크기·시점이 다르다.")
     if tk == "261240":
         X4 = (f" price_anomaly 2일(2019-03-14/15) 제거 시 ann_vol {pct(S['ann_vol'],2)} → {pct(S['trim_anom']['ann_vol'],2)} "
-              "— 전체기간 변동성의 상당 부분이 검증되지 않은 2일에서 온다.")
+              f"— 전체기간 변동성의 상당 부분이 검증되지 않은 2일에서 온다. 2026/2019-25 비율도 {f2(S['vol_ratio_26'],2)}× → {f2(S['trim_anom']['vol_ratio_26'],2)}× 로 '축소'에서 '확대'로 뒤집힌다.")
+    dq_row = dq_c1 = dag = c8 = ""
+    if tk == "261240":
+        t = S["trim_anom"]
+        dq_row = (f"\n| **DQ 2일 제외** {pct(t['ann_vol'])} | — | **{f2(t['vol_ratio_26'])}×** | {f2(t['ex_kurt'],1)} | — | — | — | ρ {f2(t['mkt_corr'],3)} | — |"
+                  "\n\n> 위 첫 행은 price_anomaly_unverified 2일(2019-03-14/15) 포함, 둘째 행은 제외. **해석은 둘째 행 기준** — 2026 은 축소가 아니라 확대다 (D 0120/0123).")
+        dq_c1 = f" — **DQ 2일 제외 시 {pct(t['ann_vol'])}, {f2(t['vol_ratio_26'])}× (확대)**"
+    if S.get("proxy") == "153130":
+        dag = "†"
+        dq_row += "\n\n† proxy β 는 153130(단기채, 연 0.32%) 분모가 극소해 불안정한 artifact (R² ≈ 0.01). 시장 관계는 market 열을 본다."
+    if row["asset_scope"] != "domestic_equity":
+        c8 = " — 비국내주식이라 KOSPI200 대비 누적차는 참고용 (결론 강등)"
     cells = []
     md = lambda s: cells.append(nbformat.v4.new_markdown_cell(s.strip()))
     code = lambda s: cells.append(nbformat.v4.new_code_cell(s.strip()))
@@ -139,7 +150,7 @@ def build(tk, slot, row, S, dq):
 ## 핵심 수치
 | ann_vol | 2026 vol | 2026 / 2019-25 | ex_kurt (trim3) | Q01 / Q99 | Max DD | β·ρ vs proxy | β·ρ vs market | |rz60|>3 (+/−) |
 |---|---|---|---|---|---|---|---|---|
-| {pct(S['ann_vol'])} | {pct(S['vol_2026'])} | {f2(S['vol_ratio_26'])}× | {f2(S['ex_kurt'],1)} ({f2(S['ex_kurt_trim3'],1)}) | {pct(S['q01'],2)} / {pct(S['q99'],2)} | {pct(S['max_dd'])} ({S['max_dd_date']}) | {f2(S['proxy_beta'])} · {f2(S['proxy_corr'],3)} | {f2(S['mkt_beta'])} · {f2(S['mkt_corr'],3)} | {S['n_ext_pos']} / {S['n_ext_neg']} |
+| {pct(S['ann_vol'])} | {pct(S['vol_2026'])} | {f2(S['vol_ratio_26'])}× | {f2(S['ex_kurt'],1)} ({f2(S['ex_kurt_trim3'],1)}) | {pct(S['q01'],2)} / {pct(S['q99'],2)} | {pct(S['max_dd'])} ({S['max_dd_date']}) | {f2(S['proxy_beta'])}{dag} · {f2(S['proxy_corr'],3)} | {f2(S['mkt_beta'])} · {f2(S['mkt_corr'],3)} | {S['n_ext_pos']} / {S['n_ext_neg']} |{dq_row}
 
 정의: ann_vol=std·√252 · ex_kurt=Fisher(편향보정) · trim3=|r| 상위 3일 제거 · rz60=(r−직전60일 median)/(1.4826·직전60일 MAD), shift(1) · β/ρ=동일일 OLS·Pearson.
 """)
@@ -238,14 +249,14 @@ pd.Series({{k: v for k, v in S.items() if not isinstance(v, (dict, list))}}).to_
 ## 결론 ↔ 지지 figure
 | # | 결론 (OBSERVATION) | 지지 figure | 근거 수치 |
 |---|---|---|---|
-| 1 | 평소 변동성 규모는 연 {pct(S['ann_vol'])}, 2026 은 2019-25 대비 {f2(S['vol_ratio_26'])}× | Fig 4, Fig 2 | vol_2026 {pct(S['vol_2026'])} |
+| 1 | 평소 변동성 규모는 연 {pct(S['ann_vol'])}, 2026 은 2019-25 대비 {f2(S['vol_ratio_26'])}×{dq_c1} | Fig 4, Fig 2 | vol_2026 {pct(S['vol_2026'])} |
 | 2 | 꼬리 두께 중 소수 날짜 기여 = kurt {f2(S['ex_kurt'],1)} → trim3 {f2(S['ex_kurt_trim3'],1)} | Fig 3 | Q01/Q99 {pct(S['q01'],2)}/{pct(S['q99'],2)} |
 | 3 | 시장({S['market']}) 민감도 β={f2(S['mkt_beta'])}, ρ={f2(S['mkt_corr'],3)}; proxy({S['proxy']}) β={f2(S['proxy_beta'])}, ρ={f2(S['proxy_corr'],3)} | Fig 7 | 잔차sd {f2(S['mkt_resid_sd_bp'],0)}bp |
 | 4 | 시장 관계는 시간변화: 120일 상관 {f2(S['roll_corr_min'])}~{f2(S['roll_corr_max'])}, 2019-21 {f2(S['mkt_corr_p1'],2)} vs 2022-26 {f2(S['mkt_corr_p2'],2)} | Fig 8 | — |
 | 5 | 최대낙폭 {pct(S['max_dd'])} ({S['max_dd_date']}), 회복 {e1['recovered']} | Fig 1, Fig 5 | — |
 | 6 | 극단일(|rz60|>3) + {S['n_ext_pos']} / − {S['n_ext_neg']}, 정의 민감 | Fig 10 | top: {S['top_ext'][0][0]} |
 | 7 | 공통충격 반응: {anc} | Fig 11 | — |
-| 8 | 시장 대비 누적 차이 {S['rel_cum_end']*100:+.1f}%p (β 미조정) | Fig 9 | — |
+| 8 | 시장 대비 누적 차이 {S['rel_cum_end']*100:+.1f}%p (β 미조정){c8} | Fig 9 | — |
 | 9 | 극단일 거래량 배수 −{f2(S['vr_med_ext_neg'])}× / +{f2(S['vr_med_ext_pos'])}× vs 전체 {f2(S['vr_med_all'])}× | Fig 6 | — |
 
 **이 notebook 이 주장하지 않는 것**: 인과(왜 움직였는가), 예측, 매매 신호. 모든 관계는 동일일 통계적 동행이다.

@@ -24,4 +24,5 @@ for nb in notebooks/universe/*.ipynb; do
     --ExecutePreprocessor.timeout=1800 "$nb" --log-level=WARN; step "universe_nb:$(basename "$nb")" $?
 done
 if [ -f analysis/robustness/robustness_final.py ]; then "$PY" analysis/robustness/robustness_final.py; step robustness_final $?; else echo "SKIP robustness_final.py (없음)"; fi
+if [ -f analysis/robustness/d0122_window_loetf.py ]; then "$PY" analysis/robustness/d0122_window_loetf.py >/dev/null; step d0122_window_loetf $?; fi
 echo "ALL DONE"
