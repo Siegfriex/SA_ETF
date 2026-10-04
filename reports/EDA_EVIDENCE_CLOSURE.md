@@ -12,7 +12,7 @@ C (Research Director) · 2026-10-04 · branch `integration/eda-hour1` · referen
 | ETF 하나: 왜 이런 ETF인가, 실제로 어떻게 움직였나, benchmark 와의 관계, 어느 그래프가 결론을 지지하나 | `notebooks/final_eda/NN_<ticker>_final_eda.ipynb` (20개, 각 11 figure + 4섹션 해석 + 맨 끝 "결론 ↔ 지지 figure" 표) |
 | 20개가 어떻게 묶이고, 언제 같이 움직이고, 언제 관계가 깨지나 | `notebooks/universe/universe_eda.ipynb` + `reports/ETF_RELATION_MAP_FINAL.md` |
 | 공통 충격은 언제였고, 정의에 따라 얼마나 달라지나 | `reports/SHOCK_MAP_FINAL.md` |
-| DOCX 의 각 주장이 어디까지 맞나 | `reports/CLAIM_EVIDENCE_MATRIX.csv` (16 claim) · `reports/ROBUSTNESS_MATRIX.csv` (74 test) |
+| DOCX 의 각 주장이 어디까지 맞나 | `reports/CLAIM_EVIDENCE_MATRIX.csv` (16 claim) · `reports/ROBUSTNESS_MATRIX.csv` (75 test) + `reports/ROBUSTNESS_MATRIX_C_ADDENDUM.csv` (5) |
 | 모든 그림 | `reports/VISUAL_INDEX.md` |
 | 다시 만들기 | `bash scripts/run_all_final.sh` (`ETF_RAW_DIR` = raw 경로, 약 1분) |
 
@@ -20,16 +20,16 @@ C (Research Director) · 2026-10-04 · branch `integration/eda-hour1` · referen
 
 | # | DOCX claim | 판정 | 핵심 수치 (95% CI = block bootstrap, block 10) | 대표 figure |
 |---|---|---|---|---|
-| DX-01 | 변동성 scale 175배 | CONFIRMED | 0.32% (153130) ~ 56.65% (122630); 261240 은 DQ 2일 제외 시 13.49% → 8.9% | universe/01 |
+| DX-01 | 변동성 scale 175배 | CONFIRMED | 0.32% (153130) ~ 56.65% (122630); 261240 은 `ann_vol_raw` 13.49% / `ann_vol_dq_excl` 8.9% (DQ 2일 제외, claim 기준) | universe/01 |
 | DX-02 | KODEX200–TIGER200 ρ≈0.999 | CONFIRMED | ρ 0.9990 [0.9987, 0.9992], 일간차 sd 8.05bp | etf/102110/07 |
 | DX-03 | 레버리지 β≈1.99 | CONFIRMED | β 1.986 [1.95, 2.02] | etf/122630/07·08 |
 | DX-04 | 인버스 β≈−1.02 | CONFIRMED | β −1.016 | etf/114800/07·08 |
 | DX-05 | 헬스케어는 KOSDAQ150 과 더 가깝다 | CONFIRMED | Δρ +0.275 [0.23, 0.32] | universe/05·14 |
 | DX-06 | 고배당은 은행과 가깝다 | CONFIRMED | Δρ +0.227 [0.19, 0.27] | universe/05·06 |
 | DX-07 | 통계 cluster ≠ taxonomy | CONFIRMED_WITH_LIMITATION | 114800+261240 동반은 부호 artifact. cluster 경계는 ward·2026 단독에서 FRAGILE (min ARI 0.15) | universe/06 · robustness/cluster_ari |
-| DX-08 | 2026 vol 확대는 국내주식 집중 | **REVISED** | 국내주식 12/12 >1, 069500 3.3× (top3일 제외 2.9×), 해외 0.73–0.94. 다만 금 2.21×, WTI 1.50×, 달러 1.26× (DQ 제외)도 확대 → "국내주식 집중, 해외주식 아님, 원자재·달러도 확대" | universe/02 · robustness/vol_ratio |
+| DX-08 | 2026 vol 확대는 국내주식 집중 | **REVISED** | 국내주식 12/12 block CI>1, 069500 3.30× (ex-top3 2.90×), 해외 0.73–0.94. 비국내 COUNTEREXAMPLE: 금 2.21× (ex-top3 1.74×), WTI 1.50× (1.19×), 달러 1.26× (`vol_ratio_26_dq_excl`; DQ 포함 `vol_ratio_26_raw` 0.80× 는 claim 에 쓰지 않음). Mann–Whitney p (ETF 0.0022 / exposure-dedup 0.0045) 는 독립성 제한으로 SECONDARY | universe/02 · robustness/vol_ratio |
 | DX-09 | shock 수는 정의에 민감 | CONFIRMED | k≥5: rz3(D식 MAD) 52 · rz3(A식 MAD) 61 · q99 22 · abs3 175 → 최대/최소 7.95× | universe/10 · robustness/shock_grid |
-| DX-10 | 단기채·달러 kurtosis 는 극단치 영향 | CONFIRMED | 153130 323 → trim3 6.1; 261240 300 → trim3 2.4 / anomaly 2일 제거 3.9 | robustness/kurtosis |
+| DX-10 | 단기채·달러 kurtosis 는 극단치 영향 | CONFIRMED | 153130 323 → trim3 6.1; 261240 `ex_kurt_raw` 301 → trim3 2.4 / `ex_kurt_dq_excl` 3.87 (anomaly 2일 제거) | robustness/kurtosis |
 | DX-11 | corr 자체가 time-varying state | CONFIRMED_WITH_LIMITATION | 국내 9종 120D 평균 ρ 0.27–0.80, anchor 에서 급등. 2026 vs 2019-25 유의 변화 44/136 쌍 (dedup, Fisher z 독립가정) | universe/07·08 |
 | DX-12 | 공통충격 anchor | CONFIRMED | A1 2020-03, A2 2024-08-05, A3 2026-03-04 는 4정의×dedup 생존. A5 2025-04-07/10 FRAGILE (q99 4종) | universe/11·12 |
 | DX-13 | 달러는 폭락일 86% 상승 | **REVISED** | 정의에 따라 72–91% (≤−3% 0.72 · ≤q05 0.80 · ≤−2% 0.81 · rz≤−3 0.91). 86% 는 재현되지 않음 | universe/12 |
@@ -64,3 +64,9 @@ C (Research Director) · 2026-10-04 · branch `integration/eda-hour1` · referen
 
 ## 6. 검수 이력 (요약)
 D 0103 (74 test) → D 0120 (07-31 SUPPORT, vol ratio 버그 발견) → A 0121 (P0 3 · P1 10 · P2 3) → 재작업 C2-A2 · B headline → A 0131 재검수 16/16 해소 → D 0122 (window/LOETF) · D 0123 (notebook 정적 검사) → freeze e9a6880 → clean 재현.
+
+## 7. Canonical patch (2026-10-04, external audit)
+외부 감사(PASS_WITH_CANONICAL_PATCH)를 반영해 lineage·표 의미·통계 보고만 정리했다. 결론 수치는 바뀌지 않았다. 상세는 `reports/CANONICAL_PATCH_NOTE.md` 에 있다.
+- **DQ 정책**: `etf_final_stats.csv` 의 DQ 영향 지표는 `_raw` / `_dq_excl` 로 나눴다. claim 은 모두 `_dq_excl` 를 쓴다.
+- **verdict 의미 정리**: 2026 vol 표의 비국내 3종(금·WTI·달러)은 FRAGILE/ROBUST 혼재에서 COUNTEREXAMPLE 로 통일했다. Mann–Whitney 2행은 SECONDARY 로 바꿨다.
+- **CI 열**: 실제 신뢰구간만 담는다. 그 밖의 요약값은 summary 열로 옮겼다.

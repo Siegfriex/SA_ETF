@@ -16,9 +16,10 @@
 | raw rows / ETF | 1,903 행 (수익률 1,902) · raw 는 git 밖에 있고 `data/raw/MANIFEST.csv` 에 sha256 이 기록되어 있다 |
 | notebook count | final ETF 20 + universe 1 = 21 (그 밖에 Phase 00 `notebooks/00_raw_eda/` 20개는 보존) |
 | figure count | 243 (etf 220 = 20×11 · universe 18 = 00 smoke + 01–17 · robustness 5) |
-| robustness test count | 79 (`ROBUSTNESS_MATRIX.csv` 74 + `ROBUSTNESS_MATRIX_C_ADDENDUM.csv` 5) |
+| robustness test count | 80 (`ROBUSTNESS_MATRIX.csv` 75 + `ROBUSTNESS_MATRIX_C_ADDENDUM.csv` 5) — canonical patch 로 Mann–Whitney exposure-dedup 1행 추가 |
 | clean rerun result | PASS — tables 29/29 max\|Δ\| = 0, figure 243 바이트 동일, notebook 41 실행 오류 0 (`reports/CLOSURE_MANIFEST.json` → `gate.clean_rerun`, `gate.clean_rerun_final`) |
 | 범위 밖 | 뉴스 · PELT · XGBoost · forecasting · trading agent · portfolio |
+| package status | 외부 감사 PASS_WITH_CANONICAL_PATCH → patch branch `claude-c/postclosure-canonical-patch-v1` (base `293e504`). 결론 수치 불변, lineage·표 의미만 정리 (`reports/CANONICAL_PATCH_NOTE.md`) |
 
 ---
 
@@ -26,6 +27,7 @@
 
 | 순서 | 파일 | 무엇을 보나 |
 |---|---|---|
+| 0 | `reports/CANONICAL_PATCH_NOTE.md` | 외부 감사 후 patch: DQ 열 분리, claim↔검정 mapping, CI 열 의미, verdict 변경 4행 |
 | 1 | `reports/EDA_EVIDENCE_CLOSURE.md` | 판정 요약 (§2 표), 새로 확인된 것 (§3), 주장하지 않는 것 (§4), 한계 (§5) |
 | 2 | `reports/CLAIM_EVIDENCE_MATRIX.csv` | DOCX claim 16개 × (원 수치 · 최종 수치 · figure · robustness · final_status) |
 | 3 | `notebooks/universe/universe_eda.ipynb` | §1 스케일 (cell 4–12) · §2 군집 (13–21) · §3 상관 상태 (22–28) · §4 충격 (29–37) · §4b peer·구조 (38–42) · §5 claim 재확인 표 (43–44) |
@@ -40,18 +42,18 @@ ETF notebook 의 구조는 20개 모두 같다. cell 0 은 "왜 이런 ETF인가
 
 # 2. Claim Ledger (16)
 
-ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `ROBUSTNESS_MATRIX.csv` 는 `DOCX-xx` 를 쓴다. 대응표는 각 행의 ROBUSTNESS 칸에 적었다. CI 는 모두 95% block bootstrap (block 10, B=1000, seed 고정)이고, 비율 CI 는 Wilson 이다. U-nb 는 `notebooks/universe/universe_eda.ipynb`, E-nb(tk) 는 notebooks/final_eda/ 아래 해당 ticker 의 notebook 이다 (경로는 §6).
+ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓴다. `ROBUSTNESS_MATRIX.csv` 와 addendum 은 원래 `claim_id`(DOCX-xx / CL-xx)에 더해 **`dx_id` 열**을 갖는다. `CLAIM_EVIDENCE_MATRIX.csv` 의 **`robustness_rows` 열**이 `<파일>:<claim_id>` 로 claim → 검정 행을 명시하고, 별도 검정이 없으면 `NONE` + "DESCRIPTIVE / NO SEPARATE ROBUSTNESS TEST" 로 적는다 (join audit: wrong 0 · orphan 0). CI 는 95% block bootstrap (block 10, B=1000, seed 고정; `interval_type=block_bootstrap_95`) 또는 Wilson (`wilson_95`) 뿐이며, CI 가 아닌 요약값은 `summary_stat/summary_low/summary_high` 열에 있다. U-nb 는 `notebooks/universe/universe_eda.ipynb`, E-nb(tk) 는 notebooks/final_eda/ 아래 해당 ticker 의 notebook 이다 (경로는 §6).
 
 ### DX-01 — 변동성 scale
 - **ORIGINAL**: 연변동성 0.32% (단기채) ~ 56.65% (레버리지), 약 175배
 - **FINAL STATUS**: CONFIRMED
-- **FINAL VALUE**: 153130 0.32% · 122630 56.6%. 261240 은 13.49% 이지만 DQ 2일을 빼면 8.9%
+- **FINAL VALUE**: 153130 0.32% · 122630 56.6%. 261240 은 `ann_vol_raw` 13.49% / `ann_vol_dq_excl` 8.9% — claim 은 dq_excl 기준
 - **METHOD**: std(log r)·√252
 - **CI**: —
-- **SOURCE TABLE**: `reports/tables/universe_vol_rank.csv`, `reports/universe_profile.csv`
+- **SOURCE TABLE**: `reports/tables/universe_vol_rank.csv` (`ann_vol` / `ann_vol_trimdq`), `reports/tables/etf_final_stats.csv` (`ann_vol_raw` / `ann_vol_dq_excl`)
 - **NOTEBOOK**: U-nb cell 5
 - **FIGURE**: `figures/universe/01_vol_ranking.png`, `figures/universe/03_quantile_interval.png`
-- **ROBUSTNESS**: DOCX-01 계열 (기술통계라 별도 검정 없음)
+- **ROBUSTNESS**: DESCRIPTIVE / NO SEPARATE ROBUSTNESS TEST (`robustness_rows=NONE`)
 - **INTERPRETATION**: 절대 수익률 threshold 하나로는 ETF 간 비교가 금융적으로 의미가 없다
 - **LIMITATION**: 261240 은 DQ 처리에 따라 값이 바뀐다
 
@@ -64,7 +66,7 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 - **SOURCE TABLE**: `reports/ROBUSTNESS_MATRIX.csv` (DOCX-01, DOCX-02), `reports/tables/universe_claim_checks.csv`
 - **NOTEBOOK**: E-nb(102110) Fig 7 (cell 20–22)
 - **FIGURE**: `figures/etf/102110/07_benchmark_scatter.png`, `figures/robustness/forest_claims.png`
-- **ROBUSTNESS**: ROBUST
+- **ROBUSTNESS**: ROBUST — DOCX-01 (ρ) + DOCX-02 (일간차 sd), 두 행 모두 `dx_id=DX-02`
 - **INTERPRETATION**: 같은 exposure 다. breadth·PCA 에서 dedup 해야 한다
 - **LIMITATION**: NAV·추적오차 데이터가 없다
 
@@ -125,26 +127,26 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 - **FINAL STATUS**: CONFIRMED_WITH_LIMITATION
 - **FINAL VALUE**: 114800+261240 동반은 부호 artifact 이고, 1−\|ρ\| 거리로 바꾸면 풀린다. average/complete k=5 는 ROBUST, ward·2026 단독은 FRAGILE. LOETF k=5 ARI ≥0.98, k=8 0.40
 - **METHOD**: hierarchical clustering, ARI
-- **CI**: — (min/median ARI)
+- **CI**: — (실제 CI 없음. min ARI = statistic, Q1/median ARI = `summary_low/summary_high`)
 - **SOURCE TABLE**: `reports/ROBUSTNESS_MATRIX.csv` (DOCX-12), `reports/ROBUSTNESS_MATRIX_C_ADDENDUM.csv`, `reports/tables/universe_clusters.csv`, `analysis/robustness/d0122/cluster_leave_one_etf_out.csv`
 - **NOTEBOOK**: U-nb cell 18
 - **FIGURE**: `figures/universe/06_dendrogram.png`, `figures/robustness/cluster_ari_heatmap.png`
-- **ROBUSTNESS**: k=5 ROBUST / k=3·k=8 FRAGILE
+- **ROBUSTNESS**: 24변형 k=3·k=5 FRAGILE · ward 제외 k=3 FRAGILE / k=5 ROBUST · addendum LOETF k=5 ROBUST / k=8 FRAGILE
 - **INTERPRETATION**: 군집 경계는 linkage 와 k 에 따라 달라진다
 - **LIMITATION**: 상관 기반 거리이므로 인과가 아니다
 
 ### DX-08 — 2026 변동성 확대
 - **ORIGINAL**: 국내주식에 집중
 - **FINAL STATUS**: REVISED
-- **FINAL VALUE**: 국내주식 12/12 >1 (069500 3.30×, top3일 제외 2.90×). 해외 0.73 / 0.87 / 0.94. 금 2.21×, WTI 1.50×, 달러 1.26× (DQ 제외)
-- **METHOD**: σ2026/σ2019-25, block CI, Mann–Whitney (국내 vs 해외)
+- **FINAL VALUE**: 국내주식 12/12 block CI>1 (069500 3.30×, ex-top3 2.90×). 해외 0.73 / 0.87 / 0.94. 비국내 확대(COUNTEREXAMPLE): 금 2.21× (ex-top3 1.74×), WTI 1.50× (1.19×), 달러 1.26× (`vol_ratio_26_dq_excl`, ex-top3 1.17×)
+- **METHOD**: σ2026/σ2019-25 + 기간 내 block bootstrap CI, ex-top3 leave-out (headline). Mann–Whitney 는 보조
 - **CI**: 069500 [2.53, 4.21] · 금 [1.39, 3.10] · WTI [1.02, 2.15] · 달러 [1.04, 1.49] · 219480 [0.57, 0.90]
 - **SOURCE TABLE**: `reports/ROBUSTNESS_MATRIX.csv` (DOCX-07 ×21), `reports/tables/universe_vol_ratio_2026.csv`
 - **NOTEBOOK**: U-nb cell 7
 - **FIGURE**: `figures/universe/02_vol_year_heatmap.png`, `figures/robustness/vol_ratio_2026.png`
-- **ROBUSTNESS**: 국내 ROBUST (MW p=0.0022, 모든 leave-out 에서 유지) · 132030 FRAGILE
+- **ROBUSTNESS**: 국내 12/12 ROBUST · 비국내 COUNTEREXAMPLE 3 (132030·261220·261240) / ROBUST(비확대) 5 · Mann–Whitney SECONDARY 2 (ETF 단위 n=12 vs 3 p=0.0022; KOSPI200 4종→1 exposure-dedup n=9 vs 3 p=0.0045)
 - **INTERPRETATION**: 국내주식 국면이고 해외주식은 아니다. 원자재·달러도 함께 확대됐다
-- **LIMITATION**: 2026 은 n=184 이다. `etf_final_stats.csv` 의 261240 은 DQ 포함 값 0.80 이다 (§8 ISSUE)
+- **LIMITATION**: 2026 은 n=184 이다. Mann–Whitney 는 국내 ETF 간 공통 factor 로 독립표본 가정이 약해 headline 근거가 아니다. 261240 의 DQ 포함 `vol_ratio_26_raw` 0.80× 는 다른 정의이므로 claim 에 쓰지 않는다
 
 ### DX-09 — shock 정의 민감도
 - **ORIGINAL**: k≥5 공통충격 52 / 22 / 175
@@ -162,7 +164,7 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 ### DX-10 — 단기채·달러 kurtosis
 - **ORIGINAL**: 153130 첨도 322.9, 261240 300, 소수 극단치 영향
 - **FINAL STATUS**: CONFIRMED
-- **FINAL VALUE**: 153130 323.8 → trim3 6.08 / winsor1% 0.98. 261240 301.1 → trim3 2.43 / anomaly 2일 제거 3.87 / winsor 1.14
+- **FINAL VALUE**: 153130 323.8 → trim3 6.08 / winsor1% 0.98. 261240 `ex_kurt_raw` 301.1 → trim3 2.43 / `ex_kurt_dq_excl` 3.87 / winsor 1.14
 - **METHOD**: excess kurtosis (unbiased), 처리 4종
 - **CI**: —
 - **SOURCE TABLE**: `reports/ROBUSTNESS_MATRIX.csv` (DOCX-09 = 261240, DOCX-10 = 153130)
@@ -181,7 +183,7 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 - **SOURCE TABLE**: `reports/tables/universe_rolling_state.csv`, `reports/tables/universe_corr_period_diff.csv`, `analysis/robustness/d0122/rolling_corr_window_estimator_summary.csv`
 - **NOTEBOOK**: U-nb cell 23, 25
 - **FIGURE**: `figures/universe/08_rolling_corr_dispersion.png`, `figures/universe/07_period_diff_corr.png`
-- **ROBUSTNESS**: ROBUST (addendum)
+- **ROBUSTNESS**: ROBUST — `reports/ROBUSTNESS_MATRIX_C_ADDENDUM.csv` claim_id `DX-11` (canonical patch 전 `DOCX-09` 로 오기)
 - **INTERPRETATION**: 충격기에는 공통 factor 가 강해진다
 - **LIMITATION**: Fisher z 는 독립을 가정하므로 낙관적이다. fig08 의 Pearson 계단은 단일 극단일 효과다
 
@@ -194,7 +196,7 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 - **SOURCE TABLE**: `reports/tables/universe_shock_anchor_survival.csv`, `config/event_anchors.csv`
 - **NOTEBOOK**: U-nb cell 32, 34
 - **FIGURE**: `figures/universe/11_breadth_timeline.png`, `figures/universe/12_shock_participation_sign.png`
-- **ROBUSTNESS**: CL-10/33
+- **ROBUSTNESS**: DESCRIPTIVE / NO SEPARATE ROBUSTNESS TEST — 정의별 생존표 `reports/tables/universe_shock_anchor_survival.csv`
 - **INTERPRETATION**: universe 공통 충격은 소수다
 - **LIMITATION**: anchor label 은 날짜 식별용이고 원인을 귀속하지 않는다
 
@@ -220,7 +222,7 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 - **SOURCE TABLE**: `reports/tables/etf_final_stats.csv`
 - **NOTEBOOK**: E-nb(148070) cell 0 (†주석), Fig 7 (cell 20–22)
 - **FIGURE**: `figures/etf/148070/07_benchmark_scatter.png`
-- **ROBUSTNESS**: 재계산
+- **ROBUSTNESS**: DESCRIPTIVE / NO SEPARATE ROBUSTNESS TEST (재계산값)
 - **INTERPRETATION**: proxy 의 분모 분산이 극소라서 생긴 artifact 다
 - **LIMITATION**: KTB 10년 지수 데이터가 없다
 
@@ -233,7 +235,7 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 - **SOURCE TABLE**: `reports/tables/universe_peer_stability.csv`
 - **NOTEBOOK**: U-nb cell 16
 - **FIGURE**: `figures/universe/14_empirical_peer_rolling.png`
-- **ROBUSTNESS**: CL-17 HOLD
+- **ROBUSTNESS**: DESCRIPTIVE / NO SEPARATE ROBUSTNESS TEST — 60D/120D 비율표 (v1 CL-17 HOLD)
 - **INTERPRETATION**: 안정적인 peer 가 없다 (REGIME_DEPENDENT)
 - **LIMITATION**: 테마 지수 구성이 바뀌었는지 확인하지 못했다
 
@@ -246,7 +248,7 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 - **SOURCE TABLE**: `reports/tables/universe_corr_period_diff.csv`, `reports/tables/universe_fx_pairs_by_period.csv`
 - **NOTEBOOK**: U-nb cell 27
 - **FIGURE**: `figures/universe/15_wti_equity_sign_flip.png`
-- **ROBUSTNESS**: CL-31
+- **ROBUSTNESS**: DESCRIPTIVE / NO SEPARATE ROBUSTNESS TEST (v1 CL-31)
 - **INTERPRETATION**: 2026 에 원유가 위험자산 축에서 달러 축으로 이동했다
 - **LIMITATION**: 원인은 범위 밖이다
 
@@ -257,13 +259,15 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 ## A. 2026 volatility expansion (DX-08)
 
 - 기존: "국내주식 집중"
-- 최종: 국내주식 확대는 강하다 (12/12 >1, 069500 3.30× [2.53, 4.21], top3일을 빼도 2.90×). 해외주식은 확대되지 않았다 (219480 0.73 [0.57, 0.90], 133690 0.87, 192090 0.94). 그러나 다음 자산도 확대됐다.
+- 최종: 국내주식 확대는 강하다 (12/12 block CI>1, 069500 3.30× [2.53, 4.21], 자기 top3일을 빼도 2.90×). 해외주식은 확대되지 않았다 (219480 0.73 [0.57, 0.90], 133690 0.87, 192090 0.94). 그러나 다음 비국내 자산도 확대됐다 (verdict = COUNTEREXAMPLE). Mann–Whitney p 는 독립성 제한으로 보조 근거다.
 
-| 자산 | σ2026/σ2019-25 | 95% CI |
-|---|---|---|
-| 132030 금 | 2.21× | [1.39, 3.10] |
-| 261220 WTI | 1.50× | [1.02, 2.15] |
-| 261240 달러 (DQ 제외) | 1.26× | [1.04, 1.49] |
+| 자산 | σ2026/σ2019-25 | 95% CI | ex-top3 |
+|---|---|---|---|
+| 132030 금 | 2.21× | [1.39, 3.10] | 1.74× |
+| 261220 WTI | 1.50× | [1.02, 2.15] | 1.19× |
+| 261240 달러 (`vol_ratio_26_dq_excl`) | 1.26× | [1.04, 1.49] | 1.17× |
+
+> 261240 의 DQ 포함 값 `vol_ratio_26_raw` = 0.80× 는 baseline σ 를 이상치 2일이 부풀린 다른 정의다. 두 값을 같은 정의로 비교하지 않는다.
 
 - 근거: `reports/tables/universe_vol_ratio_2026.csv`, `figures/robustness/vol_ratio_2026.png`, `figures/universe/02_vol_year_heatmap.png`
 
@@ -304,11 +308,11 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 | 114800 β / ρ | −1.016 / −0.996 | [−1.036, −0.997] | `figures/etf/114800/07_benchmark_scatter.png` |
 | 143860 Δρ (KOSDAQ − KOSPI) | +0.275 (Spearman) | [0.234, 0.317] | `figures/universe/17_empirical_peer_scatter.png` |
 | 161510 Δρ (은행 − KOSPI) | +0.227 (Spearman) | [0.185, 0.270] | `figures/universe/17_empirical_peer_scatter.png` |
-| 2026 국내주식 vol 확대 | 12/12 >1, 069500 3.30× (top3 제외 2.90×), MW p=0.0022 | 069500 [2.53, 4.21] | `figures/robustness/vol_ratio_2026.png` |
+| 2026 국내주식 vol 확대 | 12/12 block CI>1, 069500 3.30× (ex-top3 2.90×). (보조) MW p 0.0022 ETF 단위 / 0.0045 exposure-dedup | 069500 [2.53, 4.21] | `figures/robustness/vol_ratio_2026.png` |
 | shock 정의 민감도 | k≥5: 52 / 61 / 22 / 175 → 7.95× | — | `figures/robustness/shock_definition_grid.png` |
 | same-exposure 중복 효과 | rz3 D식 k≥5 52 → dedup 40 · PC1 45.7% → dedup 39.3% | — | `figures/universe/10_shock_definition_sensitivity_dedup.png`, `figures/universe/09_pca_scree_loading.png` |
 | cluster 안정/불안정 | LOETF k=5 ARI ≥0.98 (ROBUST) · k=8 0.40 · 24변형 k=3 min 0.15 (FRAGILE) | — | `figures/robustness/cluster_ari_heatmap.png` |
-| 261240 DQ 효과 | ann_vol 13.49% → 8.9% · kurt 301 → 3.87 · 2026 비율 0.80 → 1.26× · KOSPI ρ −0.308 → −0.458 | 비율 [1.04, 1.49] | `figures/etf/261240/03_distribution_tail.png`, `figures/universe/01_vol_ranking.png` |
+| 261240 DQ 효과 (raw → dq_excl) | ann_vol 13.49% → 8.9% · ex_kurt 301 → 3.87 · 2026 비율 0.80 → 1.26× · KOSPI ρ −0.308 → −0.458 (`etf_final_stats.csv` 의 `*_raw` / `*_dq_excl`) | 비율 (dq_excl) [1.04, 1.49] | `figures/etf/261240/03_distribution_tail.png`, `figures/universe/01_vol_ranking.png` |
 
 ---
 
@@ -404,12 +408,15 @@ ID 대응: 이 문서와 `CLAIM_EVIDENCE_MATRIX.csv` 는 `DX-xx` 를 쓰고, `RO
 | fig16 rolling β 해석 HOLD | LOW | `figures/universe/16_rolling_beta_geared.png` | 없음 (β 범위 수치는 유효) | 낮음 — β 가 튀는 시점은 극단일이 창을 지배한 결과다 |
 | 그림 여백·범례 사소한 문제 4건 | LOW | `figures/universe/11`, `12`, `17`, `RELATION_MAP_FINAL` H5 제목 | 없음 | 없음 |
 
-## 8.2 ISSUE — 이번 검토 중 발견 (수정하지 않고 기록만 함)
+## 8.2 ISSUE — 외부 감사 후 canonical patch 상태
 
-| ISSUE | 내용 | severity | 수치 영향 | 외부 검토자가 볼 필요 |
-|---|---|---|---|---|
-| I-1 | `reports/ROBUSTNESS_MATRIX_C_ADDENDUM.csv` 의 rolling corr 행이 `claim_id = DOCX-09` 로 되어 있다. 본 matrix 에서 DOCX-09 는 261240 kurtosis 이고, 이 행이 지지하는 claim 은 DX-11 (time-varying corr) 이다 | LOW | 없음 (라벨 오류) | 예 — ID 로 join 하면 잘못 묶인다 |
-| I-2 | `reports/tables/etf_final_stats.csv` 의 261240 `vol_ratio_26` 은 DQ 포함 값 0.796 이다. universe 표와 ROBUSTNESS 는 DQ 제외 값 1.26 이다. notebook headline 에는 두 행이 모두 있다 | MED | 정의 차이 (계산 오류 아님) | 예 — 이 표만 보면 "축소"로 읽힌다 |
-| I-3 | `reports/ROBUSTNESS_MATRIX.csv` 의 ARI/PC1 행 (DOCX-12, CL-13) 은 `ci_low`/`ci_high` 열에 CI 가 아니라 다른 요약값 (median 등) 을 담고 있다 | LOW | 없음 | 예 — 이 행들을 CI 로 읽지 말 것 |
-| I-4 | `ROBUSTNESS_MATRIX.csv` 의 132030 2026 비율은 CI [1.39, 3.10] 가 1 을 넘는데도 verdict 가 FRAGILE 이다. verdict 기준이 행에 적혀 있지 않다 | LOW | 없음 | 참고 |
-| I-5 | 로컬 저장소에는 `main` 브랜치가 없다 (원격 `origin/main` 만 있음). canonical 은 `origin/main` = `293e504` 로 확인했다 | INFO | 없음 | 없음 |
+| ISSUE | 내용 | 상태 | 조치 |
+|---|---|---|---|
+| I-1 | addendum rolling-corr 행이 `claim_id=DOCX-09` (= 261240 kurtosis) 로 오기 | FIXED | `claim_id=DX-11`, `dx_id` 열 추가 |
+| I-2 | `etf_final_stats.csv` 261240 `vol_ratio_26`=0.796 이 DQ 포함인데 이름만으로는 구분 불가 | FIXED | `ann_vol`·`vol_ratio_26`·`ex_kurt`·`mkt_corr` → `_raw` / `_dq_excl` + `dq_policy` 열. 생성기 `--stats-only` 로 notebook 불변 |
+| I-3 | ARI/PC1/범위 행의 `ci_low/ci_high` 에 CI 아닌 값 | FIXED | `interval_type`·`summary_stat/low/high` 열 신설, 비-CI 값 이동 (7행) |
+| I-4 | 132030 verdict FRAGILE 의 근거 불명 | FIXED | 근거는 비국내 행에 적용된 임의 문턱 `ci_low ≤ 1.2` 였고, 재현 가능한 FRAGILE 검정은 없었다. 금·WTI·달러 (CI>1) 를 COUNTEREXAMPLE 로 통일하고, ex-top3 값을 summary 로 기록 |
+| I-5 | 로컬 `main` 브랜치 부재 | INFO | 분석 결과와 무관 (`origin/main` = `293e504` 검증) |
+| I-6 | `CLAIM_EVIDENCE_MATRIX` 의 DX-01 이 무관한 DOCX-01 을 가리킴 · DX-02 는 sd 근거만 | FIXED | `robustness_rows` 열 + DESCRIPTIVE 라벨, 자동 join audit wrong 0 · orphan 0 |
+| I-7 | Mann–Whitney p=0.0022 가 KOSPI200 동일 exposure 4종 반복 표본 | FIXED | SECONDARY 로 강등, exposure-dedup 판 (n=9 vs 3, p=0.0045) 추가, headline 은 within-series CI 와 leave-out |
+| I-8 | `universe_vol_ratio_2026.csv`·`universe_vol_by_year.csv` 의 열 이름에는 DQ 정의가 없다 (값은 dq_excl) | DOCUMENTED | universe notebook 이 열 이름을 읽어 rename 하지 않음 (notebook 불변 원칙). 정의는 `CANONICAL_PATCH_NOTE.md` 의 열 의미표에 있다 |

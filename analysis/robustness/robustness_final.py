@@ -69,9 +69,20 @@ def boot(df, f):
 rows = []
 
 
-def add(cid, claim, test, variant, stat, lo, hi, n, verdict, fig, note=""):
-    rows.append(dict(claim_id=cid, claim=claim, test=test, variant=variant, statistic=round(float(stat), 4),
-                     ci_low=None if lo is None else round(float(lo), 4), ci_high=None if hi is None else round(float(hi), 4),
+# canonical patch (I-1/I-3/I-6): dx_id = CLAIM_EVIDENCE_MATRIX 의 claim id. CL-* 는 DOCX 밖 보조 claim (v1 claims registry).
+DX_OF = {"DOCX-01": "DX-02", "DOCX-02": "DX-02", "DOCX-03": "DX-03", "DOCX-04": "DX-04", "DOCX-05": "DX-05", "DOCX-06": "DX-06",
+         "DOCX-07": "DX-08", "DOCX-08": "DX-13", "DOCX-09": "DX-10", "DOCX-10": "DX-10", "DOCX-11": "DX-09", "DOCX-12": "DX-07",
+         "CL-13": "", "CL-idio": ""}
+r4 = lambda v: None if v is None else round(float(v), 4)
+
+
+def add(cid, claim, test, variant, stat, lo, hi, n, verdict, fig, note="", interval="block_bootstrap_95", summary=None):
+    """ci_low/ci_high 는 실제 신뢰구간만 담는다 (interval_type 명시). CI 가 아닌 요약값은 summary=(label, low, high) 로."""
+    has_ci = lo is not None or hi is not None
+    sl, slo, shi = summary if summary else ("", None, None)
+    rows.append(dict(claim_id=cid, dx_id=DX_OF[cid], claim=claim, test=test, variant=variant, statistic=r4(stat),
+                     ci_low=r4(lo), ci_high=r4(hi), interval_type=interval if has_ci else "",
+                     summary_stat=sl, summary_low=r4(slo), summary_high=r4(shi),
                      n=n, verdict=verdict, figure=fig, note=note))
 
 
@@ -124,15 +135,36 @@ for t in U.index:
     bf = stats.levene(a, b, center="median")
     vr.append(dict(ticker=t, name=NAME[t], scope=SCOPE[t], ratio=ratio, lo=lo, hi=hi, bf_stat=bf.statistic, bf_p=bf.pvalue, n26=len(b)))
 vr = pd.DataFrame(vr); vr.to_csv(OUT / "vol_ratio_2026.csv", index=False)
+def _ratio_ex_top(t, k=3):  # D 0120 leave-out: 2026 표본에서 자기 |r| 상위 k일 제외
+    x = R[t].dropna(); a, b = x.loc[:"2025"], x.loc["2026"]
+    return b.drop(b.abs().nlargest(k).index).std() / a.std()
+
+
+vr["ratio_ex_top3"] = [_ratio_ex_top(t) for t in vr.ticker]
 for _, v in vr.iterrows():
-    exp_up = v.scope == "domestic_equity"
-    ok = (v.lo > 1) if exp_up else (v.lo <= 1.2)
+    # canonical patch (I-4): 이전 규칙은 비국내 행에 'lo<=1.2' 임의 문턱을 써 금만 FRAGILE, WTI·달러(lo>1)는 ROBUST 로 라벨이 엇갈렸다.
+    # 행 verdict 는 이제 그 ETF 의 역할을 말한다: 국내 CI>1 = ROBUST(지지) · 비국내 CI>1 = COUNTEREXAMPLE(국내 한정 서술의 반례) · 비국내 CI∋1 이하 = ROBUST(비확대)
+    dom_ = v.scope == "domestic_equity"
+    sig = v.lo > 1
+    verdict = ("ROBUST" if sig else "FRAGILE") if dom_ else ("COUNTEREXAMPLE" if sig else "ROBUST")
+    note = f"{v['name']} BF p={v.bf_p:.2g}; ex-top3(2026 자기 |r| 상위 3일 제외) ratio={v.ratio_ex_top3:.2f}"
+    if verdict == "COUNTEREXAMPLE":
+        note += f"; 비국내인데 2026 vol 유의 확대 — top3 제외 후에도 {'>1 유지' if v.ratio_ex_top3 > 1 else '≤1 로 약화'}"
     add("DOCX-07", "2026 vol 확대는 국내주식 중심", "σ2026/σ2019-25 + block CI; Brown–Forsythe p", v.ticker, v.ratio, v.lo, v.hi, int(v.n26),
-        "ROBUST" if ok else "FRAGILE", "vol_ratio_2026.png", f"{v['name']} BF p={v.bf_p:.2g}" + ("; 반례: 비주식인데 2026 vol 유의 확대" if not ok else ""))
+        verdict, "vol_ratio_2026.png", note, summary=("ratio_ex_top3", v.ratio_ex_top3, None))
 dom = vr[vr.scope == "domestic_equity"].ratio; fo = vr[vr.scope == "foreign_equity"].ratio
 mw = stats.mannwhitneyu(dom, fo, alternative="greater")
-add("DOCX-07", "2026 vol 확대: 국내주식 > 해외주식", "Mann–Whitney (ETF 단위 ratio)", f"dom n={len(dom)} vs for n={len(fo)}", dom.median() - fo.median(), None, None, len(dom) + len(fo),
-    "ROBUST" if mw.pvalue < 0.05 else "FRAGILE", "vol_ratio_2026.png", f"p={mw.pvalue:.3g}; 단 국내 12종 중 KOSPI200 4종 중복")
+# canonical patch (I-7): ETF 단위 MW 는 KOSPI200 동일 exposure 4종 반복으로 독립표본 가정이 약하다 → SECONDARY. dedup 판을 병기.
+add("DOCX-07", "2026 vol 확대: 국내주식 > 해외주식", "Mann–Whitney one-sided (ETF 단위 ratio)", f"dom n={len(dom)} vs for n={len(fo)}", dom.median() - fo.median(), None, None, len(dom) + len(fo),
+    "SECONDARY", "vol_ratio_2026.png", "statistic=중앙값 차; 국내 12종 중 KOSPI200 동일 exposure 4종(069500·102110·122630·114800) 반복 → 독립성 약함, headline 근거 아님",
+    summary=("p_value_one_sided", mw.pvalue, None))
+_K200 = ["102110", "122630", "114800"]
+dom_d = vr[(vr.scope == "domestic_equity") & ~vr.ticker.isin(_K200)].ratio
+mw_d = stats.mannwhitneyu(dom_d, fo, alternative="greater")
+add("DOCX-07", "2026 vol 확대: 국내주식 > 해외주식", "Mann–Whitney one-sided (exposure 단위, KOSPI200 4종→069500 1개)", f"dom n={len(dom_d)} vs for n={len(fo)}",
+    dom_d.median() - fo.median(), None, None, len(dom_d) + len(fo), "SECONDARY", "vol_ratio_2026.png",
+    f"statistic=중앙값 차; exact 최소 p = 1/C({len(dom_d)+len(fo)},{len(fo)}); 국내 업종 ETF 간에도 공통 factor 가 있어 독립성은 여전히 제한 → p 는 보조 근거",
+    summary=("p_value_one_sided", mw_d.pvalue, None))
 
 # 261240 폭락일 상승률 — 정의별
 k = R["069500"]
@@ -145,12 +177,12 @@ for lab, m in crash_defs.items():
     n, s = len(x), int((x > 0).sum())
     ci = stats.binomtest(s, n).proportion_ci(method="wilson")
     add("DOCX-08", "달러선물은 주식 폭락일 86% 상승", "up-rate (Wilson CI)", lab, s / n, ci.low, ci.high, n,
-        "DEFINITION_DEPENDENT", "", f"mean {x.mean()*100:+.2f}%")
+        "DEFINITION_DEPENDENT", "", f"mean {x.mean()*100:+.2f}%", interval="wilson_95")
 
 _d8 = [r_ for r_ in rows if r_["claim_id"] == "DOCX-08"]
-add("DOCX-08", "달러선물은 주식 폭락일 86% 상승", "DOCX 86% 재현 여부", "정의 4종 범위", min(r_["statistic"] for r_ in _d8), min(r_["ci_low"] for r_ in _d8),
-    max(r_["ci_high"] for r_ in _d8), len(_d8), "DEFINITION_DEPENDENT", "",
-    "86% 는 어느 정의로도 정확히 재현 안 됨: 0.72(≤−3%)~0.91(rz≤−3). '대부분(72–91%) 상승' 으로 정의 병기 권고; ci 칸=정의 간 min/max")
+add("DOCX-08", "달러선물은 주식 폭락일 86% 상승", "DOCX 86% 재현 여부", "정의 4종 범위", min(r_["statistic"] for r_ in _d8), None, None, len(_d8), "DEFINITION_DEPENDENT", "",
+    "86% 는 어느 정의로도 정확히 재현 안 됨: 0.72(≤−3%)~0.91(rz≤−3). '대부분(72–91%) 상승' 으로 정의 병기 권고",
+    summary=("min/max of Wilson CI bounds across 4 definitions", min(r_["ci_low"] for r_ in _d8), max(r_["ci_high"] for r_ in _d8)))
 
 # kurtosis 처리별
 kt = []
@@ -250,19 +282,21 @@ ari = pd.DataFrame(ari); ari.to_csv(OUT / "cluster_ari.csv", index=False)
 for kk in [3, 5]:
     s_ = ari[(ari.k == kk) & (ari.linkage != "ward")]
     add("DOCX-12", "cluster 구조 강건성 (ward 제외)", "ARI vs full/Pearson/average", f"k={kk} min over 16 variants (average/complete)",
-        s_.ari_vs_full_pearson_avg.min(), s_.ari_vs_full_pearson_avg.quantile(.25), s_.ari_vs_full_pearson_avg.median(), len(s_),
+        s_.ari_vs_full_pearson_avg.min(), None, None, len(s_),
         "ROBUST" if s_.ari_vs_full_pearson_avg.median() >= 0.8 else "FRAGILE", "cluster_ari_heatmap.png",
-        "ci 칸=Q1/median; 불안정의 주원인은 ward(분산 기준 → 큰 주식 덩어리를 쪼갬)와 2026 단독 기간")
+        "statistic=min; 불안정의 주원인은 ward(분산 기준 → 큰 주식 덩어리를 쪼갬)와 2026 단독 기간",
+        summary=("Q1/median ARI", s_.ari_vs_full_pearson_avg.quantile(.25), s_.ari_vs_full_pearson_avg.median()))
 for kk in [3, 5]:
     s = ari[ari.k == kk]
     add("DOCX-12", "통계 cluster ≠ 경제 taxonomy; cluster 구조 자체의 강건성", "ARI vs full/Pearson/average", f"k={kk} min over 24 variants",
-        s.ari_vs_full_pearson_avg.min(), s.ari_vs_full_pearson_avg.quantile(.25), s.ari_vs_full_pearson_avg.median(), len(s),
-        "ROBUST" if s.ari_vs_full_pearson_avg.median() >= 0.8 else "FRAGILE", "cluster_ari_heatmap.png", "ci_low/ci_high 칸 = Q1/median (CI 아님)")
-    add("CL-13", "PC1 비중은 기간/방법 의존", "PC1 share range", f"k-indep", s.pc1_share.max() - s.pc1_share.min(), s.pc1_share.min(), s.pc1_share.max(), len(s),
-        "DEFINITION_DEPENDENT", "cluster_ari_heatmap.png", "ci_low/ci_high 칸 = min/max") if kk == 3 else None
+        s.ari_vs_full_pearson_avg.min(), None, None, len(s),
+        "ROBUST" if s.ari_vs_full_pearson_avg.median() >= 0.8 else "FRAGILE", "cluster_ari_heatmap.png", "statistic=min",
+        summary=("Q1/median ARI", s.ari_vs_full_pearson_avg.quantile(.25), s.ari_vs_full_pearson_avg.median()))
+    add("CL-13", "PC1 비중은 기간/방법 의존", "PC1 share range", f"k-indep", s.pc1_share.max() - s.pc1_share.min(), None, None, len(s),
+        "DEFINITION_DEPENDENT", "cluster_ari_heatmap.png", "statistic=max−min", summary=("min/max PC1 share", s.pc1_share.min(), s.pc1_share.max())) if kk == 3 else None
 X2 = X.drop(columns=["122630", "114800", "102110"])
 ev = np.linalg.eigvalsh(X2.corr().values)[::-1]; ev0 = np.linalg.eigvalsh(X.corr().values)[::-1]
-add("CL-13", "PC1 비중 universe 구성 종속", "PC1 share full vs dedup(−102110,122630,114800)", "Pearson full", ev0[0] / ev0.sum(), ev[0] / ev.sum(), None, len(X), "DEFINITION_DEPENDENT", "", "ci_low 칸 = dedup 값")
+add("CL-13", "PC1 비중 universe 구성 종속", "PC1 share full vs dedup(−102110,122630,114800)", "Pearson full", ev0[0] / ev0.sum(), None, None, len(X), "DEFINITION_DEPENDENT", "", "statistic=full 20 PC1 share", summary=("dedup17 PC1 share", ev[0] / ev.sum(), None))
 
 M = pd.DataFrame(rows); M.to_csv(ROOT / "reports" / "ROBUSTNESS_MATRIX.csv", index=False)
 

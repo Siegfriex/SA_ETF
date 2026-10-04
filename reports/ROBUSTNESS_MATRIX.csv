@@ -1,75 +1,76 @@
-claim_id,claim,test,variant,statistic,ci_low,ci_high,n,verdict,figure,note
-DOCX-01,KODEX200–TIGER200 corr≈0.999,Pearson ρ + block bootstrap,full,0.999,0.9987,0.9992,1902,ROBUST,forest_claims.png,
-DOCX-02,동일지수 ETF 일간차 sd ≈ 8bp,sd(r1−r2) bp,full,8.0464,7.1486,9.1116,1902,ROBUST,,noise floor of same exposure
-DOCX-03,KODEX 레버리지 beta≈1.99,OLS beta + block bootstrap,full,1.986,1.9515,2.0151,1902,ROBUST,forest_claims.png,
-DOCX-03,KODEX 레버리지 beta 기간 안정성,OLS beta,2019-21,1.9736,,,741,ROBUST,,
-DOCX-03,KODEX 레버리지 beta 기간 안정성,OLS beta,2022-25,1.9884,,,977,ROBUST,,
-DOCX-03,KODEX 레버리지 beta 기간 안정성,OLS beta,2026,1.9921,,,184,ROBUST,,
-DOCX-04,KODEX 인버스 beta≈-1.02,OLS beta + block bootstrap,full,-1.0164,-1.0358,-0.9969,1902,ROBUST,forest_claims.png,
-DOCX-04,KODEX 인버스 beta 기간 안정성,OLS beta,2019-21,-1.0204,,,741,ROBUST,,
-DOCX-04,KODEX 인버스 beta 기간 안정성,OLS beta,2022-25,-1.0144,,,977,ROBUST,,
-DOCX-04,KODEX 인버스 beta 기간 안정성,OLS beta,2026,-1.0135,,,184,ROBUST,,
-DOCX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) > 0,Δρ (Spearman) block bootstrap,full,0.2754,0.2339,0.3168,1902,ROBUST,forest_claims.png,"ρ_alt=0.756, ρ_K200=0.481"
-DOCX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Spearman),2019-21,0.3218,,,741,ROBUST,,
-DOCX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Spearman),2022-25,0.1918,,,977,ROBUST,,
-DOCX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Spearman),2026,0.3666,,,184,ROBUST,,
-DOCX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) > 0,Δρ (Pearson) block bootstrap,full,0.2794,0.2197,0.3375,1902,ROBUST,forest_claims.png,"ρ_alt=0.788, ρ_K200=0.508"
-DOCX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Pearson),2019-21,0.281,,,741,ROBUST,,
-DOCX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Pearson),2022-25,0.1708,,,977,ROBUST,,
-DOCX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Pearson),2026,0.3361,,,184,ROBUST,,
-DOCX-06,고배당: ρ(은행) − ρ(KOSPI200) > 0,Δρ (Spearman) block bootstrap,full,0.2268,0.1852,0.2704,1902,ROBUST,forest_claims.png,"ρ_alt=0.830, ρ_K200=0.603"
-DOCX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Spearman),2019-21,0.163,,,741,ROBUST,,
-DOCX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Spearman),2022-25,0.2462,,,977,ROBUST,,
-DOCX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Spearman),2026,0.2449,,,184,ROBUST,,
-DOCX-06,고배당: ρ(은행) − ρ(KOSPI200) > 0,Δρ (Pearson) block bootstrap,full,0.2072,0.1462,0.2658,1902,ROBUST,forest_claims.png,"ρ_alt=0.862, ρ_K200=0.655"
-DOCX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Pearson),2019-21,0.0988,,,741,ROBUST,,
-DOCX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Pearson),2022-25,0.2267,,,977,ROBUST,,
-DOCX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Pearson),2026,0.1807,,,184,ROBUST,,
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,069500,3.3039,2.528,4.2133,184,ROBUST,vol_ratio_2026.png,KODEX 200 BF p=5.5e-80
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,102110,3.3172,2.5159,4.2446,184,ROBUST,vol_ratio_2026.png,TIGER 200 BF p=7.4e-80
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,229200,2.1966,1.7462,2.7082,184,ROBUST,vol_ratio_2026.png,KODEX 코스닥150 BF p=4.8e-39
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,122630,3.3212,2.5716,4.1809,184,ROBUST,vol_ratio_2026.png,KODEX 레버리지 BF p=1e-81
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,114800,3.293,2.509,4.2695,184,ROBUST,vol_ratio_2026.png,KODEX 인버스 BF p=2.7e-79
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,091230,2.5493,1.9378,3.1934,184,ROBUST,vol_ratio_2026.png,TIGER 반도체 BF p=1.5e-52
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,091170,1.4822,1.1744,1.8361,184,ROBUST,vol_ratio_2026.png,KODEX 은행 BF p=8.8e-11
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,091180,2.1182,1.6633,2.6219,184,ROBUST,vol_ratio_2026.png,KODEX 자동차 BF p=1.7e-37
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,305540,1.669,1.3595,2.0441,184,ROBUST,vol_ratio_2026.png,TIGER 2차전지테마 BF p=3.8e-22
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,143860,1.697,1.3441,2.137,184,ROBUST,vol_ratio_2026.png,TIGER 헬스케어 BF p=1.8e-16
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,117680,1.7408,1.3989,2.156,184,ROBUST,vol_ratio_2026.png,KODEX 철강 BF p=1.3e-23
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,161510,1.7261,1.2504,2.3235,184,ROBUST,vol_ratio_2026.png,PLUS 고배당주 BF p=3.4e-19
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,219480,0.7254,0.565,0.895,184,ROBUST,vol_ratio_2026.png,KODEX 미국S&P500선물(H) BF p=0.018
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,133690,0.8733,0.7243,1.0483,184,ROBUST,vol_ratio_2026.png,TIGER 미국나스닥100 BF p=0.61
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,192090,0.9399,0.7448,1.1536,184,ROBUST,vol_ratio_2026.png,TIGER 차이나CSI300 BF p=0.63
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,148070,1.1523,0.9922,1.3439,184,ROBUST,vol_ratio_2026.png,KIWOOM 국고채10년 BF p=0.00068
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,153130,0.6558,0.394,1.2288,184,ROBUST,vol_ratio_2026.png,KODEX 단기채권 BF p=0.67
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,132030,2.2055,1.3898,3.1004,184,FRAGILE,vol_ratio_2026.png,KODEX 골드선물(H) BF p=9.8e-25; 반례: 비주식인데 2026 vol 유의 확대
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,261220,1.5024,1.0211,2.1464,184,ROBUST,vol_ratio_2026.png,KODEX WTI원유선물(H) BF p=3.2e-09
-DOCX-07,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,261240,1.2598,1.0396,1.4865,184,ROBUST,vol_ratio_2026.png,KODEX 미국달러선물 BF p=3.8e-05
-DOCX-07,2026 vol 확대: 국내주식 > 해외주식,Mann–Whitney (ETF 단위 ratio),dom n=12 vs for n=3,1.2841,,,15,ROBUST,vol_ratio_2026.png,p=0.0022; 단 국내 12종 중 KOSPI200 4종 중복
-DOCX-08,달러선물은 주식 폭락일 86% 상승,up-rate (Wilson CI),069500 ≤ q05,0.8021,0.7114,0.8695,96,DEFINITION_DEPENDENT,,mean +0.59%
-DOCX-08,달러선물은 주식 폭락일 86% 상승,up-rate (Wilson CI),069500 ≤ −2%,0.8087,0.7273,0.8701,115,DEFINITION_DEPENDENT,,mean +0.59%
-DOCX-08,달러선물은 주식 폭락일 86% 상승,up-rate (Wilson CI),069500 rz≤−3 (D식),0.9118,0.7704,0.9695,34,DEFINITION_DEPENDENT,,mean +0.85%
-DOCX-08,달러선물은 주식 폭락일 86% 상승,up-rate (Wilson CI),069500 ≤ −3%,0.7193,0.5917,0.8192,57,DEFINITION_DEPENDENT,,mean +0.51%
-DOCX-08,달러선물은 주식 폭락일 86% 상승,DOCX 86% 재현 여부,정의 4종 범위,0.7193,0.5917,0.9695,4,DEFINITION_DEPENDENT,,86% 는 어느 정의로도 정확히 재현 안 됨: 0.72(≤−3%)~0.91(rz≤−3). '대부분(72–91%) 상승' 으로 정의 병기 권고; ci 칸=정의 간 min/max
-DOCX-09,KODEX 미국달러선물 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),전체,301.0946,,,1902,ROBUST,kurtosis_variants.png,ann_vol=13.49%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
-DOCX-09,KODEX 미국달러선물 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),trim3 (상위|r| 3일 제거),2.4331,,,1899,ROBUST,kurtosis_variants.png,ann_vol=8.78%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
-DOCX-09,KODEX 미국달러선물 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),anomaly 2일 제거,3.8683,,,1900,ROBUST,kurtosis_variants.png,ann_vol=8.92%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
-DOCX-09,KODEX 미국달러선물 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),winsor 1%,1.1359,,,1902,ROBUST,kurtosis_variants.png,ann_vol=8.53%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
-DOCX-10,KODEX 단기채권 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),전체,323.7558,,,1902,ROBUST,kurtosis_variants.png,ann_vol=0.32%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
-DOCX-10,KODEX 단기채권 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),trim3 (상위|r| 3일 제거),6.0809,,,1899,ROBUST,kurtosis_variants.png,ann_vol=0.21%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
-DOCX-10,KODEX 단기채권 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),anomaly 제거 (해당 없음),323.7558,,,1902,ROBUST,kurtosis_variants.png,ann_vol=0.32%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
-DOCX-10,KODEX 단기채권 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),winsor 1%,0.9753,,,1902,ROBUST,kurtosis_variants.png,ann_vol=0.19%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
-DOCX-11,k≥5 공통충격 후보 52/22/175 (정의 민감),count days with ≥5 ETFs extreme,"rz3 (D식 MAD: 잔차 rolling median, mp20)",52.0,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,DOCX/CL-32 기준값 52; 재현=YES
-DOCX-11,k≥5 공통충격 후보 52/22/175 (정의 민감),count days with ≥5 ETFs extreme,"rz3 (A식 MAD: 창내 MAD, mp40)",61.0,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,DOCX/CL-32 기준값 61; 재현=YES
-DOCX-11,k≥5 공통충격 후보 52/22/175 (정의 민감),count days with ≥5 ETFs extreme,q99 (ETF별 전체기간 |r|),22.0,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,DOCX/CL-32 기준값 22; 재현=YES
-DOCX-11,k≥5 공통충격 후보 52/22/175 (정의 민감),count days with ≥5 ETFs extreme,abs3 (|단순수익률|≥3%),175.0,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,DOCX/CL-32 기준값 175; 재현=YES
-DOCX-11,정의 간 개수 배율,max/min k≥5,4 정의,7.9545,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,
-CL-idio,ETF 고유(idiosyncratic) 충격 사례는 calm 기준에 강건,"universe median|rz|<c, solo |rz|>3",c=0.75,0.6119,,,123,FRAGILE,,"n=123, |r|≥1% n=96, ≥1% 생존 0.57"
-CL-idio,ETF 고유(idiosyncratic) 충격 사례는 calm 기준에 강건,"universe median|rz|<c, solo |rz|>3",c=1.0,1.0,,,201,ROBUST,,"n=201, |r|≥1% n=167, ≥1% 생존 1.00"
-CL-idio,ETF 고유(idiosyncratic) 충격 사례는 calm 기준에 강건,"universe median|rz|<c, solo |rz|>3",c=1.25,1.0,,,257,ROBUST,,"n=257, |r|≥1% n=219, ≥1% 생존 1.00"
-DOCX-12,cluster 구조 강건성 (ward 제외),ARI vs full/Pearson/average,k=3 min over 16 variants (average/complete),0.6172,0.6397,0.6397,16,FRAGILE,cluster_ari_heatmap.png,ci 칸=Q1/median; 불안정의 주원인은 ward(분산 기준 → 큰 주식 덩어리를 쪼갬)와 2026 단독 기간
-DOCX-12,cluster 구조 강건성 (ward 제외),ARI vs full/Pearson/average,k=5 min over 16 variants (average/complete),0.5329,0.6947,0.8473,16,ROBUST,cluster_ari_heatmap.png,ci 칸=Q1/median; 불안정의 주원인은 ward(분산 기준 → 큰 주식 덩어리를 쪼갬)와 2026 단독 기간
-DOCX-12,통계 cluster ≠ 경제 taxonomy; cluster 구조 자체의 강건성,ARI vs full/Pearson/average,k=3 min over 24 variants,0.1549,0.6172,0.6397,24,FRAGILE,cluster_ari_heatmap.png,ci_low/ci_high 칸 = Q1/median (CI 아님)
-CL-13,PC1 비중은 기간/방법 의존,PC1 share range,k-indep,0.0934,0.4254,0.5188,24,DEFINITION_DEPENDENT,cluster_ari_heatmap.png,ci_low/ci_high 칸 = min/max
-DOCX-12,통계 cluster ≠ 경제 taxonomy; cluster 구조 자체의 강건성,ARI vs full/Pearson/average,k=5 min over 24 variants,0.2647,0.5573,0.6947,24,FRAGILE,cluster_ari_heatmap.png,ci_low/ci_high 칸 = Q1/median (CI 아님)
-CL-13,PC1 비중 universe 구성 종속,"PC1 share full vs dedup(−102110,122630,114800)",Pearson full,0.4572,0.3927,,1900,DEFINITION_DEPENDENT,,ci_low 칸 = dedup 값
+claim_id,dx_id,claim,test,variant,statistic,ci_low,ci_high,interval_type,summary_stat,summary_low,summary_high,n,verdict,figure,note
+DOCX-01,DX-02,KODEX200–TIGER200 corr≈0.999,Pearson ρ + block bootstrap,full,0.999,0.9987,0.9992,block_bootstrap_95,,,,1902,ROBUST,forest_claims.png,
+DOCX-02,DX-02,동일지수 ETF 일간차 sd ≈ 8bp,sd(r1−r2) bp,full,8.0464,7.1486,9.1116,block_bootstrap_95,,,,1902,ROBUST,,noise floor of same exposure
+DOCX-03,DX-03,KODEX 레버리지 beta≈1.99,OLS beta + block bootstrap,full,1.986,1.9515,2.0151,block_bootstrap_95,,,,1902,ROBUST,forest_claims.png,
+DOCX-03,DX-03,KODEX 레버리지 beta 기간 안정성,OLS beta,2019-21,1.9736,,,,,,,741,ROBUST,,
+DOCX-03,DX-03,KODEX 레버리지 beta 기간 안정성,OLS beta,2022-25,1.9884,,,,,,,977,ROBUST,,
+DOCX-03,DX-03,KODEX 레버리지 beta 기간 안정성,OLS beta,2026,1.9921,,,,,,,184,ROBUST,,
+DOCX-04,DX-04,KODEX 인버스 beta≈-1.02,OLS beta + block bootstrap,full,-1.0164,-1.0358,-0.9969,block_bootstrap_95,,,,1902,ROBUST,forest_claims.png,
+DOCX-04,DX-04,KODEX 인버스 beta 기간 안정성,OLS beta,2019-21,-1.0204,,,,,,,741,ROBUST,,
+DOCX-04,DX-04,KODEX 인버스 beta 기간 안정성,OLS beta,2022-25,-1.0144,,,,,,,977,ROBUST,,
+DOCX-04,DX-04,KODEX 인버스 beta 기간 안정성,OLS beta,2026,-1.0135,,,,,,,184,ROBUST,,
+DOCX-05,DX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) > 0,Δρ (Spearman) block bootstrap,full,0.2754,0.2339,0.3168,block_bootstrap_95,,,,1902,ROBUST,forest_claims.png,"ρ_alt=0.756, ρ_K200=0.481"
+DOCX-05,DX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Spearman),2019-21,0.3218,,,,,,,741,ROBUST,,
+DOCX-05,DX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Spearman),2022-25,0.1918,,,,,,,977,ROBUST,,
+DOCX-05,DX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Spearman),2026,0.3666,,,,,,,184,ROBUST,,
+DOCX-05,DX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) > 0,Δρ (Pearson) block bootstrap,full,0.2794,0.2197,0.3375,block_bootstrap_95,,,,1902,ROBUST,forest_claims.png,"ρ_alt=0.788, ρ_K200=0.508"
+DOCX-05,DX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Pearson),2019-21,0.281,,,,,,,741,ROBUST,,
+DOCX-05,DX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Pearson),2022-25,0.1708,,,,,,,977,ROBUST,,
+DOCX-05,DX-05,헬스케어: ρ(KOSDAQ150) − ρ(KOSPI200) 기간별,Δρ (Pearson),2026,0.3361,,,,,,,184,ROBUST,,
+DOCX-06,DX-06,고배당: ρ(은행) − ρ(KOSPI200) > 0,Δρ (Spearman) block bootstrap,full,0.2268,0.1852,0.2704,block_bootstrap_95,,,,1902,ROBUST,forest_claims.png,"ρ_alt=0.830, ρ_K200=0.603"
+DOCX-06,DX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Spearman),2019-21,0.163,,,,,,,741,ROBUST,,
+DOCX-06,DX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Spearman),2022-25,0.2462,,,,,,,977,ROBUST,,
+DOCX-06,DX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Spearman),2026,0.2449,,,,,,,184,ROBUST,,
+DOCX-06,DX-06,고배당: ρ(은행) − ρ(KOSPI200) > 0,Δρ (Pearson) block bootstrap,full,0.2072,0.1462,0.2658,block_bootstrap_95,,,,1902,ROBUST,forest_claims.png,"ρ_alt=0.862, ρ_K200=0.655"
+DOCX-06,DX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Pearson),2019-21,0.0988,,,,,,,741,ROBUST,,
+DOCX-06,DX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Pearson),2022-25,0.2267,,,,,,,977,ROBUST,,
+DOCX-06,DX-06,고배당: ρ(은행) − ρ(KOSPI200) 기간별,Δρ (Pearson),2026,0.1807,,,,,,,184,ROBUST,,
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,069500,3.3039,2.528,4.2133,block_bootstrap_95,ratio_ex_top3,2.9027,,184,ROBUST,vol_ratio_2026.png,KODEX 200 BF p=5.5e-80; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=2.90
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,102110,3.3172,2.5159,4.2446,block_bootstrap_95,ratio_ex_top3,2.9073,,184,ROBUST,vol_ratio_2026.png,TIGER 200 BF p=7.4e-80; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=2.91
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,229200,2.1966,1.7462,2.7082,block_bootstrap_95,ratio_ex_top3,1.9624,,184,ROBUST,vol_ratio_2026.png,KODEX 코스닥150 BF p=4.8e-39; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.96
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,122630,3.3212,2.5716,4.1809,block_bootstrap_95,ratio_ex_top3,2.9505,,184,ROBUST,vol_ratio_2026.png,KODEX 레버리지 BF p=1e-81; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=2.95
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,114800,3.293,2.509,4.2695,block_bootstrap_95,ratio_ex_top3,2.8626,,184,ROBUST,vol_ratio_2026.png,KODEX 인버스 BF p=2.7e-79; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=2.86
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,091230,2.5493,1.9378,3.1934,block_bootstrap_95,ratio_ex_top3,2.2522,,184,ROBUST,vol_ratio_2026.png,TIGER 반도체 BF p=1.5e-52; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=2.25
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,091170,1.4822,1.1744,1.8361,block_bootstrap_95,ratio_ex_top3,1.3018,,184,ROBUST,vol_ratio_2026.png,KODEX 은행 BF p=8.8e-11; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.30
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,091180,2.1182,1.6633,2.6219,block_bootstrap_95,ratio_ex_top3,1.8947,,184,ROBUST,vol_ratio_2026.png,KODEX 자동차 BF p=1.7e-37; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.89
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,305540,1.669,1.3595,2.0441,block_bootstrap_95,ratio_ex_top3,1.4999,,184,ROBUST,vol_ratio_2026.png,TIGER 2차전지테마 BF p=3.8e-22; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.50
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,143860,1.697,1.3441,2.137,block_bootstrap_95,ratio_ex_top3,1.4658,,184,ROBUST,vol_ratio_2026.png,TIGER 헬스케어 BF p=1.8e-16; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.47
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,117680,1.7408,1.3989,2.156,block_bootstrap_95,ratio_ex_top3,1.5652,,184,ROBUST,vol_ratio_2026.png,KODEX 철강 BF p=1.3e-23; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.57
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,161510,1.7261,1.2504,2.3235,block_bootstrap_95,ratio_ex_top3,1.4681,,184,ROBUST,vol_ratio_2026.png,PLUS 고배당주 BF p=3.4e-19; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.47
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,219480,0.7254,0.565,0.895,block_bootstrap_95,ratio_ex_top3,0.6659,,184,ROBUST,vol_ratio_2026.png,KODEX 미국S&P500선물(H) BF p=0.018; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=0.67
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,133690,0.8733,0.7243,1.0483,block_bootstrap_95,ratio_ex_top3,0.8139,,184,ROBUST,vol_ratio_2026.png,TIGER 미국나스닥100 BF p=0.61; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=0.81
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,192090,0.9399,0.7448,1.1536,block_bootstrap_95,ratio_ex_top3,0.8648,,184,ROBUST,vol_ratio_2026.png,TIGER 차이나CSI300 BF p=0.63; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=0.86
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,148070,1.1523,0.9922,1.3439,block_bootstrap_95,ratio_ex_top3,1.0667,,184,ROBUST,vol_ratio_2026.png,KIWOOM 국고채10년 BF p=0.00068; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.07
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,153130,0.6558,0.394,1.2288,block_bootstrap_95,ratio_ex_top3,0.6107,,184,ROBUST,vol_ratio_2026.png,KODEX 단기채권 BF p=0.67; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=0.61
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,132030,2.2055,1.3898,3.1004,block_bootstrap_95,ratio_ex_top3,1.7352,,184,COUNTEREXAMPLE,vol_ratio_2026.png,KODEX 골드선물(H) BF p=9.8e-25; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.74; 비국내인데 2026 vol 유의 확대 — top3 제외 후에도 >1 유지
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,261220,1.5024,1.0211,2.1464,block_bootstrap_95,ratio_ex_top3,1.1914,,184,COUNTEREXAMPLE,vol_ratio_2026.png,KODEX WTI원유선물(H) BF p=3.2e-09; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.19; 비국내인데 2026 vol 유의 확대 — top3 제외 후에도 >1 유지
+DOCX-07,DX-08,2026 vol 확대는 국내주식 중심,σ2026/σ2019-25 + block CI; Brown–Forsythe p,261240,1.2598,1.0396,1.4865,block_bootstrap_95,ratio_ex_top3,1.1742,,184,COUNTEREXAMPLE,vol_ratio_2026.png,KODEX 미국달러선물 BF p=3.8e-05; ex-top3(2026 자기 |r| 상위 3일 제외) ratio=1.17; 비국내인데 2026 vol 유의 확대 — top3 제외 후에도 >1 유지
+DOCX-07,DX-08,2026 vol 확대: 국내주식 > 해외주식,Mann–Whitney one-sided (ETF 단위 ratio),dom n=12 vs for n=3,1.2841,,,,p_value_one_sided,0.0022,,15,SECONDARY,vol_ratio_2026.png,"statistic=중앙값 차; 국내 12종 중 KOSPI200 동일 exposure 4종(069500·102110·122630·114800) 반복 → 독립성 약함, headline 근거 아님"
+DOCX-07,DX-08,2026 vol 확대: 국내주식 > 해외주식,"Mann–Whitney one-sided (exposure 단위, KOSPI200 4종→069500 1개)",dom n=9 vs for n=3,0.8675,,,,p_value_one_sided,0.0045,,12,SECONDARY,vol_ratio_2026.png,"statistic=중앙값 차; exact 최소 p = 1/C(12,3); 국내 업종 ETF 간에도 공통 factor 가 있어 독립성은 여전히 제한 → p 는 보조 근거"
+DOCX-08,DX-13,달러선물은 주식 폭락일 86% 상승,up-rate (Wilson CI),069500 ≤ q05,0.8021,0.7114,0.8695,wilson_95,,,,96,DEFINITION_DEPENDENT,,mean +0.59%
+DOCX-08,DX-13,달러선물은 주식 폭락일 86% 상승,up-rate (Wilson CI),069500 ≤ −2%,0.8087,0.7273,0.8701,wilson_95,,,,115,DEFINITION_DEPENDENT,,mean +0.59%
+DOCX-08,DX-13,달러선물은 주식 폭락일 86% 상승,up-rate (Wilson CI),069500 rz≤−3 (D식),0.9118,0.7704,0.9695,wilson_95,,,,34,DEFINITION_DEPENDENT,,mean +0.85%
+DOCX-08,DX-13,달러선물은 주식 폭락일 86% 상승,up-rate (Wilson CI),069500 ≤ −3%,0.7193,0.5917,0.8192,wilson_95,,,,57,DEFINITION_DEPENDENT,,mean +0.51%
+DOCX-08,DX-13,달러선물은 주식 폭락일 86% 상승,DOCX 86% 재현 여부,정의 4종 범위,0.7193,,,,min/max of Wilson CI bounds across 4 definitions,0.5917,0.9695,4,DEFINITION_DEPENDENT,,86% 는 어느 정의로도 정확히 재현 안 됨: 0.72(≤−3%)~0.91(rz≤−3). '대부분(72–91%) 상승' 으로 정의 병기 권고
+DOCX-09,DX-10,KODEX 미국달러선물 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),전체,301.0946,,,,,,,1902,ROBUST,kurtosis_variants.png,ann_vol=13.49%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
+DOCX-09,DX-10,KODEX 미국달러선물 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),trim3 (상위|r| 3일 제거),2.4331,,,,,,,1899,ROBUST,kurtosis_variants.png,ann_vol=8.78%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
+DOCX-09,DX-10,KODEX 미국달러선물 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),anomaly 2일 제거,3.8683,,,,,,,1900,ROBUST,kurtosis_variants.png,ann_vol=8.92%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
+DOCX-09,DX-10,KODEX 미국달러선물 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),winsor 1%,1.1359,,,,,,,1902,ROBUST,kurtosis_variants.png,ann_vol=8.53%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
+DOCX-10,DX-10,KODEX 단기채권 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),전체,323.7558,,,,,,,1902,ROBUST,kurtosis_variants.png,ann_vol=0.32%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
+DOCX-10,DX-10,KODEX 단기채권 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),trim3 (상위|r| 3일 제거),6.0809,,,,,,,1899,ROBUST,kurtosis_variants.png,ann_vol=0.21%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
+DOCX-10,DX-10,KODEX 단기채권 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),anomaly 제거 (해당 없음),323.7558,,,,,,,1902,ROBUST,kurtosis_variants.png,ann_vol=0.32%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
+DOCX-10,DX-10,KODEX 단기채권 kurtosis 300대는 극단 소수일 산물,excess kurtosis (unbiased),winsor 1%,0.9753,,,,,,,1902,ROBUST,kurtosis_variants.png,ann_vol=0.19%; unbiased(G2) 추정 — universe_profile 과 소수점 차이 가능
+DOCX-11,DX-09,k≥5 공통충격 후보 52/22/175 (정의 민감),count days with ≥5 ETFs extreme,"rz3 (D식 MAD: 잔차 rolling median, mp20)",52.0,,,,,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,DOCX/CL-32 기준값 52; 재현=YES
+DOCX-11,DX-09,k≥5 공통충격 후보 52/22/175 (정의 민감),count days with ≥5 ETFs extreme,"rz3 (A식 MAD: 창내 MAD, mp40)",61.0,,,,,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,DOCX/CL-32 기준값 61; 재현=YES
+DOCX-11,DX-09,k≥5 공통충격 후보 52/22/175 (정의 민감),count days with ≥5 ETFs extreme,q99 (ETF별 전체기간 |r|),22.0,,,,,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,DOCX/CL-32 기준값 22; 재현=YES
+DOCX-11,DX-09,k≥5 공통충격 후보 52/22/175 (정의 민감),count days with ≥5 ETFs extreme,abs3 (|단순수익률|≥3%),175.0,,,,,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,DOCX/CL-32 기준값 175; 재현=YES
+DOCX-11,DX-09,정의 간 개수 배율,max/min k≥5,4 정의,7.9545,,,,,,,1902,DEFINITION_DEPENDENT,shock_definition_grid.png,
+CL-idio,,ETF 고유(idiosyncratic) 충격 사례는 calm 기준에 강건,"universe median|rz|<c, solo |rz|>3",c=0.75,0.6119,,,,,,,123,FRAGILE,,"n=123, |r|≥1% n=96, ≥1% 생존 0.57"
+CL-idio,,ETF 고유(idiosyncratic) 충격 사례는 calm 기준에 강건,"universe median|rz|<c, solo |rz|>3",c=1.0,1.0,,,,,,,201,ROBUST,,"n=201, |r|≥1% n=167, ≥1% 생존 1.00"
+CL-idio,,ETF 고유(idiosyncratic) 충격 사례는 calm 기준에 강건,"universe median|rz|<c, solo |rz|>3",c=1.25,1.0,,,,,,,257,ROBUST,,"n=257, |r|≥1% n=219, ≥1% 생존 1.00"
+DOCX-12,DX-07,cluster 구조 강건성 (ward 제외),ARI vs full/Pearson/average,k=3 min over 16 variants (average/complete),0.6172,,,,Q1/median ARI,0.6397,0.6397,16,FRAGILE,cluster_ari_heatmap.png,statistic=min; 불안정의 주원인은 ward(분산 기준 → 큰 주식 덩어리를 쪼갬)와 2026 단독 기간
+DOCX-12,DX-07,cluster 구조 강건성 (ward 제외),ARI vs full/Pearson/average,k=5 min over 16 variants (average/complete),0.5329,,,,Q1/median ARI,0.6947,0.8473,16,ROBUST,cluster_ari_heatmap.png,statistic=min; 불안정의 주원인은 ward(분산 기준 → 큰 주식 덩어리를 쪼갬)와 2026 단독 기간
+DOCX-12,DX-07,통계 cluster ≠ 경제 taxonomy; cluster 구조 자체의 강건성,ARI vs full/Pearson/average,k=3 min over 24 variants,0.1549,,,,Q1/median ARI,0.6172,0.6397,24,FRAGILE,cluster_ari_heatmap.png,statistic=min
+CL-13,,PC1 비중은 기간/방법 의존,PC1 share range,k-indep,0.0934,,,,min/max PC1 share,0.4254,0.5188,24,DEFINITION_DEPENDENT,cluster_ari_heatmap.png,statistic=max−min
+DOCX-12,DX-07,통계 cluster ≠ 경제 taxonomy; cluster 구조 자체의 강건성,ARI vs full/Pearson/average,k=5 min over 24 variants,0.2647,,,,Q1/median ARI,0.5573,0.6947,24,FRAGILE,cluster_ari_heatmap.png,statistic=min
+CL-13,,PC1 비중 universe 구성 종속,"PC1 share full vs dedup(−102110,122630,114800)",Pearson full,0.4572,,,,dedup17 PC1 share,0.3927,,1900,DEFINITION_DEPENDENT,,statistic=full 20 PC1 share

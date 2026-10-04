@@ -4,7 +4,7 @@
 같은 함수가 notebook 실행 시 figure 를 그리므로 텍스트와 그림의 정의가 일치한다.
 산출: notebooks/final_eda/{slot:02d}_{ticker}_final_eda.ipynb, reports/tables/etf_final_stats.csv
 
-usage: python scripts/build_final_notebooks.py [--only TICKER ...]
+usage: python scripts/build_final_notebooks.py [--only TICKER ...] [--stats-only]
 env: ETF_RAW_DIR (raw 경로 override)
 """
 import argparse, hashlib, re, sys
@@ -20,6 +20,7 @@ from src import final_figs as F  # noqa: E402
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--only", nargs="*")
+ap.add_argument("--stats-only", action="store_true", help="etf_final_stats.csv 만 쓰고 notebook 은 건드리지 않음")
 args = ap.parse_args()
 
 
@@ -270,6 +271,24 @@ pd.Series({{k: v for k, v in S.items() if not isinstance(v, (dict, list))}}).to_
         c.id = hashlib.sha1(f"final-{tk}-{i}".encode()).hexdigest()[:12]
     return nb
 
+# DQ 정책 (canonical patch P0): DQ 영향을 받는 4개 지표는 _raw / _dq_excl 로 분리해 같은 이름으로 두 정의가 섞이지 않게 한다.
+# _dq_excl = dq_flags 의 price_anomaly_unverified 날짜 제외 (현재 261240 의 2019-03-14/15 만 해당). 해당 날짜가 없는 ETF 는 _raw 와 같다.
+DQ_SPLIT = ["ann_vol", "vol_ratio_26", "ex_kurt", "mkt_corr"]
+
+
+def stats_row(S):
+    r = {k: S[k] for k in ["ticker", "name", "n_obs"]}
+    t = S.get("trim_anom")
+    for k in DQ_SPLIT:
+        r[f"{k}_raw"] = S[k]
+        r[f"{k}_dq_excl"] = t[k] if t else S[k]
+    r["dq_policy"] = ("raw=all days; dq_excl=drop 2019-03-14/15 price_anomaly_unverified (canonical for claims); other columns=raw"
+                      if t else "no DQ-excluded days; raw=dq_excl; all columns raw")
+    r.update({k: S[k] for k in ["vol_2026", "vol_2019_25", "ex_kurt_trim3", "q01", "q99", "max_dd", "max_dd_date",
+                                "proxy", "proxy_corr", "proxy_beta", "market", "mkt_beta",
+                                "mkt_corr_p1", "mkt_corr_p2", "n_ext_pos", "n_ext_neg"]})
+    return r
+
 
 def main():
     U = F.universe()
@@ -282,14 +301,12 @@ def main():
         if args.only and tk not in args.only:
             continue
         S = F.compute(tk, close, vol, R)
-        nb = build(tk, slot, row, S, dq)
-        p = out / f"{slot:02d}_{tk}_final_eda.ipynb"
-        nbformat.write(nb, p)
-        print("wrote", p.relative_to(ROOT))
-        rows.append({k: S[k] for k in ["ticker", "name", "n_obs", "ann_vol", "vol_2026", "vol_2019_25", "vol_ratio_26",
-                                       "ex_kurt", "ex_kurt_trim3", "q01", "q99", "max_dd", "max_dd_date",
-                                       "proxy", "proxy_corr", "proxy_beta", "market", "mkt_corr", "mkt_beta",
-                                       "mkt_corr_p1", "mkt_corr_p2", "n_ext_pos", "n_ext_neg"]})
+        if not args.stats_only:
+            nb = build(tk, slot, row, S, dq)
+            p = out / f"{slot:02d}_{tk}_final_eda.ipynb"
+            nbformat.write(nb, p)
+            print("wrote", p.relative_to(ROOT))
+        rows.append(stats_row(S))
     if not args.only:
         t = ROOT / "reports" / "tables"; t.mkdir(parents=True, exist_ok=True)
         pd.DataFrame(rows).to_csv(t / "etf_final_stats.csv", index=False, float_format="%.10g")

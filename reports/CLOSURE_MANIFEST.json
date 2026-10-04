@@ -15,7 +15,7 @@
     "relation_map": "reports/ETF_RELATION_MAP_FINAL.md COMPLETE (A 0131 재검수 16/16)",
     "shock_map": "reports/SHOCK_MAP_FINAL.md COMPLETE",
     "claim_evidence_matrix": "16 claims, PENDING 0",
-    "robustness": "74 tests + 5 addendum; CONTRADICTED 0",
+    "robustness": "75 tests + 5 addendum; CONTRADICTED 0; COUNTEREXAMPLE 3 (DX-08 비국내); SECONDARY 2 (Mann–Whitney)",
     "clean_rerun": "PASS — e9a6880 detached worktree, run_all_final 1m23s, tables 29/29 max|Δ|=0, csv·png 바이트 동일, nb 41/41 출력 동일 (sa-ae 0113)",
     "unsupported_causal_claims": "none (anchor label 은 날짜 식별용으로 명시)",
     "hidden_blockers": "none",
@@ -30,9 +30,11 @@
     "DOWNGRADED": 1
   },
   "robustness_verdicts": {
-    "ROBUST": 57,
+    "ROBUST": 54,
     "DEFINITION_DEPENDENT": 12,
-    "FRAGILE": 5
+    "FRAGILE": 4,
+    "COUNTEREXAMPLE": 3,
+    "SECONDARY": 2
   },
   "reproducibility_notes": [
     "시도 1 은 xargs -P6 병렬 kernel 기동 ZMQ 포트 race 로 FAIL(infra) → 재시도 PASS. run_all_final.sh 에 순차 재시도 추가",
@@ -72,5 +74,32 @@
     "D": "C subagent C2-D1 + sa-56 audit 0120/0122/0123"
   },
   "final_verified_sha": "840f8e8",
-  "main_promotion": "origin/main(042cf2d) 가 HEAD 의 조상 → fast-forward promotion"
+  "main_promotion": "origin/main(042cf2d) 가 HEAD 의 조상 → fast-forward promotion",
+  "robustness_addendum_verdicts": {
+    "ROBUST": 4,
+    "FRAGILE": 1
+  },
+  "canonical_patch": {
+    "branch": "claude-c/postclosure-canonical-patch-v1",
+    "base": "293e504",
+    "note": "reports/CANONICAL_PATCH_NOTE.md",
+    "fixed": [
+      "I-1",
+      "I-2",
+      "I-3",
+      "I-4",
+      "I-6",
+      "I-7"
+    ],
+    "analytical_conclusions_changed": false,
+    "verdict_changes": {
+      "DOCX-07/132030": "FRAGILE→COUNTEREXAMPLE",
+      "DOCX-07/261220": "ROBUST→COUNTEREXAMPLE",
+      "DOCX-07/261240": "ROBUST→COUNTEREXAMPLE",
+      "DOCX-07/MW n=12": "ROBUST→SECONDARY"
+    },
+    "added_rows": [
+      "DOCX-07 Mann–Whitney exposure-dedup (n=9 vs 3, p=0.0045, SECONDARY)"
+    ]
+  }
 }
