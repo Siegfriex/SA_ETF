@@ -1,0 +1,185 @@
+{
+  "sp500": {
+    "paper": {
+      "date": "2015-08-18",
+      "stat": 2.4751,
+      "title": "S&P 500"
+    },
+    "raise": {
+      "status": "ok",
+      "statistic": 0.754,
+      "reject_5pct": false,
+      "change_date": "2015-06-26",
+      "n_returns": 1194,
+      "n_test": 597,
+      "fit_start": "2012-01-04",
+      "fit_end": "2014-05-20",
+      "best_svr": {
+        "C": 1.0,
+        "paper_gamma_squared": 1.0,
+        "epsilon": 0.1
+      },
+      "n_nonpositive_variance": 0,
+      "max_abs_return": 4.021,
+      "date_max_abs_return": "2015-08-24"
+    },
+    "clip": {
+      "status": "ok",
+      "statistic": 0.754,
+      "reject_5pct": false,
+      "change_date": "2015-06-26",
+      "n_returns": 1194,
+      "n_test": 597,
+      "fit_start": "2012-01-04",
+      "fit_end": "2014-05-20",
+      "best_svr": {
+        "C": 1.0,
+        "paper_gamma_squared": 1.0,
+        "epsilon": 0.1
+      },
+      "n_nonpositive_variance": 0,
+      "max_abs_return": 4.021,
+      "date_max_abs_return": "2015-08-24"
+    },
+    "recursive_clip": {
+      "status": "ok",
+      "statistic": 1.0963,
+      "reject_5pct": false,
+      "change_date": "2015-08-18",
+      "n_returns": 1194,
+      "n_test": 597,
+      "fit_start": "2012-01-04",
+      "fit_end": "2014-05-20",
+      "best_svr": {
+        "C": 1.0,
+        "paper_gamma_squared": 1.0,
+        "epsilon": 0.1
+      },
+      "n_nonpositive_variance": 0,
+      "max_abs_return": 4.021,
+      "date_max_abs_return": "2015-08-24"
+    }
+  },
+  "kospi": {
+    "paper": {
+      "date": "2018-01-22",
+      "stat": 1.5081,
+      "title": "KOSPI"
+    },
+    "raise": {
+      "status": "ok",
+      "statistic": 0.791,
+      "reject_5pct": false,
+      "change_date": "2018-03-22",
+      "n_returns": 1652,
+      "n_test": 826,
+      "fit_start": "2012-10-04",
+      "fit_end": "2016-02-11",
+      "best_svr": {
+        "C": 10.0,
+        "paper_gamma_squared": 1.0,
+        "epsilon": 0.1
+      },
+      "n_nonpositive_variance": 0,
+      "max_abs_return": 4.541,
+      "date_max_abs_return": "2018-10-11"
+    },
+    "clip": {
+      "status": "ok",
+      "statistic": 0.791,
+      "reject_5pct": false,
+      "change_date": "2018-03-22",
+      "n_returns": 1652,
+      "n_test": 826,
+      "fit_start": "2012-10-04",
+      "fit_end": "2016-02-11",
+      "best_svr": {
+        "C": 10.0,
+        "paper_gamma_squared": 1.0,
+        "epsilon": 0.1
+      },
+      "n_nonpositive_variance": 0,
+      "max_abs_return": 4.541,
+      "date_max_abs_return": "2018-10-11"
+    },
+    "recursive_clip": {
+      "status": "ok",
+      "statistic": 1.1071,
+      "reject_5pct": false,
+      "change_date": "2017-11-24",
+      "n_returns": 1652,
+      "n_test": 826,
+      "fit_start": "2012-10-04",
+      "fit_end": "2016-02-11",
+      "best_svr": {
+        "C": 10.0,
+        "paper_gamma_squared": 1.0,
+        "epsilon": 0.1
+      },
+      "n_nonpositive_variance": 0,
+      "max_abs_return": 4.541,
+      "date_max_abs_return": "2018-10-11"
+    }
+  },
+  "krw_usd": {
+    "paper": {
+      "date": "2014-09-26",
+      "stat": 4.2754,
+      "title": "KRW/USD"
+    },
+    "raise": {
+      "status": "ok",
+      "statistic": 0.7939,
+      "reject_5pct": false,
+      "change_date": "2014-09-09",
+      "n_returns": 1237,
+      "n_test": 619,
+      "fit_start": "2012-01-03",
+      "fit_end": "2014-05-19",
+      "best_svr": {
+        "C": 1.0,
+        "paper_gamma_squared": 0.1,
+        "epsilon": 0.1
+      },
+      "n_nonpositive_variance": 0,
+      "max_abs_return": 3.733,
+      "date_max_abs_return": "2012-07-02"
+    },
+    "clip": {
+      "status": "ok",
+      "statistic": 0.7939,
+      "reject_5pct": false,
+      "change_date": "2014-09-09",
+      "n_returns": 1237,
+      "n_test": 619,
+      "fit_start": "2012-01-03",
+      "fit_end": "2014-05-19",
+      "best_svr": {
+        "C": 1.0,
+        "paper_gamma_squared": 0.1,
+        "epsilon": 0.1
+      },
+      "n_nonpositive_variance": 0,
+      "max_abs_return": 3.733,
+      "date_max_abs_return": "2012-07-02"
+    },
+    "recursive_clip": {
+      "status": "ok",
+      "statistic": 1.0238,
+      "reject_5pct": false,
+      "change_date": "2014-09-09",
+      "n_returns": 1237,
+      "n_test": 619,
+      "fit_start": "2012-01-03",
+      "fit_end": "2014-05-19",
+      "best_svr": {
+        "C": 1.0,
+        "paper_gamma_squared": 0.1,
+        "epsilon": 0.1
+      },
+      "n_nonpositive_variance": 0,
+      "max_abs_return": 3.733,
+      "date_max_abs_return": "2012-07-02"
+    }
+  }
+}

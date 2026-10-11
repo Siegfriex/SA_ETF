@@ -1,0 +1,136 @@
+table,case_id,label,n,kind,paper,clip_reps,clip_failed,clip_fail_rate,clip_rejections,clip_rate_cond_ok,clip_ci_lo,clip_ci_hi,clip_paper_in_ci,clip_status,raise_reps,raise_failed,raise_fail_rate,raise_rejections,raise_rate_cond_ok,raise_ci_lo,raise_ci_hi,raise_paper_in_ci,raise_status,recursive_reps,recursive_failed,recursive_fail_rate,recursive_rejections,recursive_rate_cond_ok,recursive_ci_lo,recursive_ci_hi,recursive_paper_in_ci,recursive_status
+1,t1_size,size,500,size,0.023,1000.0,0.0,0.0,0.0,0.0,0.0,0.0038,False,COMPLETE_1000,100.0,1.0,0.01,0.0,0.0,0.0,0.0374,True,PARTIAL_100,100.0,0.0,0.0,5.0,0.05,0.0215,0.1118,True,PARTIAL_100
+1,t1_size,size,1000,size,0.038,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_size,size,2000,size,0.055,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_omega_1,omega=1,500,power,0.761,1000.0,0.0,0.0,284.0,0.284,0.2569,0.3127,False,COMPLETE_1000,100.0,5.0,0.05,28.0,0.2947,0.2125,0.3929,False,PARTIAL_100,100.0,0.0,0.0,63.0,0.63,0.5322,0.7182,False,PARTIAL_100
+1,t1_omega_1,omega=1,1000,power,0.826,100.0,0.0,0.0,45.0,0.45,0.3561,0.5476,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_omega_1,omega=1,2000,power,0.956,100.0,0.0,0.0,78.0,0.78,0.6893,0.85,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_omega_01,omega=0.1,500,power,0.612,1000.0,0.0,0.0,692.0,0.692,0.6627,0.7198,False,COMPLETE_1000,100.0,2.0,0.02,67.0,0.6837,0.5862,0.7673,True,PARTIAL_100,100.0,0.0,0.0,94.0,0.94,0.8752,0.9722,False,PARTIAL_100
+1,t1_omega_01,omega=0.1,1000,power,0.792,100.0,0.0,0.0,99.0,0.99,0.9455,0.9982,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_omega_01,omega=0.1,2000,power,0.97,100.0,0.0,0.0,100.0,1.0,0.963,1.0,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_alpha_01_beta_02,"alpha=0.1,beta=0.2",500,power,0.355,1000.0,0.0,0.0,4.0,0.004,0.0016,0.0102,False,COMPLETE_1000,100.0,2.0,0.02,0.0,0.0,0.0,0.0377,False,PARTIAL_100,100.0,0.0,0.0,19.0,0.19,0.1251,0.2778,False,PARTIAL_100
+1,t1_alpha_01_beta_02,"alpha=0.1,beta=0.2",1000,power,0.651,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_alpha_01_beta_02,"alpha=0.1,beta=0.2",2000,power,0.949,100.0,0.0,0.0,3.0,0.03,0.0103,0.0845,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_alpha_04_beta_05,"alpha=0.4,beta=0.5",500,power,0.649,1000.0,0.0,0.0,399.0,0.399,0.3691,0.4297,False,COMPLETE_1000,100.0,2.0,0.02,42.0,0.4286,0.3351,0.5274,False,PARTIAL_100,100.0,0.0,0.0,70.0,0.7,0.6042,0.7811,True,PARTIAL_100
+1,t1_alpha_04_beta_05,"alpha=0.4,beta=0.5",1000,power,0.802,100.0,0.0,0.0,63.0,0.63,0.5322,0.7182,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_alpha_04_beta_05,"alpha=0.4,beta=0.5",2000,power,0.952,100.0,0.0,0.0,71.0,0.71,0.6146,0.7899,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_omega_07_alpha_01,"omega=0.7,alpha=0.1",500,power,0.871,1000.0,0.0,0.0,2.0,0.002,0.0005,0.0073,False,COMPLETE_1000,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,100.0,0.0,0.0,17.0,0.17,0.1089,0.2555,False,PARTIAL_100
+1,t1_omega_07_alpha_01,"omega=0.7,alpha=0.1",1000,power,0.969,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_omega_07_alpha_01,"omega=0.7,alpha=0.1",2000,power,0.981,100.0,0.0,0.0,4.0,0.04,0.0157,0.0984,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_omega_01_beta_01,"omega=0.1,beta=0.1",500,power,0.848,1000.0,0.0,0.0,972.0,0.972,0.9598,0.9806,False,COMPLETE_1000,100.0,0.0,0.0,97.0,0.97,0.9155,0.9897,False,PARTIAL_100,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100
+1,t1_omega_01_beta_01,"omega=0.1,beta=0.1",1000,power,0.952,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+1,t1_omega_01_beta_01,"omega=0.1,beta=0.1",2000,power,0.964,100.0,0.0,0.0,99.0,0.99,0.9455,0.9982,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_size,size,500,size,0.031,1000.0,0.0,0.0,3.0,0.003,0.001,0.0088,False,COMPLETE_1000,100.0,1.0,0.01,0.0,0.0,0.0,0.0374,True,PARTIAL_100,100.0,0.0,0.0,5.0,0.05,0.0215,0.1118,True,PARTIAL_100
+2,t2_size,size,1000,size,0.04,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_size,size,2000,size,0.03,100.0,0.0,0.0,0.0,0.0,0.0,0.037,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_omega_1,omega=1,500,power,0.881,1000.0,0.0,0.0,39.0,0.039,0.0287,0.0529,False,COMPLETE_1000,100.0,0.0,0.0,2.0,0.02,0.0055,0.07,False,PARTIAL_100,100.0,0.0,0.0,23.0,0.23,0.1584,0.3215,False,PARTIAL_100
+2,t2_omega_1,omega=1,1000,power,0.951,100.0,0.0,0.0,11.0,0.11,0.0625,0.1863,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_omega_1,omega=1,2000,power,0.975,100.0,0.0,0.0,19.0,0.19,0.1251,0.2778,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_omega_01,omega=0.1,500,power,0.26,1000.0,0.0,0.0,22.0,0.022,0.0146,0.0331,False,COMPLETE_1000,100.0,1.0,0.01,3.0,0.0303,0.0104,0.0853,False,PARTIAL_100,100.0,0.0,0.0,15.0,0.15,0.0931,0.2328,False,PARTIAL_100
+2,t2_omega_01,omega=0.1,1000,power,0.613,100.0,0.0,0.0,4.0,0.04,0.0157,0.0984,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_omega_01,omega=0.1,2000,power,0.904,100.0,0.0,0.0,10.0,0.1,0.0552,0.1744,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_alpha_01_beta_01,"alpha=0.1,beta=0.1",500,power,0.783,1000.0,0.0,0.0,812.0,0.812,0.7866,0.835,False,COMPLETE_1000,100.0,1.0,0.01,76.0,0.7677,0.6754,0.8399,True,PARTIAL_100,100.0,0.0,0.0,92.0,0.92,0.85,0.9589,False,PARTIAL_100
+2,t2_alpha_01_beta_01,"alpha=0.1,beta=0.1",1000,power,0.939,100.0,0.0,0.0,99.0,0.99,0.9455,0.9982,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_alpha_01_beta_01,"alpha=0.1,beta=0.1",2000,power,0.975,100.0,0.0,0.0,98.0,0.98,0.93,0.9945,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_alpha_06,alpha=0.6,500,power,0.762,1000.0,0.0,0.0,637.0,0.637,0.6067,0.6662,False,COMPLETE_1000,100.0,4.0,0.04,68.0,0.7083,0.6108,0.7898,True,PARTIAL_100,100.0,0.0,0.0,76.0,0.76,0.6677,0.8331,True,PARTIAL_100
+2,t2_alpha_06,alpha=0.6,1000,power,0.863,100.0,0.0,0.0,86.0,0.86,0.7786,0.9147,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_alpha_06,alpha=0.6,2000,power,0.941,100.0,0.0,0.0,94.0,0.94,0.8752,0.9722,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_b_0,b=0,500,power,0.591,1000.0,0.0,0.0,130.0,0.13,0.1106,0.1523,False,COMPLETE_1000,100.0,2.0,0.02,9.0,0.0918,0.0491,0.1654,False,PARTIAL_100,100.0,0.0,0.0,33.0,0.33,0.2456,0.4269,False,PARTIAL_100
+2,t2_b_0,b=0,1000,power,0.897,100.0,0.0,0.0,47.0,0.47,0.3751,0.5671,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_b_0,b=0,2000,power,0.976,100.0,0.0,0.0,88.0,0.88,0.8019,0.93,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_b_3,b=3,500,power,0.898,1000.0,0.0,0.0,567.0,0.567,0.5361,0.5974,False,COMPLETE_1000,100.0,5.0,0.05,58.0,0.6105,0.51,0.7025,False,PARTIAL_100,100.0,0.0,0.0,74.0,0.74,0.6463,0.816,False,PARTIAL_100
+2,t2_b_3,b=3,1000,power,0.936,100.0,0.0,0.0,87.0,0.87,0.7902,0.9224,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_b_3,b=3,2000,power,0.957,100.0,0.0,0.0,96.0,0.96,0.9016,0.9843,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_mixed_1,"omega=0.1,alpha=0.5,beta=0.4,b=0",500,power,0.565,1000.0,0.0,0.0,847.0,0.847,0.8234,0.868,False,COMPLETE_1000,100.0,2.0,0.02,83.0,0.8469,0.7627,0.905,False,PARTIAL_100,100.0,0.0,0.0,87.0,0.87,0.7902,0.9224,False,PARTIAL_100
+2,t2_mixed_1,"omega=0.1,alpha=0.5,beta=0.4,b=0",1000,power,0.726,100.0,0.0,0.0,97.0,0.97,0.9155,0.9897,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_mixed_1,"omega=0.1,alpha=0.5,beta=0.4,b=0",2000,power,0.846,100.0,0.0,0.0,97.0,0.97,0.9155,0.9897,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_mixed_2,"omega=0.1,beta=0.6,b=2",500,power,0.879,1000.0,0.0,0.0,636.0,0.636,0.6057,0.6652,False,COMPLETE_1000,100.0,2.0,0.02,58.0,0.5918,0.4929,0.6839,False,PARTIAL_100,100.0,0.0,0.0,79.0,0.79,0.7002,0.8583,False,PARTIAL_100
+2,t2_mixed_2,"omega=0.1,beta=0.6,b=2",1000,power,0.926,100.0,0.0,0.0,81.0,0.81,0.7222,0.8749,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+2,t2_mixed_2,"omega=0.1,beta=0.6,b=2",2000,power,0.966,100.0,0.0,0.0,94.0,0.94,0.8752,0.9722,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_size,size,500,size,0.021,1000.0,0.0,0.0,4.0,0.004,0.0016,0.0102,False,COMPLETE_1000,100.0,1.0,0.01,0.0,0.0,0.0,0.0374,True,PARTIAL_100,100.0,0.0,0.0,6.0,0.06,0.0278,0.1248,False,PARTIAL_100
+3,t3_size,size,1000,size,0.029,100.0,0.0,0.0,0.0,0.0,0.0,0.037,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_size,size,2000,size,0.028,100.0,0.0,0.0,0.0,0.0,0.0,0.037,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_omega_1,omega=1,500,power,0.851,1000.0,0.0,0.0,259.0,0.259,0.2328,0.287,False,COMPLETE_1000,100.0,1.0,0.01,32.0,0.3232,0.2392,0.4205,False,PARTIAL_100,100.0,0.0,0.0,62.0,0.62,0.5221,0.709,False,PARTIAL_100
+3,t3_omega_1,omega=1,1000,power,0.912,100.0,0.0,0.0,46.0,0.46,0.3656,0.5574,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_omega_1,omega=1,2000,power,0.947,100.0,0.0,0.0,80.0,0.8,0.7112,0.8666,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_omega_01,omega=0.1,500,power,0.644,1000.0,0.0,0.0,737.0,0.737,0.7088,0.7633,False,COMPLETE_1000,100.0,1.0,0.01,74.0,0.7475,0.6538,0.8227,False,PARTIAL_100,100.0,0.0,0.0,89.0,0.89,0.8137,0.9375,False,PARTIAL_100
+3,t3_omega_01,omega=0.1,1000,power,0.787,100.0,0.0,0.0,96.0,0.96,0.9016,0.9843,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_omega_01,omega=0.1,2000,power,0.866,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_alpha1_05_alpha2_08,"alpha_1=0.5,alpha_2=0.8",500,power,0.418,1000.0,0.0,0.0,362.0,0.362,0.3328,0.3923,False,COMPLETE_1000,100.0,3.0,0.03,32.0,0.3299,0.2444,0.4284,True,PARTIAL_100,100.0,0.0,0.0,51.0,0.51,0.4135,0.6058,True,PARTIAL_100
+3,t3_alpha1_05_alpha2_08,"alpha_1=0.5,alpha_2=0.8",1000,power,0.695,100.0,0.0,0.0,48.0,0.48,0.3846,0.5768,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_alpha1_05_alpha2_08,"alpha_1=0.5,alpha_2=0.8",2000,power,0.879,100.0,0.0,0.0,73.0,0.73,0.6357,0.8073,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_alpha2_01_beta_01,"alpha_2=0.1,beta=0.1",500,power,0.421,1000.0,0.0,0.0,29.0,0.029,0.0203,0.0413,False,COMPLETE_1000,100.0,1.0,0.01,2.0,0.0202,0.0056,0.0707,False,PARTIAL_100,100.0,0.0,0.0,29.0,0.29,0.2101,0.3854,False,PARTIAL_100
+3,t3_alpha2_01_beta_01,"alpha_2=0.1,beta=0.1",1000,power,0.751,100.0,0.0,0.0,7.0,0.07,0.0343,0.1375,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_alpha2_01_beta_01,"alpha_2=0.1,beta=0.1",2000,power,0.888,100.0,0.0,0.0,37.0,0.37,0.2818,0.4678,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_omega_05_alpha2_06,"omega=0.5,alpha_2=0.6",500,power,0.657,1000.0,0.0,0.0,114.0,0.114,0.0958,0.1352,False,COMPLETE_1000,100.0,2.0,0.02,8.0,0.0816,0.0419,0.1529,False,PARTIAL_100,100.0,0.0,0.0,30.0,0.3,0.2189,0.3958,False,PARTIAL_100
+3,t3_omega_05_alpha2_06,"omega=0.5,alpha_2=0.6",1000,power,0.863,100.0,0.0,0.0,15.0,0.15,0.0931,0.2328,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_omega_05_alpha2_06,"omega=0.5,alpha_2=0.6",2000,power,0.928,100.0,0.0,0.0,50.0,0.5,0.4038,0.5962,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_omega_01_beta_07,"omega=0.1,beta=0.7",500,power,0.717,1000.0,0.0,0.0,866.0,0.866,0.8435,0.8857,False,COMPLETE_1000,100.0,0.0,0.0,89.0,0.89,0.8137,0.9375,False,PARTIAL_100,100.0,0.0,0.0,97.0,0.97,0.9155,0.9897,False,PARTIAL_100
+3,t3_omega_01_beta_07,"omega=0.1,beta=0.7",1000,power,0.857,100.0,0.0,0.0,94.0,0.94,0.8752,0.9722,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+3,t3_omega_01_beta_07,"omega=0.1,beta=0.7",2000,power,0.925,100.0,0.0,0.0,98.0,0.98,0.93,0.9945,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_size,size,500,size,0.037,1000.0,0.0,0.0,0.0,0.0,0.0,0.0038,False,COMPLETE_1000,100.0,1.0,0.01,0.0,0.0,0.0,0.0374,True,PARTIAL_100,100.0,0.0,0.0,1.0,0.01,0.0018,0.0545,True,PARTIAL_100
+4,t4_size,size,1000,size,0.049,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_size,size,2000,size,0.059,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_omega_1,omega=1,500,power,0.718,1000.0,0.0,0.0,965.0,0.965,0.9517,0.9747,False,COMPLETE_1000,100.0,3.0,0.03,96.0,0.9897,0.9439,0.9982,False,PARTIAL_100,100.0,0.0,0.0,98.0,0.98,0.93,0.9945,False,PARTIAL_100
+4,t4_omega_1,omega=1,1000,power,0.795,100.0,0.0,0.0,99.0,0.99,0.9455,0.9982,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_omega_1,omega=1,2000,power,0.879,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_omega_01,omega=0.1,500,power,0.647,1000.0,0.0,0.0,995.0,0.995,0.9883,0.9979,False,COMPLETE_1000,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,100.0,0.0,0.0,99.0,0.99,0.9455,0.9982,False,PARTIAL_100
+4,t4_omega_01,omega=0.1,1000,power,0.84,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_omega_01,omega=0.1,2000,power,0.902,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_alpha_01_beta_02,"alpha=0.1,beta=0.2",500,power,0.805,1000.0,0.0,0.0,94.0,0.094,0.0774,0.1137,False,COMPLETE_1000,100.0,0.0,0.0,8.0,0.08,0.0411,0.15,False,PARTIAL_100,100.0,0.0,0.0,82.0,0.82,0.7333,0.883,True,PARTIAL_100
+4,t4_alpha_01_beta_02,"alpha=0.1,beta=0.2",1000,power,0.886,100.0,0.0,0.0,43.0,0.43,0.3373,0.5278,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_alpha_01_beta_02,"alpha=0.1,beta=0.2",2000,power,0.913,100.0,0.0,0.0,87.0,0.87,0.7902,0.9224,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_alpha_04_beta_05,"alpha=0.4,beta=0.5",500,power,0.735,1000.0,0.0,0.0,914.0,0.914,0.895,0.9298,False,COMPLETE_1000,100.0,1.0,0.01,92.0,0.9293,0.8612,0.9653,False,PARTIAL_100,100.0,0.0,0.0,97.0,0.97,0.9155,0.9897,False,PARTIAL_100
+4,t4_alpha_04_beta_05,"alpha=0.4,beta=0.5",1000,power,0.838,100.0,0.0,0.0,98.0,0.98,0.93,0.9945,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_alpha_04_beta_05,"alpha=0.4,beta=0.5",2000,power,0.897,100.0,0.0,0.0,98.0,0.98,0.93,0.9945,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_omega_07_alpha_01,"omega=0.7,alpha=0.1",500,power,0.907,1000.0,0.0,0.0,51.0,0.051,0.039,0.0664,False,COMPLETE_1000,100.0,4.0,0.04,0.0,0.0,0.0,0.0385,False,PARTIAL_100,100.0,0.0,0.0,60.0,0.6,0.502,0.6906,False,PARTIAL_100
+4,t4_omega_07_alpha_01,"omega=0.7,alpha=0.1",1000,power,0.97,100.0,0.0,0.0,5.0,0.05,0.0215,0.1118,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_omega_07_alpha_01,"omega=0.7,alpha=0.1",2000,power,0.994,100.0,0.0,0.0,31.0,0.31,0.2278,0.4063,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_omega_01_beta_01,"omega=0.1,beta=0.1",500,power,0.499,1000.0,0.0,0.0,991.0,0.991,0.983,0.9953,False,COMPLETE_1000,100.0,1.0,0.01,99.0,1.0,0.9626,1.0,False,PARTIAL_100,100.0,0.0,0.0,97.0,0.97,0.9155,0.9897,False,PARTIAL_100
+4,t4_omega_01_beta_01,"omega=0.1,beta=0.1",1000,power,0.674,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+4,t4_omega_01_beta_01,"omega=0.1,beta=0.1",2000,power,0.772,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_size,size,500,size,0.047,1000.0,0.0,0.0,0.0,0.0,0.0,0.0038,False,COMPLETE_1000,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,100.0,0.0,0.0,1.0,0.01,0.0018,0.0545,True,PARTIAL_100
+5,t5_size,size,1000,size,0.039,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_size,size,2000,size,0.037,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_omega_1,omega=1,500,power,0.906,1000.0,0.0,0.0,812.0,0.812,0.7866,0.835,False,COMPLETE_1000,100.0,4.0,0.04,81.0,0.8438,0.7581,0.903,False,PARTIAL_100,100.0,0.0,0.0,94.0,0.94,0.8752,0.9722,True,PARTIAL_100
+5,t5_omega_1,omega=1,1000,power,0.984,100.0,0.0,0.0,95.0,0.95,0.8882,0.9785,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_omega_1,omega=1,2000,power,0.997,100.0,0.0,0.0,100.0,1.0,0.963,1.0,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_omega_01,omega=0.1,500,power,0.228,1000.0,0.0,0.0,7.0,0.007,0.0034,0.0144,False,COMPLETE_1000,100.0,0.0,0.0,1.0,0.01,0.0018,0.0545,False,PARTIAL_100,100.0,0.0,0.0,4.0,0.04,0.0157,0.0984,False,PARTIAL_100
+5,t5_omega_01,omega=0.1,1000,power,0.382,100.0,0.0,0.0,2.0,0.02,0.0055,0.07,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_omega_01,omega=0.1,2000,power,0.507,100.0,0.0,0.0,17.0,0.17,0.1089,0.2555,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_alpha_n01_beta_n02,"alpha=-0.1,beta=-0.2",500,power,0.868,1000.0,0.0,0.0,4.0,0.004,0.0016,0.0102,False,COMPLETE_1000,100.0,1.0,0.01,1.0,0.0101,0.0018,0.055,False,PARTIAL_100,100.0,0.0,0.0,1.0,0.01,0.0018,0.0545,False,PARTIAL_100
+5,t5_alpha_n01_beta_n02,"alpha=-0.1,beta=-0.2",1000,power,0.946,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_alpha_n01_beta_n02,"alpha=-0.1,beta=-0.2",2000,power,0.976,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_alpha_n04_beta_05,"alpha=-0.4,beta=0.5",500,power,0.917,1000.0,0.0,0.0,134.0,0.134,0.1143,0.1565,False,COMPLETE_1000,100.0,6.0,0.06,11.0,0.117,0.0666,0.1975,False,PARTIAL_100,100.0,0.0,0.0,36.0,0.36,0.2727,0.4576,False,PARTIAL_100
+5,t5_alpha_n04_beta_05,"alpha=-0.4,beta=0.5",1000,power,0.985,100.0,0.0,0.0,47.0,0.47,0.3751,0.5671,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_alpha_n04_beta_05,"alpha=-0.4,beta=0.5",2000,power,1.0,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_omega_07_beta_05,"omega=0.7,beta=0.5",500,power,0.82,1000.0,0.0,0.0,934.0,0.934,0.9169,0.9478,False,COMPLETE_1000,100.0,2.0,0.02,96.0,0.9796,0.9286,0.9944,False,PARTIAL_100,100.0,0.0,0.0,97.0,0.97,0.9155,0.9897,False,PARTIAL_100
+5,t5_omega_07_beta_05,"omega=0.7,beta=0.5",1000,power,0.973,100.0,0.0,0.0,100.0,1.0,0.963,1.0,True,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_omega_07_beta_05,"omega=0.7,beta=0.5",2000,power,0.998,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_omega_01_alpha_n01,"omega=0.1,alpha=-0.1",500,power,0.862,1000.0,0.0,0.0,1.0,0.001,0.0002,0.0056,False,COMPLETE_1000,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,100.0,0.0,0.0,1.0,0.01,0.0018,0.0545,False,PARTIAL_100
+5,t5_omega_01_alpha_n01,"omega=0.1,alpha=-0.1",1000,power,0.944,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+5,t5_omega_01_alpha_n01,"omega=0.1,alpha=-0.1",2000,power,0.971,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_garch_to_log_omega_1,GARCH->log-GARCH omega=1,500,power,0.879,1000.0,0.0,0.0,969.0,0.969,0.9563,0.9781,False,COMPLETE_1000,100.0,2.0,0.02,97.0,0.9898,0.9444,0.9982,False,PARTIAL_100,100.0,0.0,0.0,96.0,0.96,0.9016,0.9843,False,PARTIAL_100
+6,t6_garch_to_log_omega_1,GARCH->log-GARCH omega=1,1000,power,0.946,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_garch_to_log_omega_1,GARCH->log-GARCH omega=1,2000,power,0.956,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_garch_to_log_alpha_01_beta_01,"GARCH->log-GARCH alpha=0.1,beta=0.1",500,power,0.668,1000.0,0.0,0.0,4.0,0.004,0.0016,0.0102,False,COMPLETE_1000,100.0,1.0,0.01,1.0,0.0101,0.0018,0.055,False,PARTIAL_100,100.0,0.0,0.0,20.0,0.2,0.1334,0.2888,False,PARTIAL_100
+6,t6_garch_to_log_alpha_01_beta_01,"GARCH->log-GARCH alpha=0.1,beta=0.1",1000,power,0.918,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_garch_to_log_alpha_01_beta_01,"GARCH->log-GARCH alpha=0.1,beta=0.1",2000,power,0.969,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_log_to_garch_omega_1,log-GARCH->GARCH omega=1,500,power,0.907,1000.0,0.0,0.0,23.0,0.023,0.0154,0.0343,False,COMPLETE_1000,100.0,3.0,0.03,1.0,0.0103,0.0018,0.0561,False,PARTIAL_100,100.0,0.0,0.0,31.0,0.31,0.2278,0.4063,False,PARTIAL_100
+6,t6_log_to_garch_omega_1,log-GARCH->GARCH omega=1,1000,power,0.97,100.0,0.0,0.0,3.0,0.03,0.0103,0.0845,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_log_to_garch_omega_1,log-GARCH->GARCH omega=1,2000,power,0.994,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_log_to_garch_alpha_01_beta_01,"log-GARCH->GARCH alpha=0.1,beta=0.1",500,power,0.499,1000.0,0.0,0.0,69.0,0.069,0.0549,0.0864,False,COMPLETE_1000,100.0,0.0,0.0,3.0,0.03,0.0103,0.0845,False,PARTIAL_100,100.0,0.0,0.0,44.0,0.44,0.3467,0.5377,True,PARTIAL_100
+6,t6_log_to_garch_alpha_01_beta_01,"log-GARCH->GARCH alpha=0.1,beta=0.1",1000,power,0.674,100.0,0.0,0.0,29.0,0.29,0.2101,0.3854,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_log_to_garch_alpha_01_beta_01,"log-GARCH->GARCH alpha=0.1,beta=0.1",2000,power,0.772,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_tgarch_to_agarch_omega_1,"TGARCH->AGARCH omega=1,b=1",500,power,0.728,1000.0,0.0,0.0,941.0,0.941,0.9246,0.954,False,COMPLETE_1000,100.0,0.0,0.0,96.0,0.96,0.9016,0.9843,False,PARTIAL_100,100.0,0.0,0.0,99.0,0.99,0.9455,0.9982,False,PARTIAL_100
+6,t6_tgarch_to_agarch_omega_1,"TGARCH->AGARCH omega=1,b=1",1000,power,0.795,100.0,0.0,0.0,96.0,0.96,0.9016,0.9843,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_tgarch_to_agarch_omega_1,"TGARCH->AGARCH omega=1,b=1",2000,power,0.879,100.0,0.0,0.0,99.0,0.99,0.9455,0.9982,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_tgarch_to_agarch_alpha_01_beta_01,"TGARCH->AGARCH alpha=0.1,beta=0.1,b=1",500,power,0.851,1000.0,0.0,0.0,1.0,0.001,0.0002,0.0056,False,COMPLETE_1000,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,100.0,0.0,0.0,1.0,0.01,0.0018,0.0545,False,PARTIAL_100
+6,t6_tgarch_to_agarch_alpha_01_beta_01,"TGARCH->AGARCH alpha=0.1,beta=0.1,b=1",1000,power,0.891,100.0,0.0,0.0,0.0,0.0,0.0,0.037,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_tgarch_to_agarch_alpha_01_beta_01,"TGARCH->AGARCH alpha=0.1,beta=0.1,b=1",2000,power,0.919,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_agarch_to_gjr_mixed_1,"AGARCH->GJR omega=0.7,alpha_1=0.3,alpha_2=0.7",500,power,0.549,1000.0,0.0,0.0,95.0,0.095,0.0783,0.1148,False,COMPLETE_1000,100.0,3.0,0.03,7.0,0.0722,0.0354,0.1415,False,PARTIAL_100,100.0,0.0,0.0,22.0,0.22,0.15,0.3107,False,PARTIAL_100
+6,t6_agarch_to_gjr_mixed_1,"AGARCH->GJR omega=0.7,alpha_1=0.3,alpha_2=0.7",1000,power,0.861,100.0,0.0,0.0,13.0,0.13,0.0776,0.2098,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_agarch_to_gjr_mixed_1,"AGARCH->GJR omega=0.7,alpha_1=0.3,alpha_2=0.7",2000,power,0.958,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_agarch_to_gjr_mixed_2,"AGARCH->GJR alpha_1=0.1,alpha_2=0.3,beta=0.1",500,power,0.802,1000.0,0.0,0.0,823.0,0.823,0.7981,0.8454,True,COMPLETE_1000,100.0,1.0,0.01,83.0,0.8384,0.7535,0.898,True,PARTIAL_100,100.0,0.0,0.0,95.0,0.95,0.8882,0.9785,False,PARTIAL_100
+6,t6_agarch_to_gjr_mixed_2,"AGARCH->GJR alpha_1=0.1,alpha_2=0.3,beta=0.1",1000,power,0.931,100.0,0.0,0.0,100.0,1.0,0.963,1.0,False,PARTIAL_100,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN
+6,t6_agarch_to_gjr_mixed_2,"AGARCH->GJR alpha_1=0.1,alpha_2=0.3,beta=0.1",2000,power,0.976,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN,,,,,,,,,NOT_RUN

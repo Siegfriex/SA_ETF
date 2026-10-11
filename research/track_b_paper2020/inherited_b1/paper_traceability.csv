@@ -1,0 +1,40 @@
+requirement_id,source_section,physical_pdf_page,article_page,source_requirement,contract_key,implementation_target,notebook_target,test_target,B1_status,gap_ids
+EQ-01,2,32,3,"Observation and unknown conditional-variance function",equations.eq_1,src/r2h/paper2020/svr_garch.py::SVRGARCHSpec,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_contract.py::test_eq_inventory,SPECIFIED,
+EQ-02,2,32,3,"epsilon-insensitive loss",equations.eq_2,sklearn.svm.SVR parity note,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_kernel_mapping.py,SPECIFIED,
+EQ-03,2,32,3,"SVR primal objective and constraints",equations.eq_3,sklearn.svm.SVR parity note,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_kernel_mapping.py,SPECIFIED,MATH-01;MATH-02
+EQ-04,2,33,4,"SVR Lagrangian",equations.eq_4,derivation documentation,01_SVR_GARCH_CUSUM.ipynb,static trace check,SPECIFIED,
+EQ-05,2,33,4,"KKT stationarity and feasibility",equations.eq_5,derivation documentation,01_SVR_GARCH_CUSUM.ipynb,static trace check,SPECIFIED,
+EQ-06,2,33,4,"KKT complementarity",equations.eq_6,derivation documentation,01_SVR_GARCH_CUSUM.ipynb,static trace check,SPECIFIED,
+EQ-07,2,33,4,"SVR dual and box constraints",equations.eq_7,sklearn.svm.SVR parity note,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_kernel_mapping.py,SPECIFIED,GRID-01
+EQ-08,2,34,5,"Kernel representation of fitted SVR",equations.eq_8,src/r2h/paper2020/svr_garch.py::fit_svr_variance,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_kernel_mapping.py,SPECIFIED,ENV-02
+EQ-09,2,34,5,"Lagged squared-observation and variance feature vector",equations.eq_9,src/r2h/paper2020/features.py::build_lagged_design,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_features.py,SPECIFIED,MATH-04;MATH-05
+KERNEL,2,34,5,"Gaussian kernel and C/gamma-squared/epsilon ranges",svr_garch.kernel;svr_garch.parameter_ranges,src/r2h/paper2020/kernel.py::paper_gamma_to_sklearn,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_kernel_mapping.py,SPECIFIED,GRID-01;ENV-02
+PROC-01,2,34,5,"Chronological training-validation split and tuning points",svr_garch.procedure.step_1,src/r2h/paper2020/selection.py::chronological_split,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_selection.py,SPECIFIED,GRID-01
+PROC-02,2,34,5,"Moving-average squared-observation proxy including y_t squared",svr_garch.procedure.step_2,src/r2h/paper2020/proxy.py::moving_square_proxy,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_proxy.py,SPECIFIED,MATH-04
+PROC-03,2,34,5,"Fit g-hat and estimate conditional variance",svr_garch.procedure.step_3,src/r2h/paper2020/svr_garch.py::fit_svr_variance,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_svr_garch.py,SPECIFIED,MATH-05;MATH-10
+PROC-04,2,34,5,"Validation MAE against same proxy formula",svr_garch.procedure.step_4,src/r2h/paper2020/selection.py::validation_mae,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_selection.py,SPECIFIED,MATH-04
+PROC-05,2,35,6,"Minimum-MAE selection and combined refit",svr_garch.procedure.step_5,src/r2h/paper2020/selection.py::select_and_refit,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_selection.py,SPECIFIED,MATH-06
+REM-01,2,35,6,"Grid search and m=5 choice",svr_garch.remarks.remark_1,documentation,00_SVR_GARCH_CUSUM기본설정.ipynb,static trace check,SPECIFIED,GRID-01
+REM-02,2,35,6,"Do not iteratively update variance forecasts",svr_garch.remarks.remark_2,guardrail,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_svr_garch.py,SPECIFIED,
+REM-03,2,35,6,"MAE rationale and ambiguous MAPE wording",svr_garch.remarks.remark_3,documentation,00_SVR_GARCH_CUSUM기본설정.ipynb,static trace check,SPECIFIED,MATH-07
+CUSUM-REF,3,35,6,"Parametric GARCH reference; H0/H1; printed recursion and initials",cusum.parametric_reference,src/r2h/paper2020/cusum.py::reference_recursion,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_cusum.py,SPECIFIED,MATH-08;MATH-09
+CUSUM-RESID,3,35,6,"Standardized residual y_t/sigma-hat_t",cusum.residual,src/r2h/paper2020/cusum.py::standardized_residuals,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_cusum.py,SPECIFIED,MATH-08;MATH-09;MATH-10
+CUSUM-PATH,3,35,6,"Centered cumulative sum of squared residuals",cusum.centered_path,src/r2h/paper2020/cusum.py::centered_square_path,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_cusum.py,SPECIFIED,
+CUSUM-TAU,3,36,7,"Variance normalization with denominator n",cusum.variance_estimator,src/r2h/paper2020/cusum.py::tau_hat,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_cusum.py,SPECIFIED,MATH-11
+CUSUM-STAT,3,35-36,6-7,"Supremum statistic",cusum.statistic,src/r2h/paper2020/cusum.py::cusum_squares_test,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_cusum.py,SPECIFIED,
+CUSUM-THEORY,3,36,7,"True-error statistic T_n and tau^2=Var(e_1^2)",cusum.theoretical_reference,derivation documentation,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_cusum.py,SPECIFIED,MATH-12
+CUSUM-LIMIT,3,36,7,"Standard Brownian-bridge supremum null limit",cusum.null_limit,derivation documentation,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_cusum.py,SPECIFIED,MATH-12
+CUSUM-DECISION,3,36,7,"Reject at 5 percent when T-hat >= 1.3397",cusum.reject_rule,src/r2h/paper2020/cusum.py::cusum_squares_test,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_cusum.py,SPECIFIED,
+CUSUM-LOC,3,36,7,"Separate change-point argmax",cusum.localization,src/r2h/paper2020/cusum.py::locate_change,01_SVR_GARCH_CUSUM.ipynb,tests/paper2020/test_cusum.py,SPECIFIED,MATH-11
+SIM-PROTOCOL,4,36,7,"2n observations; 0.7n train; 0.3n validation; n test; 1000 repetitions",simulation,experiments/paper2020/run_tables_1_6.py,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_simulation_protocol.py,SPECIFIED,SIM-01;SIM-02;SIM-03
+TABLE-01,4,38,9,"GARCH size and power rows",simulation.target_tables,experiments/paper2020/table_01.yaml,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_table_targets.py,SPECIFIED,SIM-01;SIM-02
+TABLE-02,4,38,9,"AGARCH size and power rows",simulation.target_tables,experiments/paper2020/table_02.yaml,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_table_targets.py,SPECIFIED,SIM-01;SIM-02
+TABLE-03,4,38,9,"GJR-GARCH size and power rows",simulation.target_tables,experiments/paper2020/table_03.yaml,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_table_targets.py,SPECIFIED,SIM-01;SIM-02
+TABLE-04,4,39,10,"TGARCH size and power rows",simulation.target_tables,experiments/paper2020/table_04.yaml,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_table_targets.py,SPECIFIED,SIM-01;SIM-02
+TABLE-05,4,39,10,"Log-linear GARCH rows and literal N=20 truncation",simulation.literal_truncation,experiments/paper2020/table_05.yaml,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_truncation.py,SPECIFIED,SIM-04;SIM-05
+TABLE-06,4,39,10,"Four DGP-change cases and powers",simulation.target_tables,experiments/paper2020/table_06.yaml,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_table_targets.py,SPECIFIED,SIM-01;SIM-06;SIM-07
+FIGURE-01,5,40,11,"Training log-return ACF and PACF through lag 25",empirical.diagnostics.figure_1,src/r2h/paper2020/empirical.py::plot_acf_pacf,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_empirical_contract.py,SPECIFIED,DATA-01;DATA-02;DATA-03
+FIGURE-02,5,41,12,"S&P 500 raw index and log-return; 2015-08-18; T=2.4751",empirical.series.sp500,src/r2h/paper2020/empirical.py,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_empirical_contract.py,SPECIFIED,DATA-01;DATA-02;DATA-03
+FIGURE-03,5,41-42,12-13,"KOSPI raw index and log-return; 2018-01-22; T=1.5081",empirical.series.kospi,src/r2h/paper2020/empirical.py,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_empirical_contract.py,SPECIFIED,DATA-01;DATA-02
+FIGURE-04,5,41-42,12-13,"KRW/USD raw rate and log-return; 2014-09-26; T=4.2754",empirical.series.krw_usd,src/r2h/paper2020/empirical.py,02_SVR_GARCH_CUSUM_결과시각화.ipynb,tests/paper2020/test_empirical_contract.py,SPECIFIED,DATA-01;DATA-02
+ENV-PARITY,4,36,7,"Windows 10; R 3.5.1; e1071; fGarch",parity.authors,isolated environment plan,00_SVR_GARCH_CUSUM기본설정.ipynb,environment audit,SPECIFIED,ENV-01;ENV-02

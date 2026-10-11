@@ -1,0 +1,68 @@
+{
+  "investing_com_probe": "HTTP 403 on https://www.investing.com/indices/us-spx-500-historical-data (2026-10-11); not retried",
+  "series": {
+    "sp500": {
+      "name": "sp500",
+      "meaning": "S&P 500 index level",
+      "provider": "Yahoo Finance chart API v8",
+      "symbol": "^GSPC",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC?period1=1325289600&period2=1475452800&interval=1d",
+      "paper_source": "Investing.com",
+      "label": "SOURCE_SUBSTITUTED",
+      "price_field": "close (unadjusted index/FX close)",
+      "paper_period": [
+        "2012-01-03",
+        "2016-09-30"
+      ],
+      "first_date": "2012-01-03",
+      "last_date": "2016-09-30",
+      "n_levels": 1195,
+      "n_null_dropped": 0,
+      "n_timestamps_raw": 1195,
+      "sha256": "4bfa8e263582a65bc06b48b32543a5f48503eac74b40e18d5ea07308d17832af",
+      "fetched_at": "2026-10-11T05:37:57.590596+00:00"
+    },
+    "kospi": {
+      "name": "kospi",
+      "meaning": "KOSPI composite index level",
+      "provider": "Yahoo Finance chart API v8",
+      "symbol": "^KS11",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/%5EKS11?period1=1348876800&period2=1561939200&interval=1d",
+      "paper_source": "Investing.com",
+      "label": "SOURCE_SUBSTITUTED",
+      "price_field": "close (unadjusted index/FX close)",
+      "paper_period": [
+        "2012-10-02",
+        "2019-06-28"
+      ],
+      "first_date": "2012-10-02",
+      "last_date": "2019-06-28",
+      "n_levels": 1653,
+      "n_null_dropped": 1,
+      "n_timestamps_raw": 1655,
+      "sha256": "840e5443ebb49b9ef5f560c14f2457be115e4cca27406bd6765ff618f451671b",
+      "fetched_at": "2026-10-11T05:37:57.977074+00:00"
+    },
+    "krw_usd": {
+      "name": "krw_usd",
+      "meaning": "KRW per 1 USD (USD/KRW quote)",
+      "provider": "Yahoo Finance chart API v8",
+      "symbol": "KRW=X",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/KRW=X?period1=1325203200&period2=1475452800&interval=1d",
+      "paper_source": "Investing.com",
+      "label": "SOURCE_SUBSTITUTED",
+      "price_field": "close (unadjusted index/FX close)",
+      "paper_period": [
+        "2012-01-02",
+        "2016-09-30"
+      ],
+      "first_date": "2012-01-02",
+      "last_date": "2016-09-30",
+      "n_levels": 1238,
+      "n_null_dropped": 2,
+      "n_timestamps_raw": 1242,
+      "sha256": "04d0f78ee0ab66afe3f257ed57f8ddcdce67f67a672837db36f90d8c8ae1169d",
+      "fetched_at": "2026-10-11T05:37:58.364081+00:00"
+    }
+  }
+}

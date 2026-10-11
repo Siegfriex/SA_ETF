@@ -1,0 +1,89 @@
+schema_version: "1.0"
+variant_id: "python_method_equivalent_v1"
+status: "preregistered_before_result_comparison"
+created_at: "2026-10-11T14:29:00+09:00"
+
+principles:
+  paper_literal_first: true
+  published_targets_are_not_tuning_objectives: true
+  exact_unknowns_remain_labeled: true
+  sensitivity_outputs_are_separate: true
+
+svr:
+  p: 1
+  q: 1
+  proxy_window_m: 5
+  parameter_grid:
+    C: [1.0, 10.0, 100.0]
+    paper_gamma_squared: [0.1, 0.5, 1.0]
+    epsilon: [0.1, 0.5, 1.0]
+  smoke_parameter_grid:
+    C: [1.0]
+    paper_gamma_squared: [0.5]
+    epsilon: [0.1]
+  kernel_mapping: "gamma_sklearn=1/(2*paper_gamma_squared)"
+  scaling:
+    mode: "training_zscore_x_and_y"
+    rationale: "Method-equivalent emulation of e1071 svm(scale=TRUE), whose documented default scales both x and y"
+    ddof: 1
+    zero_scale_policy: "raise"
+  solver:
+    backend: "sklearn.svm.SVR/libsvm"
+    tol: 0.001
+    shrinking: true
+    cache_size_mb: 200
+    max_iter: -1
+  selection:
+    metric: "MAE"
+    tie_break: "lexicographic_lowest_C_then_gamma_squared_then_epsilon"
+  boundaries:
+    proxy: "continuous_combined_sequence; validation proxies use preceding training observations"
+    lag: "drop rows lacking p/q prior values"
+    final_refit: "recompute proxy over concatenated training+validation"
+    test_feature_update: "paper_proxy_from_observed_squared_test_values; carry prior combined history across boundary"
+  variance_positivity:
+    primary: "raise_on_nonpositive_prediction"
+    sensitivity: "clip_to_machine_epsilon"
+
+cusum:
+  critical_value_5pct: 1.3397
+  tau_ddof: 0
+  argmax_tie: "first"
+  zero_tau_policy: "raise"
+  indexing: "return zero_based_index and one_based_k; dates use zero_based test row"
+  truncation:
+    primary: "paper_literal_positive_N_for_both_tails"
+    N: 20.0
+    sensitivity: "sign_preserving_clip"
+
+simulation:
+  innovations: "numpy.random.Generator.standard_normal"
+  master_seed: 20201011
+  per_condition_seed: "SeedSequence(master_seed, spawn_key=stable_condition_index)"
+  n_values: [500, 1000, 2000]
+  repetitions_full: 1000
+  repetitions_smoke: 5
+  change_index_primary: "test_midpoint; global index n + floor(n/2)"
+  change_index_rationale: "Literal 2n midpoint equals the test boundary and cannot create an internal retrospective test change"
+  initialization:
+    burn_in: 1000
+    variance: "model-specific unconditional value when defined; otherwise recursion fixed point; explicit in manifest"
+  checkpoint_every: 10
+  unlisted_post_change_parameters: "carry baseline values"
+
+empirical:
+  source_priority: ["author supplement", "Investing.com", "lawful alternative provider"]
+  return_formula: "100*(log(level_t)-log(level_{t-1}))"
+  return_scale_rationale: "Figure axes appear percentage-scaled; retained as an explicit method-equivalent assumption"
+  sort: "ascending_date"
+  duplicates: "raise"
+  missing_level: "raise"
+  training_split_primary: "first floor(N/2) log-return rows"
+  sp500_training_sensitivity: ["2012-04-02", "2014-04-16"]
+  acf_pacf_lags: 25
+
+execution_labels:
+  exact: "Only paper-stated choices"
+  method_equivalent: "Paper equations plus preregistered choices above"
+  smoke: "Reduced repetitions and/or grid; not a table reproduction"
+  partial: "Interrupted or fewer than 1000 repetitions"

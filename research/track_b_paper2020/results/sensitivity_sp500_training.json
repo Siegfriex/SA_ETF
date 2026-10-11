@@ -1,0 +1,28 @@
+{
+  "observed_proxy": {
+    "statistic": 0.8134,
+    "reject": false,
+    "change_date": "2015-06-26",
+    "n_fit": 513,
+    "n_test": 620,
+    "best": {
+      "C": 1.0,
+      "paper_gamma_squared": 1.0,
+      "epsilon": 0.1
+    },
+    "nonpos": 0
+  },
+  "recursive_prediction": {
+    "statistic": 1.3372,
+    "reject": false,
+    "change_date": "2015-08-18",
+    "n_fit": 513,
+    "n_test": 620,
+    "best": {
+      "C": 1.0,
+      "paper_gamma_squared": 1.0,
+      "epsilon": 0.1
+    },
+    "nonpos": 0
+  }
+}

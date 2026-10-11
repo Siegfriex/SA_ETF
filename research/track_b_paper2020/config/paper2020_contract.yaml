@@ -1,0 +1,296 @@
+schema_version: "1.0"
+contract_id: "lee-kim-lee-2020-svr-garch-cusum"
+phase: "B1_SOURCE_AND_EXPERIMENTAL_CONTRACT"
+status: "specified_not_implemented"
+
+scope:
+  objective: "Faithful reconstruction of Lee, Kim, and Lee (2020), Entropy 22(5), 578"
+  in_scope: ["Equations 1-9", "Section 3 CUSUM", "Tables 1-6", "Figures 1-4"]
+  out_of_scope: ["ETF application", "online monitoring", "new algorithms", "full Monte Carlo execution"]
+  source_precedence:
+    - "English original, physical PDF pages 30-45 (printed article pages 1-16)"
+    - "Korean tutorial/audit, physical PDF pages 1-29, interpretation only"
+
+source:
+  local_pdf: "/home/sieg/projects-wsl/hongik_univ_26_2/SA/1011/Hybrid_SVR_GARCH_CUSUM_.pdf"
+  sha256: "97c95e308af8dd95e8d283f01674932f52349ab8b4d0ea2a93d4dbe45fcf3cd6"
+  total_physical_pages: 45
+  english_original_physical_pages: [30, 45]
+  citation:
+    authors: ["Sangyeol Lee", "Chang Kyeom Kim", "Sangjo Lee"]
+    year: 2020
+    title: "Hybrid CUSUM Change Point Test for Time Series with Time-Varying Volatilities Based on Support Vector Regression"
+    journal: "Entropy"
+    volume: 22
+    issue: 5
+    article: 578
+    doi: "10.3390/e22050578"
+
+artifacts:
+  setup_notebook: "notebooks/paper2020/00_SVR_GARCH_CUSUM기본설정.ipynb"
+  algorithm_notebook_planned: "notebooks/paper2020/01_SVR_GARCH_CUSUM.ipynb"
+  results_notebook_planned: "notebooks/paper2020/02_SVR_GARCH_CUSUM_결과시각화.ipynb"
+  traceability: "reports/r2h/paper2020/paper_traceability.csv"
+  gaps: "reports/r2h/paper2020/reproducibility_gap_register.md"
+  environment: "reports/r2h/paper2020/environment_report.md"
+
+fidelity_levels:
+  level_1: "Mathematical reconstruction of Equations 1-9 and Section 3"
+  level_2: "Five-step SVR-GARCH algorithm"
+  level_3: "Tables 1-6 simulation protocol and numerical comparison"
+  level_4: "Figures 1-4 original-data empirical comparison"
+
+equations:
+  eq_1:
+    source: {physical_pdf_page: 32, article_page: 3}
+    definition: "y_t = sigma_t e_t; sigma_t^2 = g(y_{t-1}^2,...,y_{t-p}^2,sigma_{t-1}^2,...,sigma_{t-q}^2)"
+    assumptions: "e_t iid with mean 0 and variance 1; p,q nonnegative integers"
+    implementation_target: "src/r2h/paper2020/svr_garch.py::SVRGARCHSpec"
+  eq_2:
+    source: {physical_pdf_page: 32, article_page: 3}
+    definition: "epsilon-insensitive loss: max(|y-f(x)|-epsilon, 0), with equality branch at |y-f(x)| >= epsilon"
+    implementation_target: "document sklearn SVR loss equivalence; no custom solver planned"
+  eq_3:
+    source: {physical_pdf_page: 32, article_page: 3}
+    definition: "minimize 0.5||w||^2 + C sum_i(tilde_xi_{1,i}+tilde_xi_{2,i}), subject to y_i-w^T phi(x_i)-b <= epsilon+tilde_xi_{2,i}; w^T phi(x_i)+b-y_i <= epsilon+tilde_xi_{1,i}; tilde_xi_{1,i},tilde_xi_{2,i} >= 0"
+    implementation_target: "sklearn.svm.SVR parity contract"
+  eq_4:
+    source: {physical_pdf_page: 33, article_page: 4}
+    definition: >-
+      L=0.5||w||^2+C sum_i(tilde_xi_{1,i}+tilde_xi_{2,i})
+      -sum_i(beta_{1,i}tilde_xi_{1,i}+beta_{2,i}tilde_xi_{2,i})
+      -sum_i alpha_{1,i}(epsilon+tilde_xi_{1,i}-y_i+w^T phi(x_i)+b)
+      -sum_i alpha_{2,i}(epsilon+tilde_xi_{2,i}+y_i-w^T phi(x_i)-b)
+    implementation_target: "derivation/documentation only"
+  eq_5:
+    source: {physical_pdf_page: 33, article_page: 4}
+    definition: >-
+      w-sum_i(alpha_{1,i}-alpha_{2,i})phi(x_i)=0;
+      sum_i(alpha_{1,i}-alpha_{2,i})=0;
+      C-alpha_{1,i}-beta_{1,i}=0; C-alpha_{2,i}-beta_{2,i}=0;
+      alpha_{1,i},alpha_{2,i},tilde_xi_{1,i},tilde_xi_{2,i}>=0
+    implementation_target: "derivation/documentation only"
+  eq_6:
+    source: {physical_pdf_page: 33, article_page: 4}
+    definition: >-
+      alpha_{1,i}(epsilon+tilde_xi_{1,i}-y_i+w^T phi(x_i)+b)=0;
+      alpha_{2,i}(epsilon+tilde_xi_{2,i}+y_i-w^T phi(x_i)-b)=0;
+      (C-alpha_{1,i})tilde_xi_{1,i}=0; (C-alpha_{2,i})tilde_xi_{2,i}=0
+    implementation_target: "derivation/documentation only"
+  eq_7:
+    source: {physical_pdf_page: 33, article_page: 4}
+    definition: >-
+      maximize -0.5 sum_i sum_j (alpha_{1,i}-alpha_{2,i})(alpha_{1,j}-alpha_{2,j})
+      phi(x_i)^T phi(x_j) - epsilon sum_i(alpha_{1,i}+alpha_{2,i})
+      + sum_i(alpha_{1,i}-alpha_{2,i})y_i;
+      subject to sum_i(alpha_{1,i}-alpha_{2,i})=0 and 0<=alpha_{1,i},alpha_{2,i}<=C
+    implementation_target: "sklearn.svm.SVR parity contract"
+  eq_8:
+    source: {physical_pdf_page: 34, article_page: 5}
+    definition: "f_hat(x)=sum_i(alpha_1i-alpha_2i)K(x_i,x)+b_hat; support-vector representation"
+    implementation_target: "src/r2h/paper2020/svr_garch.py::fit_svr_variance"
+  eq_9:
+    source: {physical_pdf_page: 34, article_page: 5}
+    definition: "x_s=(y_breve_s^T,sigma_breve_s^T)^T; y_breve_s=(y_{s-p}^2,...,y_{s-1}^2)^T; sigma_breve_s=(sigma_{s-q}^2,...,sigma_{s-1}^2)^T"
+    implementation_target: "src/r2h/paper2020/features.py::build_lagged_design"
+
+svr_garch:
+  kernel:
+    paper: "K(x,y)=exp(-||x-y||^2/(2*gamma^2))"
+    sklearn: "K(x,y)=exp(-gamma_sklearn*||x-y||^2)"
+    mapping: "gamma_sklearn = 1/(2*paper_gamma_squared)"
+    numerical_equivalence_test: "required"
+  parameter_ranges:
+    C: {min: 1.0, max: 100.0}
+    paper_gamma_squared: {min: 0.1, max: 1.0}
+    epsilon: {min: 0.1, max: 1.0}
+    exact_grid_points: null
+  lag_order_for_experiments: {p: 1, q: 1}
+  proxy:
+    m: 5
+    general: "sigma_tilde_t^2 = (1/m) sum_{j=1}^m y_{t-j+1}^2"
+    early: "for t<m, sigma_tilde_t^2 = (1/t) sum_{j=1}^t y_{t-j+1}^2"
+  procedure:
+    step_1: "Prescribe tuning points; chronological training size n and validation size n_prime"
+    step_2: "Construct moving-average conditional-variance proxy from squared observations"
+    step_3: "Fit SVR g_hat using proxy lags; obtain sigma_hat_t^2"
+    step_4: "Apply same proxy formula to validation and compute MAE=(1/n_prime)sum|sigma_hat_t^2-sigma_tilde_t^2|"
+    step_5: "Select minimum-MAE combination; refit Steps 2-3 on combined training+validation"
+  remarks:
+    remark_1: "Grid search is used; m=5 reported as most consistently satisfactory"
+    remark_2: "Iterative sigma_hat updating is rejected because fits flatten to a constant or follow proxy peaks"
+    remark_3: "MAE is retained; MSE/RMSE amplify/shrink losses, while the paper's MAPE explanation says it uses an 'unobservable sigma_tilde_t^2 rather than sigma_hat_t^2'; the meaning of that phrase is itself unclear"
+
+cusum:
+  source: {physical_pdf_pages: [35, 36], article_pages: [6, 7]}
+  parametric_reference:
+    model: "y_t=sigma_t e_t; sigma_t^2=omega+alpha*y_{t-1}^2+beta*sigma_{t-1}^2; omega>0; alpha,beta>=0; alpha+beta<1"
+    hypotheses: "H0: omega,alpha,beta remain the same for t=1,...,n; H1: not H0"
+    residual: "e_hat_t=y_t/sigma_hat_t"
+    recursion_as_printed: "sigma_hat_t^2=omega_hat+alpha_hat*y_{t-1}^2+beta_hat*sigma_{t-1}^2"
+    initials_as_printed: "y_0=0; sigma_0^2=y_1"
+    warning: "The prior variance lacks a hat and sigma_0^2=y_1 is dimensionally/positivity problematic; do not silently correct"
+  residual: "e_hat_t = y_t/sigma_hat_t"
+  centered_path: "D_k = sum_{t=1}^k e_hat_t^2 - (k/n) sum_{t=1}^n e_hat_t^2"
+  variance_estimator: "tau_hat_n^2 = (1/n)sum e_hat_t^4 - ((1/n)sum e_hat_t^2)^2"
+  statistic: "T_hat_n = max_{1<=k<=n} |D_k|/(sqrt(n)*tau_hat_n)"
+  theoretical_reference: "T_n=max_{1<=k<=n}|sum_{t=1}^k e_t^2-(k/n)sum_{t=1}^n e_t^2|/(sqrt(n)*tau), where tau^2=Var(e_1^2)"
+  null_limit: "sup_{0<=s<=1}|B_circ(s)|, where B_circ is a standard Brownian bridge"
+  alpha: 0.05
+  critical_value: 1.3397
+  reject_rule: "T_hat_n >= 1.3397"
+  localization: "k_hat_n = argmax_{1<=k<=n}|D_k|, reported separately from rejection"
+  mode: "retrospective_single_change_primary"
+  golden_test:
+    residuals: [1.0, 1.0, 1.0, 3.0]
+    squared: [1.0, 1.0, 1.0, 9.0]
+    centered_path: [-2.0, -4.0, -6.0, 0.0]
+    tau_squared: 12.0
+    statistic: 0.8660254037844386
+    argmax_one_based: 3
+    reject_at_5pct: false
+
+simulation:
+  source: {physical_pdf_pages: [36, 39], article_pages: [7, 10]}
+  n_values: [500, 1000, 2000]
+  generated_length: "2*n"
+  splits:
+    training: "first 0.7*n"
+    validation: "next 0.3*n"
+    testing: "remaining n"
+  repetitions: 1000
+  alpha: 0.05
+  innovations: "iid standard normal"
+  change_location_text: "middle of the time series"
+  change_location_index: null
+  dgp:
+    garch: "sigma_t^2=omega+alpha*y_{t-1}^2+beta*sigma_{t-1}^2"
+    agarch: "sigma_t^2=omega+alpha*(y_{t-1}-b)^2+beta*sigma_{t-1}^2"
+    gjr_garch: "sigma_t^2=omega+alpha_1*(y_{t-1}^+)^2+alpha_2*(y_{t-1}^-)^2+beta*sigma_{t-1}^2"
+    tgarch: "sigma_t=omega+alpha*abs(y_{t-1})+beta*sigma_{t-1}"
+    log_linear_garch: "log(sigma_t^2)=omega+alpha*log(y_{t-1}^2)+beta*log(sigma_{t-1}^2)"
+  baselines:
+    garch: {omega: 0.3, alpha: 0.3, beta: 0.3}
+    agarch: {omega: 0.3, alpha: 0.3, beta: 0.4, b: 1.0}
+    gjr_garch: {omega: 0.3, alpha_1: 0.3, alpha_2: 0.4, beta: 0.3}
+    tgarch: {omega: 0.3, alpha: 0.3, beta: 0.3}
+    log_linear_garch: {omega: 0.3, alpha: 0.3, beta: 0.3}
+  literal_truncation:
+    N: 20.0
+    rule: "e_tilde=e_hat*I(abs(e_hat)<N)+N*I(abs(e_hat)>=N)"
+    applies_to: ["table_5", "table_6_case_1", "table_6_case_2"]
+    warning: "Non-sign-preserving as printed; sensitivity alternatives must be separate"
+  target_tables:
+    table_1_garch:
+      source: {physical_pdf_page: 38, article_page: 9}
+      rows:
+        - {case: size, post: {}, values: [0.023, 0.038, 0.055]}
+        - {case: omega, post: {omega: 1.0}, values: [0.761, 0.826, 0.956]}
+        - {case: omega, post: {omega: 0.1}, values: [0.612, 0.792, 0.970]}
+        - {case: alpha_beta, post: {alpha: 0.1, beta: 0.2}, values: [0.355, 0.651, 0.949]}
+        - {case: alpha_beta, post: {alpha: 0.4, beta: 0.5}, values: [0.649, 0.802, 0.952]}
+        - {case: mixed, post: {omega: 0.7, alpha: 0.1}, values: [0.871, 0.969, 0.981]}
+        - {case: mixed, post: {omega: 0.1, beta: 0.1}, values: [0.848, 0.952, 0.964]}
+    table_2_agarch:
+      source: {physical_pdf_page: 38, article_page: 9}
+      rows:
+        - {case: size, post: {}, values: [0.031, 0.040, 0.030]}
+        - {case: omega, post: {omega: 1.0}, values: [0.881, 0.951, 0.975]}
+        - {case: omega, post: {omega: 0.1}, values: [0.260, 0.613, 0.904]}
+        - {case: alpha_beta, post: {alpha: 0.1, beta: 0.1}, values: [0.783, 0.939, 0.975]}
+        - {case: alpha_beta, post: {alpha: 0.6}, values: [0.762, 0.863, 0.941]}
+        - {case: b, post: {b: 0.0}, values: [0.591, 0.897, 0.976]}
+        - {case: b, post: {b: 3.0}, values: [0.898, 0.936, 0.957]}
+        - {case: mixed, post: {omega: 0.1, alpha: 0.5, beta: 0.4, b: 0.0}, values: [0.565, 0.726, 0.846]}
+        - {case: mixed, post: {omega: 0.1, beta: 0.6, b: 2.0}, values: [0.879, 0.926, 0.966]}
+    table_3_gjr_garch:
+      source: {physical_pdf_page: 38, article_page: 9}
+      rows:
+        - {case: size, post: {}, values: [0.021, 0.029, 0.028]}
+        - {case: omega, post: {omega: 1.0}, values: [0.851, 0.912, 0.947]}
+        - {case: omega, post: {omega: 0.1}, values: [0.644, 0.787, 0.866]}
+        - {case: alpha_beta, post: {alpha_1: 0.5, alpha_2: 0.8}, values: [0.418, 0.695, 0.879]}
+        - {case: alpha_beta, post: {alpha_2: 0.1, beta: 0.1}, values: [0.421, 0.751, 0.888]}
+        - {case: mixed, post: {omega: 0.5, alpha_2: 0.6}, values: [0.657, 0.863, 0.928]}
+        - {case: mixed, post: {omega: 0.1, beta: 0.7}, values: [0.717, 0.857, 0.925]}
+    table_4_tgarch:
+      source: {physical_pdf_page: 39, article_page: 10}
+      rows:
+        - {case: size, post: {}, values: [0.037, 0.049, 0.059]}
+        - {case: omega, post: {omega: 1.0}, values: [0.718, 0.795, 0.879]}
+        - {case: omega, post: {omega: 0.1}, values: [0.647, 0.840, 0.902]}
+        - {case: alpha_beta, post: {alpha: 0.1, beta: 0.2}, values: [0.805, 0.886, 0.913]}
+        - {case: alpha_beta, post: {alpha: 0.4, beta: 0.5}, values: [0.735, 0.838, 0.897]}
+        - {case: mixed, post: {omega: 0.7, alpha: 0.1}, values: [0.907, 0.970, 0.994]}
+        - {case: mixed, post: {omega: 0.1, beta: 0.1}, values: [0.499, 0.674, 0.772]}
+    table_5_log_linear_garch:
+      source: {physical_pdf_page: 39, article_page: 10}
+      rows:
+        - {case: size, post: {}, values: [0.047, 0.039, 0.037]}
+        - {case: omega, post: {omega: 1.0}, values: [0.906, 0.984, 0.997]}
+        - {case: omega, post: {omega: 0.1}, values: [0.228, 0.382, 0.507]}
+        - {case: alpha_beta, post: {alpha: -0.1, beta: -0.2}, values: [0.868, 0.946, 0.976]}
+        - {case: alpha_beta, post: {alpha: -0.4, beta: 0.5}, values: [0.917, 0.985, 1.000]}
+        - {case: mixed, post: {omega: 0.7, beta: 0.5}, values: [0.820, 0.973, 0.998]}
+        - {case: mixed, post: {omega: 0.1, alpha: -0.1}, values: [0.862, 0.944, 0.971]}
+    table_6_model_changes:
+      source: {physical_pdf_page: 39, article_page: 10}
+      rows:
+        - {case: garch_to_log_garch, post: {omega: 1.0}, values: [0.879, 0.946, 0.956]}
+        - {case: garch_to_log_garch, post: {alpha: 0.1, beta: 0.1}, values: [0.668, 0.918, 0.969]}
+        - {case: log_garch_to_garch, post: {omega: 1.0}, values: [0.907, 0.970, 0.994]}
+        - {case: log_garch_to_garch, post: {alpha: 0.1, beta: 0.1}, values: [0.499, 0.674, 0.772]}
+        - {case: tgarch_to_agarch, post: {omega: 1.0, b: 1.0}, values: [0.728, 0.795, 0.879]}
+        - {case: tgarch_to_agarch, post: {alpha: 0.1, beta: 0.1, b: 1.0}, values: [0.851, 0.891, 0.919]}
+        - {case: agarch_to_gjr, post_as_printed: {omega: 0.7, alpha_1: 0.3, alpha_2: 0.7, b: 0.0}, values: [0.549, 0.861, 0.958]}
+        - {case: agarch_to_gjr, post_as_printed: {alpha_1: 0.1, alpha_2: 0.3, beta: 0.1, b: 0.0}, values: [0.802, 0.931, 0.976]}
+
+empirical:
+  source: "Investing.com"
+  source_evidence: {physical_pdf_pages: [40, 42], article_pages: [11, 13]}
+  snapshot_present_locally: false
+  series:
+    sp500:
+      full_period: ["2012-01-03", "2016-09-30"]
+      example_training_period: ["2012-04-02", "2014-04-16"]
+      target_change_date: "2015-08-18"
+      target_statistic: 2.4751
+    kospi:
+      full_period: ["2012-10-02", "2019-06-28"]
+      training_period: null
+      target_change_date: "2018-01-22"
+      target_statistic: 1.5081
+    krw_usd:
+      full_period: ["2012-01-02", "2016-09-30"]
+      training_period: null
+      target_change_date: "2014-09-26"
+      target_statistic: 4.2754
+  training_rule: "first half of each entire time series"
+  diagnostics: {figure_1: "ACF and PACF of training log-returns through lag 25"}
+  figures:
+    figure_2: "S&P 500 raw index and log-returns with detected change-point line"
+    figure_3: "KOSPI raw index and log-returns with detected change-point line"
+    figure_4: "KRW/USD index and log-returns with detected change-point line"
+
+parity:
+  authors: {os: "Windows 10", language: "R 3.5.1", packages: ["e1071", "fGarch"]}
+  primary_lane: "method-equivalent Python/Jupyter"
+  secondary_lane: "environment-parity R replication, only after explicit environment approval"
+  no_post_hoc_tuning_to_targets: true
+
+phase_gates:
+  B1:
+    required: ["source contract", "traceability", "gap register", "environment report", "B00 fresh-kernel pass"]
+  B2:
+    starts_only_after_user_approval: true
+    approval_received: true
+    approval_source: "User FULL PAPER REPLICATION EXECUTION ORDER on 2026-10-11"
+  B3:
+    full_protocol_requires_1000_repetitions: true
+    reduced_repetitions_label: "smoke_only"
+
+contract_revision_log:
+  - date: "2026-10-11"
+    phase: "B2/B3"
+    change: "Recorded explicit user approval that releases the B1 gate; mathematical/source contract unchanged"
+    rationale: "Full Paper Replication Execution Order section 0 and section 13"
