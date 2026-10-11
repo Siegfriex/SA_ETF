@@ -59,7 +59,7 @@ def pair_overview(close: pd.DataFrame, r: pd.DataFrame, ref: str, t: str, rhos: 
     for a in ax:
         shade_periods(a)
     ax[3].xaxis.set_major_locator(mdates.YearLocator() if start is None else mdates.AutoDateLocator())
-    fig.suptitle(f"{labels[t]} vs {labels[ref]} — 가격 · 수익률 · 변동성 · rolling ρ (같은 시간축; 노랑=2025 검증, 주황=2026 holdout 관찰)", y=1.0, fontsize=11)
+    fig.suptitle(f"{labels[t]} vs {labels[ref]} — 가격 · 수익률 · 변동성 · rolling ρ (같은 시간축; 노랑=2025 검증, 주황=2026 관찰 구간·blind 아님)", y=1.0, fontsize=11)
     fig.tight_layout()
     return fig
 

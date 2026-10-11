@@ -1,9 +1,9 @@
 {
   "phase": "A3",
-  "run_id": "A3-20261011T150030-fd9713f7",
-  "generated_at": "2026-10-11T15:03:56+09:00",
+  "run_id": "A3-20261011T150723-fd9713f7",
+  "generated_at": "2026-10-11T15:10:35+09:00",
   "input_data_version": "fd9713f7f985e9503638e7201ad1d21588c2c70dd7c6726839de14a96be37aff",
-  "git_sha": "2443f5721752a6519c967c5f9dc340e728ec2639",
+  "git_sha": "95b93ea84648b28bb12e6739b35cc4cb25c64061",
   "git_branch": "codex/r2h-track-a",
   "runtime": {
     "python": "3.12.3",
@@ -52,29 +52,29 @@
     "multiple_testing": "BH over all rows of event_null_tests.csv"
   },
   "derived_files": {
-    "data/processed/research_a/A3-20261011T150030-fd9713f7/correlation_events.parquet": {
-      "sha256": "269f4b460a7209f85af94c31e0a7cc9a42862689890047c2920dda051c44cf40"
+    "data/processed/research_a/A3-20261011T150723-fd9713f7/correlation_events.parquet": {
+      "sha256": "b0513693daf0ac6eede8389c7658f1486fc6034c9f6fd44baa32fac00c91b072"
     },
-    "data/processed/research_a/A3-20261011T150030-fd9713f7/price_events.parquet": {
-      "sha256": "2ca1046cef9a86a7236f00f384d7b130dd30b7a5df7e2486ff2e2523e2bcca0a"
+    "data/processed/research_a/A3-20261011T150723-fd9713f7/price_events.parquet": {
+      "sha256": "69e209729edbb3a2f3485b08d415f7b0979cef0c6891917e76a2fc7346fe9060"
     }
   },
   "report_tables": {
-    "correlation_event_candidates.csv": "9628b7a213837680156ae85ea689f8ef56d967cd441500b2e9e245741fdae51b",
-    "price_event_candidates.csv": "de89e1fa829c2753b533edaefc8da0f9cd92829593d561dd6ce713df5558e137",
-    "event_alignment.csv": "ab852d9c3f28c3227180a447152f2ba948314a1c5a4c187d944196b9c03c1f2a",
-    "event_null_tests.csv": "e2656bbf10d072a54b6bd589ea6b43fafa4008e1250692001bd31966fa6c6cbf",
-    "mechanical_cooccurrence.csv": "7894d26fc330c14d89ff621ae056c3f24f4fccd88bc7e443ed4e23c1817d9669",
-    "mechanical_summary.csv": "5c722ec034a153e23bf9a31e737aa35989b875340cdbd8e0f2d4fe1366852cd3",
-    "price_event_counts.csv": "84a870af4722ae9105e835821e96181884c77bece257eb82f82a21662e91c0c6",
-    "price_def_jaccard.csv": "77cee07a574620dacdb78c3d3613f031f183e726f2cb8abbcdffec46359fc4ec",
-    "robust_z_definition_overlap.csv": "c1ba3d14fae3ec47da9874f8c2ba357b74f36fb179c16e06edf8da4bfdbcb5d9",
-    "exposure_dedup_check.csv": "35af76d2f628ab7fc2885d3311495de1b5cff17002e33a01e28de34e5d72f81f",
-    "period_results.csv": "511486431336b5d650a19d3b1a00a28280b3777358c4d2ac1ba13435b4893450",
-    "dq_event_sensitivity.csv": "f27df520cb8f2b8a36b528c7b41eb7a2b0a4ae3e7399a86e9a546e78cc4ebe58",
-    "dq_price_event_sensitivity.csv": "e2e7053f02abb3e1315842c7580a937d7f90fab2f21fe578b6081fde43a3bb5c",
-    "case_study_index.csv": "a12f673f8d927088bcafcfbee9c61d9e9ae209d709474f927fc235f8a27b29c6",
-    "mechanical_removed_retest.csv": "34477c99948b482215c9feffaaaee4bae36ecc8bede7d88c69d605c80ac54af7"
+    "correlation_event_candidates.csv": "2d36800fa7e3ab27f93e97d045920ba872a83f45b705794f8bdb5567862d44d3",
+    "price_event_candidates.csv": "6a38e440e0a66de160007ee22888897f14d44d71660b6edf2b92cd9df84b944b",
+    "event_alignment.csv": "619c26c7b48a7cb1081b1448da10472a445eb332d6e1817e2e1c356e822f5f96",
+    "event_null_tests.csv": "c6aaefb67afb723ab8af17e252b9799d3c1b767ad652cc537e4fc8fbb9a70e26",
+    "mechanical_cooccurrence.csv": "00888460510f7927452b2e9841dd7efe71e931224a3bb82e3f0cb4302df1e48d",
+    "mechanical_summary.csv": "2d734a6cc8a11d0216f2ee0c98ff6b9ed764aec49eba289cd5cbe5714be090f0",
+    "price_event_counts.csv": "69ffce0ea5b769c679f468a88ca32bb7630447a74389ed97f7a1b90d357932d7",
+    "price_def_jaccard.csv": "53dfda8e723c8a4ab988519d6012a89d8efbc3acd5bd630ca45f8eb316d2bd09",
+    "robust_z_definition_overlap.csv": "dce3e0ced76d9d550ad1e3e15e8e28618844328a6dca68479fd3cfe4edaff419",
+    "exposure_dedup_check.csv": "2d5cf508fafa997fba17d3def4bfe0838744326168e12da42c3603a42cd1485d",
+    "period_results.csv": "e1f44e69a06f5828758c2430b5a4f54a6aecc79d40457a2e6fdb59e1f2ac7503",
+    "dq_event_sensitivity.csv": "70a3ad8a02c45e9bfc806f1032fda80474d3e64bb135a1b9af1028ff3ae17798",
+    "dq_price_event_sensitivity.csv": "47be04eebacf8d86843a44d0832417b7000d19690a0ea2faa1a735e90dfa37a2",
+    "case_study_index.csv": "d32ee0be2b4854e1599a169d624fe2276cafe1b0eec99bd68a9e8936ac543dbc",
+    "mechanical_removed_retest.csv": "27447803e0c6a05a2a2bb796e288a69c8ff6b0b3cae088b23a93408e27cf52b0"
   },
   "metrics": {
     "n_correlation_events": 4090,
@@ -117,5 +117,5 @@
       "naive_sum_double_count": 55
     }
   },
-  "code_hash": "71da68d7bca0699d7607d697c2c3df4d41e87aeb66de3d94c42f84cbe4f86417"
+  "code_hash": "da303305a8850b0d52aefa87358a49d241d607b698e279e09ccb353fd2008cef"
 }

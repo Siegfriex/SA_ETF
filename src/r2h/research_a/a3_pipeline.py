@@ -419,6 +419,29 @@ def select_cases(ce: pd.DataFrame, pe: pd.DataFrame, align: pd.DataFrame, idx, c
     return out
 
 
+def load_a3_checkpoint(root: str | Path | None = None, strict: bool = True) -> dict:
+    """A3 결과 재사용: 입력 데이터 버전과 코드 해시가 현재와 같을 때만 checkpoint 를 쓴다 (다르면 RuntimeError → run_a3 재실행).
+    반환 dict: manifest, 그리고 표 이름(확장자 제외) → DataFrame. ticker·series 열은 문자열(선행 0 보존)."""
+    c = load_contract(root)
+    rep = c.report_dir / "a3"
+    man = json.loads((rep / "A3_RUN_MANIFEST.json").read_text())
+    cur_v = input_data_version(read_manifest(c)); cur_h = code_hash()
+    status = {"input_version_match": man["input_data_version"] == cur_v, "code_hash_match": man.get("code_hash") == cur_h,
+              "table_hash_match": all(sha256_file(rep / n) == h for n, h in man["report_tables"].items() if (rep / n).exists()),
+              "all_tables_present": all((rep / n).exists() for n in man["report_tables"])}
+    if strict and not all(status.values()):
+        raise RuntimeError(f"A3 checkpoint mismatch: {status} — run_a3() 로 다시 계산하라")
+    strcols = {"ticker": str, "series_id": str, "reference_series_id": str, "window": str}
+    out = {"manifest": man, "status": status}
+    for n in man["report_tables"]:
+        df = pd.read_csv(rep / n, dtype=strcols, low_memory=False)
+        for col in ("candidate_at", "confirmed_at", "available_at", "event_end", "c_date", "p_date"):
+            if col in df:
+                df[col] = pd.to_datetime(df[col])
+        out[n.removesuffix(".csv")] = df
+    return out
+
+
 if __name__ == "__main__":
     res = run_a3()
     print(res["run_id"]); print(json.dumps(res["metrics"], indent=1, default=str))
