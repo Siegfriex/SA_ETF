@@ -37,14 +37,19 @@ class Contract:
     spec: dict[str, Any]
 
     # ---- 경로: raw 는 공유 절대경로(READ-ONLY), 나머지는 작업 트리 상대
+    def _resolve(self, p: str | Path) -> Path:
+        """계약의 경로가 상대경로면 작업 루트 기준 (배포 패키지는 data/raw 스냅샷을 상대경로로 가리킨다)."""
+        p = Path(p)
+        return p if p.is_absolute() else self.root / p
+
     @property
     def raw_dir(self) -> Path:
         i = self.spec["inputs"]
-        return Path(os.environ.get(i["raw_dir_env"], i["raw_dir"]))
+        return self._resolve(os.environ.get(i["raw_dir_env"], i["raw_dir"]))
 
     @property
     def interim_dir(self) -> Path:
-        return Path(self.spec["inputs"]["interim_dir"])
+        return self._resolve(self.spec["inputs"]["interim_dir"])
 
     def path(self, key: str) -> Path:
         return self.root / self.spec["inputs"][key]
@@ -101,20 +106,24 @@ def input_data_version(manifest: pd.DataFrame) -> str:
     return hashlib.sha256("\n".join(lines).encode()).hexdigest()
 
 
-def git_sha(root: Path) -> str:
+def _git(root: Path, *args: str) -> str | None:
+    """root 가 *그 자체로* git 작업 트리 최상위일 때만 git 정보를 돌려준다.
+    배포 패키지(1011/research_a)는 다른 저장소 안의 미추적 폴더라, 상위 저장소의 HEAD 를 자기 commit 으로 오인하면 안 된다."""
     try:
-        return subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True,
-                              text=True, check=True).stdout.strip()
+        top = subprocess.run(["git", "-C", str(root), "rev-parse", "--show-toplevel"], capture_output=True, text=True, check=True).stdout.strip()
+        if Path(top).resolve() != Path(root).resolve():
+            return None
+        return subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True, check=True).stdout.strip()
     except (OSError, subprocess.CalledProcessError):
-        return "unknown"
+        return None
+
+
+def git_sha(root: Path) -> str:
+    return _git(root, "rev-parse", "HEAD") or "not_a_git_checkout"
 
 
 def git_branch(root: Path) -> str:
-    try:
-        return subprocess.run(["git", "-C", str(root), "branch", "--show-current"], capture_output=True,
-                              text=True, check=True).stdout.strip()
-    except (OSError, subprocess.CalledProcessError):
-        return "unknown"
+    return _git(root, "branch", "--show-current") or "not_a_git_checkout"
 
 
 def make_run_id(version: str, phase: str = "A1", now: datetime | None = None) -> str:

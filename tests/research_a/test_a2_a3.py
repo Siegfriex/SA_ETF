@@ -195,3 +195,14 @@ def test_a3_checkpoint_consistency():
     assert not f.duplicated(["ticker", "c_date", "p_date"]).any()
     for col in CE.EVENT_COLS:
         assert col in pd.read_csv(C.report_dir / "a3" / "price_event_candidates.csv", nrows=2).columns
+
+
+def test_contract_relative_paths_resolve_to_root(tmp_path):
+    import shutil, yaml
+    (tmp_path / "config").mkdir()
+    spec = yaml.safe_load((ROOT / "config/research_a_contract.yaml").read_text())
+    spec["inputs"]["raw_dir"] = "data/raw"; spec["inputs"]["interim_dir"] = "data/interim"
+    (tmp_path / "config/research_a_contract.yaml").write_text(yaml.safe_dump(spec, allow_unicode=True))
+    c2 = K.load_contract(tmp_path)
+    assert c2.raw_dir == tmp_path / "data/raw" and c2.interim_dir == tmp_path / "data/interim"
+    assert K.git_sha(tmp_path) == "not_a_git_checkout"
