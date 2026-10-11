@@ -1,0 +1,181 @@
+# R2H Track A — Data Contract (Phase A1)
+# 소유: Track A (codex/r2h-track-a). 이 파일은 A1~A3 의 모든 A 산출물이 공유하는 입력·정의 계약이다.
+# 원칙: 기존 canonical 산출물(raw · interim · closure)은 READ-ONLY. 여기서는 "읽는 법"만 고정한다.
+# 판단 유보 항목은 status: unresolved / ESTIMATED 로 남기고, 사용자·교수 승인 없이 확정하지 않는다.
+
+contract_id: r2h_track_a_data_contract
+contract_version: "1.0.0"
+phase: A1
+created_at: "2026-10-11"
+base_commit: d5c2f792022d3c8efdbc52bdecd246b04bf32c45
+branch: codex/r2h-track-a
+
+# ---------------------------------------------------------------- 입력 (READ-ONLY)
+inputs:
+  shared_data_root: /home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data   # 00 계약: 모든 worktree 가 이 절대경로를 읽는다
+  raw_dir_env: ETF_RAW_DIR            # 설정 시 raw_dir 을 override (기존 스크립트와 같은 변수)
+  raw_dir: /home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data/raw
+  interim_dir: /home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data/interim
+  manifest: data/raw/MANIFEST.csv     # 작업 트리 상대경로 (git 추적, sha256 기준)
+  universe: config/universe.csv
+  dq_flags: reports/dq_flags.csv
+  event_anchors: config/event_anchors.csv
+  raw_columns: [Date, Open, High, Low, Close, Volume, Change]
+  expected:
+    n_tickers: 20
+    rows_per_ticker: 1903
+    first_date: "2019-01-02"
+    last_date: "2026-10-02"
+    panel_close_rows: 1903
+    panel_logret_rows: 1902
+    dq_flag_rows: 220
+  provenance:
+    source: "FinanceDataReader 0.9.202 DataReader (MANIFEST.source)"
+    fetched_at: "2026-10-03T20:58~20:59+09:00 (MANIFEST.fetched_at)"
+    recollection: forbidden          # Track A 는 raw 를 재수집하지 않는다
+    interim_builder: scripts/validate_raw.py   # common = close.dropna(); logret = log(common).diff().dropna()
+
+# ---------------------------------------------------------------- 가격·수익률 정의
+price:
+  field: Close                        # FDR Close 그대로. Open/High/Low 는 수익률 계산에 쓰지 않는다
+  adjustment_status: ESTIMATED_DISTRIBUTION_ADJUSTED_UNVERIFIED
+  adjustment_evidence:
+    - "MANIFEST.adjusted_policy (C-0012 DEC-3): 069500/KS200 누적비 1.155 ≈ KOSPI200 TR 1.163 → 분배 소급조정 추정"
+    - "raw Change 열 = Close.pct_change() (|Δ|≤1e-16) → Change 는 Close 파생값이라 조정 여부의 독립 증거가 아니다"
+    - "Close>High 212건(229200·305540·143860, 비율 ≤1.0005, 2019~2025) → Close 와 H/L 의 조정 기준 불일치 또는 반올림과 정합하나 증명은 아님"
+  not_claimed: "조정주가(adjusted)로 확정하지 않는다. 분배일 하락이 Close 에 남아 있을 가능성을 배제하지 않는다"
+
+returns:
+  primary: daily_log_return
+  formula: "r_t = ln(Close_t / Close_{t-1})"
+  unit: "자연로그, 일간(거래일), 비연율화. 연율화가 필요하면 ×√252 를 표시와 함께 별도 적용"
+  index: "KRX 거래일 DatetimeIndex (공통 날짜 = 20종 모두 Close 존재하는 날)"
+  first_row: dropped                  # 첫 거래일 2019-01-02 는 수익률 없음 → 1902 행
+  numeric_implementation:
+    a_default: logdiff                # ln(C_t) - ln(C_{t-1}) — validate_raw.py / panel_logret.csv 와 비트 수준 일치(≤1e-16)
+    alternative_in_existing: logratio # ln(C_t/C_{t-1}) — universe_final.py · d0122 (robustness_final 은 logdiff)
+    max_abs_gap: 1.84e-15
+    rank_stat_rule: "Spearman 등 순위 통계는 rank_safe(round 12) 후 계산 — 1e-15 차이가 동률을 깨 Spearman 이 최대 6e-6 달라짐 (A1 발견)"
+  matches_existing: [scripts/validate_raw.py, analysis/scripts/universe_final.py, analysis/robustness/robustness_final.py, src/final_figs.py, src/eda_utils.engineer_basic]
+  variants:
+    raw:
+      description: "DQ 처리 없음. canonical interim panel_logret.csv 와 수치 동일해야 한다"
+      equals: data/interim/panel_logret.csv
+    dq_trim_canonical:
+      description: "price_anomaly_unverified 2건만 NaN (행 삭제·보간 없음). 기존 Rt / ANOM 처리와 동일"
+      nan_cells: {"261240": ["2019-03-14", "2019-03-15"]}
+      matches_existing: ["analysis/scripts/universe_final.py DQ_DAYS → Rt", "analysis/robustness/robustness_final.py ANOM → R"]
+  flag_only:                          # 값은 그대로 두고 flag 열로만 노출
+    - "ohlc_close_gt_high (212): Close→logret 경로에 영향 없음 (O/H/L 미사용)"
+    - "spike_reversal_candidate (6): 219480 2025-04-08·09, 153130 2024-01-30·31, 192090 2024-10-07·08 — 민감도로만 보고"
+
+# ---------------------------------------------------------------- 유니버스와 분석 비교군 (분리된 필드)
+universe:
+  status: PROVISIONAL                 # 공식 수업 ticker list 없음 (00 계약). 공식 평가 대상으로 입증되지 않음
+  in_original_universe: all_20        # config/universe.csv 20종 전부. A 는 범위를 줄이지 않는다
+  not_in_universe_do_not_fabricate:
+    - "국고채5년 ETF — 수집되지 않음. 존재하는 것처럼 처리하지 않는다"
+
+analysis_roles:                       # 분석 목적상 선택. in_original_universe 와 독립
+  reference: "069500"
+  roles:
+    "069500": reference
+    "102110": control_not_independent   # 동일 KOSPI200 exposure — 독립 사건으로 집계 금지
+    "148070": comparison
+    "153130": comparison
+    "229200": comparison
+    "219480": comparison
+    "133690": comparison
+    "132030": comparison
+    "261220": comparison
+    "261240": comparison
+    "122630": not_in_base_panel
+    "114800": not_in_base_panel
+    "091230": not_in_base_panel
+    "091170": not_in_base_panel
+    "091180": not_in_base_panel
+    "305540": not_in_base_panel
+    "143860": not_in_base_panel
+    "117680": not_in_base_panel
+    "161510": not_in_base_panel
+    "192090": not_in_base_panel
+  base_panel: ["069500", "102110", "148070", "153130", "229200", "219480", "133690", "132030", "261220", "261240"]
+  comparison_group_label:
+    "148070": bond_long          # 국고채10년
+    "153130": bond_short         # 단기채권
+    "229200": domestic_equity_kosdaq
+    "219480": foreign_equity_us_hedged
+    "133690": foreign_equity_us_unhedged
+    "132030": commodity_gold_hedged
+    "261220": commodity_oil_hedged
+    "261240": fx_usd
+  exposure_groups:               # 기존 K200 dedup 규칙 (universe_final.K200, robustness_final.K200)
+    KOSPI200: ["069500", "102110", "122630", "114800"]
+  event_counting: "exposure_group 당 1건. 102110 은 069500 결과의 대조(브랜드·추적오차)로만 보고"
+
+session_sync:                    # universe.csv trading_hours_note 에서 매핑. A2 lag 분석 입력
+  same_session: ["069500", "102110", "229200", "122630", "114800", "091230", "091170", "091180", "305540", "143860", "117680", "161510", "148070", "153130", "261240"]
+  overnight_lag: ["219480", "133690", "132030", "261220"]   # 기초자산이 KST 밤 미국장 → 국내 종가에 전일 미국장 반영
+  partial_overlap: ["192090"]                               # 중국장 KST 10:30-16:00 부분 중첩, 휴장일 상이
+
+# ---------------------------------------------------------------- 기존 정의 레지스트리 (판단 유보)
+robust_z_registry:
+  status: unresolved             # 사용자·교수 승인 전 하나를 정답으로 선언하지 않는다
+  definitions:
+    rz_D:
+      source: "analysis/scripts/universe_final.py rz_D · analysis/robustness/robustness_final.py"
+      formula: "med = r.rolling(60, mp=20).median().shift(1); MAD = |r-med|.rolling(60, mp=20).median().shift(1); z=(r-med)/(1.4826·MAD)"
+      note: "MAD 가 잔차 |r_s - med_s| (시점별 med) 의 rolling median"
+    rz_A:
+      source: "analysis/scripts/universe_final.py rz_A · src/final_figs.robust_z (동일)"
+      formula: "med = r.rolling(60, mp=40).median().shift(1); MAD = 창 내부 median|x - median(x)| (mp=40) .shift(1)"
+      note: "창 내부 MAD (표준 MAD)"
+    rz_eda_utils:
+      source: "src/eda_utils.extreme_definitions robust_z_shift1_w60_k3"
+      formula: "base=r.shift(1); med=base.rolling(60, mp=30).median(); MAD=|base-med|.rolling(60, mp=30).median(); |r-med|/(1.4826·MAD)"
+      note: "D 식 구조 + min_periods 30, 절대값만"
+  threshold_used_in_existing: "|z| > 3"
+
+existing_rolling_registry:      # A2 정합성 비교는 같은 종류끼리만 한다
+  - id: d0122_avg_pairwise
+    source: analysis/robustness/d0122_window_loetf.py
+    windows: [60, 120, 250]
+    kind: "평균 pairwise 상관 (domeq9 / dedup17), pearson · spearman · pearson_ex_top2"
+    min_periods: "w (완전 창)"
+    note: "KOSPI200 대 개별자산 pair 상관이 아님"
+  - id: final_figs_roll_corr
+    source: src/final_figs.fig08_rolling_corr_beta · compute()
+    windows: [120]
+    kind: "ETF vs 069500 Pearson pair 상관 (+β)"
+    min_periods: 120
+  - id: universe_final_peer
+    source: analysis/scripts/universe_final.py (fig 14, 15, peer_stability)
+    windows: [60, 120]
+    kind: "pair Pearson, min_periods = 0.8w (fig14/15 은 120/100)"
+  - id: universe_final_beta60
+    source: analysis/scripts/universe_final.py rbeta
+    windows: [60]
+    kind: "rolling OLS β vs 069500, min_periods 50"
+  - id: relation_rolling_corr_120
+    source: analysis/relation/rolling_corr_120.csv (A3, scratchpad a3.py — 코드 미보존)
+    windows: [120]
+    kind: "평균 상관 eq14 / all20 / eq12_ex_lev_inv"
+existing_windows_without: [30]       # 30일 상관·0선 교차·persistence 함수는 기존에 없음 (A2 신규)
+
+proposed_for_A2:                 # A1 에서 확정하지 않음 — A2 착수 시 승인 대상
+  windows: [30, 60, 120]
+  methods: [pearson, spearman]
+  min_periods: "window (완전 창) 기본, 민감도로 0.8·window"
+  timing: "rho_t 는 t 종가까지의 정보로 관측 가능. persistence 를 쓰면 candidate_at / confirmed_at 분리"
+
+# ---------------------------------------------------------------- 재현성
+reproducibility:
+  python: /home/sieg/projects-wsl/hongik_univ_26_2/.venv/bin/python   # 공용 venv 읽기 전용 사용, 설치 금지
+  kernel: hongik_26_2
+  package_install: none
+  run_id_format: "A1-YYYYMMDDTHHMMSS-<input_version[:8]>"
+  input_data_version: "sha256( sorted 'ticker:sha256' lines of MANIFEST ) — 20 raw 파일의 내용 지문"
+  derived_output_dir: data/processed/research_a/<run_id>/   # gitignored. 파일 지문은 reports 쪽 manifest 에 기록
+  report_dir: reports/r2h/research_a/
+  forbidden: ["raw 수정·삭제·재수집", "기존 notebook --inplace 실행", "전체표본 quantile 을 실시간 임계값으로 사용", "DQ 관측치 임의 삭제·보간", "2019~2026 전체를 단일 검증기간으로 선언"]
+  validation_periods_note: "2019~2026 은 탐색 표본이다. 검증 기간 분할은 A3 이후 승인 대상"

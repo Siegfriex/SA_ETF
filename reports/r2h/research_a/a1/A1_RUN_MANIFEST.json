@@ -1,0 +1,99 @@
+{
+  "phase": "A1",
+  "run_id": "A1-20261011T142600-fd9713f7",
+  "generated_at": "2026-10-11T14:26:04+09:00",
+  "input_data_version": "fd9713f7f985e9503638e7201ad1d21588c2c70dd7c6726839de14a96be37aff",
+  "git_sha": "d5c2f792022d3c8efdbc52bdecd246b04bf32c45",
+  "git_branch": "codex/r2h-track-a",
+  "base_commit": "d5c2f792022d3c8efdbc52bdecd246b04bf32c45",
+  "contract_version": "1.0.0",
+  "raw_dir": "/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data/raw",
+  "interim_dir": "/home/sieg/projects-wsl/hongik_univ_26_2/SA/ETF_EDA_SCAFFOLD/data/interim",
+  "runtime": {
+    "python": "3.12.3",
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "pyyaml": "6.0.3"
+  },
+  "derived_dir": "data/processed/research_a/A1-20261011T142600-fd9713f7",
+  "derived_files": {
+    "data/processed/research_a/A1-20261011T142600-fd9713f7/close_panel.csv": {
+      "sha256": "6e30a98c21dd3d7c4c84eaea8bb4b4a99f52e686fec84f193e8d0dcfb140ad45",
+      "rows": 1903,
+      "cols": 20
+    },
+    "data/processed/research_a/A1-20261011T142600-fd9713f7/logret_raw.csv": {
+      "sha256": "e12cac5f9ece7c4f4f98057ea33103b01ab6835ce46fef7741ff664d586e8fc8",
+      "rows": 1902,
+      "cols": 20
+    },
+    "data/processed/research_a/A1-20261011T142600-fd9713f7/logret_dq_trim_canonical.csv": {
+      "sha256": "075798566b368d16014a3125232ac7d23b4b770837e32b618bfddf8c728d01a1",
+      "rows": 1902,
+      "cols": 20
+    },
+    "data/processed/research_a/A1-20261011T142600-fd9713f7/dq_flags_long.csv": {
+      "sha256": "41342b0e83072ce73d65ad2f8cda1605690432164e3e6ec1fbfc2c182cd6f40f",
+      "rows": 220,
+      "cols": 7
+    }
+  },
+  "report_tables": [
+    "calendar_alignment_base_panel.csv",
+    "change_column_check.csv",
+    "dq_corr_sensitivity_base_panel.csv",
+    "dq_impact.csv",
+    "dq_summary.csv",
+    "etf_manifest.csv",
+    "existing_parity_base_panel.csv",
+    "existing_qa_parity.csv",
+    "large_moves_base_panel.csv",
+    "ohlc_consistency.csv",
+    "pair_coverage_base_panel.csv",
+    "raw_integrity.csv",
+    "raw_sha_check.csv"
+  ],
+  "interim_parity": {
+    "close_shape_interim": [
+      1903,
+      20
+    ],
+    "close_shape_rebuilt": [
+      1903,
+      20
+    ],
+    "close_index_equal": true,
+    "close_columns_equal": true,
+    "close_max_abs_diff": 0.0,
+    "logret_shape_interim": [
+      1902,
+      20
+    ],
+    "logret_shape_rebuilt": [
+      1902,
+      20
+    ],
+    "logret_index_equal": true,
+    "logret_columns_equal": true,
+    "logret_nan_interim": 0,
+    "logret_nan_rebuilt": 0,
+    "logret_max_abs_diff": 9.985502008591496e-17,
+    "logret_first": "2019-01-03",
+    "logret_last": "2026-10-02"
+  },
+  "checks": {
+    "raw_sha_all_match": true,
+    "raw_integrity_all_ok": true,
+    "base_panel_calendar_identical": true,
+    "interim_close_exact": true,
+    "interim_logret_match_1e-15": true,
+    "existing_tables_reproduced": true,
+    "existing_raw_validation_reproduced": true,
+    "dq_flag_rows": 220
+  },
+  "audit_discrepancies": {
+    "finance_datareader_in_shared_venv": true,
+    "note": "감사 기록은 'FDR 없음'. A1 은 FDR 을 import/사용하지 않으며 raw 재수집도 하지 않는다"
+  }
+}
