@@ -1,0 +1,121 @@
+{
+  "phase": "A3",
+  "run_id": "A3-20261011T150030-fd9713f7",
+  "generated_at": "2026-10-11T15:03:56+09:00",
+  "input_data_version": "fd9713f7f985e9503638e7201ad1d21588c2c70dd7c6726839de14a96be37aff",
+  "git_sha": "2443f5721752a6519c967c5f9dc340e728ec2639",
+  "git_branch": "codex/r2h-track-a",
+  "runtime": {
+    "python": "3.12.3",
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "pyyaml": "6.0.3"
+  },
+  "params": {
+    "seed": 20261011,
+    "B": 1000,
+    "lags": [
+      0,
+      5,
+      10,
+      20
+    ],
+    "windows": [
+      30,
+      60,
+      120
+    ],
+    "primary_rule": "b0.100_k10",
+    "sens_rules": [
+      "b0.000_k5",
+      "b0.200_k10",
+      "b0.100_k20"
+    ],
+    "z_thr_C2": 2.58,
+    "C4_tol": 10,
+    "p_defs": [
+      "P1_vol_scaled",
+      "P2_quantile_exp",
+      "P2_quantile_full",
+      "P3_rz_D",
+      "P3_rz_A",
+      "P3_rz_eda",
+      "P4_cum_h5",
+      "P4_cum_h10",
+      "P4_cum_h20",
+      "P5_legacy_abs3",
+      "P5_legacy_q99",
+      "P5_common_shock"
+    ],
+    "null": "circular shift of P positions, u~U{2L+1..n-2L-1}, T=#C with P within ±L, one-sided",
+    "multiple_testing": "BH over all rows of event_null_tests.csv"
+  },
+  "derived_files": {
+    "data/processed/research_a/A3-20261011T150030-fd9713f7/correlation_events.parquet": {
+      "sha256": "269f4b460a7209f85af94c31e0a7cc9a42862689890047c2920dda051c44cf40"
+    },
+    "data/processed/research_a/A3-20261011T150030-fd9713f7/price_events.parquet": {
+      "sha256": "2ca1046cef9a86a7236f00f384d7b130dd30b7a5df7e2486ff2e2523e2bcca0a"
+    }
+  },
+  "report_tables": {
+    "correlation_event_candidates.csv": "9628b7a213837680156ae85ea689f8ef56d967cd441500b2e9e245741fdae51b",
+    "price_event_candidates.csv": "de89e1fa829c2753b533edaefc8da0f9cd92829593d561dd6ce713df5558e137",
+    "event_alignment.csv": "ab852d9c3f28c3227180a447152f2ba948314a1c5a4c187d944196b9c03c1f2a",
+    "event_null_tests.csv": "e2656bbf10d072a54b6bd589ea6b43fafa4008e1250692001bd31966fa6c6cbf",
+    "mechanical_cooccurrence.csv": "7894d26fc330c14d89ff621ae056c3f24f4fccd88bc7e443ed4e23c1817d9669",
+    "mechanical_summary.csv": "5c722ec034a153e23bf9a31e737aa35989b875340cdbd8e0f2d4fe1366852cd3",
+    "price_event_counts.csv": "84a870af4722ae9105e835821e96181884c77bece257eb82f82a21662e91c0c6",
+    "price_def_jaccard.csv": "77cee07a574620dacdb78c3d3613f031f183e726f2cb8abbcdffec46359fc4ec",
+    "robust_z_definition_overlap.csv": "c1ba3d14fae3ec47da9874f8c2ba357b74f36fb179c16e06edf8da4bfdbcb5d9",
+    "exposure_dedup_check.csv": "35af76d2f628ab7fc2885d3311495de1b5cff17002e33a01e28de34e5d72f81f",
+    "period_results.csv": "511486431336b5d650a19d3b1a00a28280b3777358c4d2ac1ba13435b4893450",
+    "dq_event_sensitivity.csv": "f27df520cb8f2b8a36b528c7b41eb7a2b0a4ae3e7399a86e9a546e78cc4ebe58",
+    "dq_price_event_sensitivity.csv": "e2e7053f02abb3e1315842c7580a937d7f90fab2f21fe578b6081fde43a3bb5c",
+    "case_study_index.csv": "a12f673f8d927088bcafcfbee9c61d9e9ae209d709474f927fc235f8a27b29c6",
+    "mechanical_removed_retest.csv": "34477c99948b482215c9feffaaaee4bae36ecc8bede7d88c69d605c80ac54af7"
+  },
+  "metrics": {
+    "n_correlation_events": 4090,
+    "n_price_events": 11085,
+    "n_tests": 46000,
+    "n_tests_testable": 45280,
+    "n_simulated_shifts_total": 65646000,
+    "share_tests_p_lt_0.05": 0.07628260869565218,
+    "share_testable_p_lt_0.05": 0.07749558303886926,
+    "n_refined_B20000": 1034,
+    "min_p_value": 4.999750012499375e-05,
+    "min_q_global": 0.008640789334579072,
+    "n_tests_q_lt_0.10": 299,
+    "n_primary_family": 586,
+    "min_q_primary": 0.009766178357748779,
+    "n_primary_q_lt_0.10": 3,
+    "mech_removed_share_p_lt_0.05_by_lag": {
+      "0": 0.0,
+      "5": 0.041666666666666664,
+      "10": 0.0,
+      "20": 0.0
+    },
+    "mech_kept_share_p_lt_0.05_by_lag": {
+      "0": 0.1875,
+      "5": 0.0625,
+      "10": 0.0625,
+      "20": 0.041666666666666664
+    },
+    "primary_C3_share_p_lt_0.05": 0.08779264214046822,
+    "primary_C3_share_p_lt_0.05_lag0": 0.15217391304347827,
+    "primary_C3_share_p_lt_0.05_lag20": 0.04180602006688963,
+    "confirmed_at_share_p_lt_0.05": 0.04807692307692308,
+    "mech_C1_entering_day_driven": 0.4864479315263909,
+    "common_shock_days_reproduced": 40,
+    "exposure_P1": {
+      "P1_069500": 28,
+      "P1_102110": 27,
+      "P1_both": 26,
+      "P1_union": 29,
+      "naive_sum_double_count": 55
+    }
+  },
+  "code_hash": "71da68d7bca0699d7607d697c2c3df4d41e87aeb66de3d94c42f84cbe4f86417"
+}

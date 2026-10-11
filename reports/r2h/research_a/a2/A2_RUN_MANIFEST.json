@@ -1,0 +1,93 @@
+{
+  "phase": "A2",
+  "run_id": "A2-20261011T145943-fd9713f7",
+  "generated_at": "2026-10-11T15:00:29+09:00",
+  "input_data_version": "fd9713f7f985e9503638e7201ad1d21588c2c70dd7c6726839de14a96be37aff",
+  "git_sha": "2443f5721752a6519c967c5f9dc340e728ec2639",
+  "git_branch": "codex/r2h-track-a",
+  "runtime": {
+    "python": "3.12.3",
+    "pandas": "3.0.3",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "pyyaml": "6.0.3"
+  },
+  "params": {
+    "windows": [
+      30,
+      60,
+      120
+    ],
+    "windows_sensitivity": [
+      30,
+      60,
+      120,
+      250
+    ],
+    "methods": [
+      "pearson",
+      "spearman"
+    ],
+    "min_periods_frac": 0.9,
+    "regime_rules": [
+      "b0.000_k5",
+      "b0.000_k10",
+      "b0.000_k20",
+      "b0.100_k5",
+      "b0.100_k10",
+      "b0.100_k20",
+      "b0.200_k5",
+      "b0.200_k10",
+      "b0.200_k20",
+      "null_band(w)_k10"
+    ],
+    "periods": {
+      "dev_2019_2024": [
+        "2019-01-01",
+        "2024-12-31"
+      ],
+      "val_2025": [
+        "2025-01-01",
+        "2025-12-31"
+      ],
+      "holdout_2026": [
+        "2026-01-01",
+        "2026-12-31"
+      ]
+    },
+    "returns": "dq_trim_canonical logdiff (primary), raw (DQ 민감도)",
+    "rank_policy": "rank_safe round 12"
+  },
+  "derived_files": {
+    "data/processed/research_a/A2-20261011T145943-fd9713f7/rolling_correlations.parquet": {
+      "sha256": "cc3d028e947f687820f8c1c3b6234e4681ce6d2b9071c1f85567563ffafb0def",
+      "rows": 517344
+    }
+  },
+  "report_tables": {
+    "etf_pair_manifest.csv": "0121927815d02809875fcdde8d5b650631366d2b3e3bd3f21bbd3120f6a69b93",
+    "correlation_crossings.csv": "c4458264a741f0a8cb69bec6198871c2c4bdd7bcea87e3c17e28b037de40b093",
+    "correlation_regime_candidates.csv": "66514cefbdca3c2b44acab9f20638071ec474b72f09eed0a31221936c9090f35",
+    "regime_counts_by_rule.csv": "ab8ec97756fd1c52f0dfcc51aebff9e92979ebc5721427385c6cdab83755cb95",
+    "crossing_counts.csv": "ebcfe13490e090d318e9a485e940cfd09f413821ff3d8ede0bc708240ddff1da",
+    "window_sensitivity.csv": "7abcc7491f9b38f61dfe62c89db6239abe3dcac42ba14b7b1c5cd9b60fd1add1",
+    "static_corr_by_period.csv": "5a24d8626dbf92d4d5c26e818c35b244eb2730ff3e7262cb743e45e1be411ba6",
+    "control_102110_comparison.csv": "d3d0aedbf14eeb6465cec655f72481f2eae05ce7eecd4cca5077237d22c2a37f",
+    "data_quality_sensitivity.csv": "4f9239157e49bec06b3cc5d60b6a4eb19e79280a3f0bcc202773cfde16c7ee5a",
+    "zero_return_diagnostics_153130.csv": "a6587154274c9018d6265a0111e525a433cca44f9d66b970e556d62bbf706aad",
+    "rank_policy_sensitivity.csv": "50311539cf62154ec43127cf4503f52b9c30c3377fd537b2f4a1f80f6f04e1cf",
+    "min_periods_sensitivity.csv": "85a9dce11824c9e4e72873f92390f3c71a482e82273c81b016048695d21b69bc",
+    "lead_lag_corr.csv": "3261558d15e4835a55509ee6d6d65098432f80ffc64e4ee8cee2fdd52630ec98",
+    "async_aggregated_corr.csv": "fd6f1b9f3fbe0f82a1172fd21d1194485e8812c8405b72b44946dc438065814e",
+    "legacy_parity_d0122.csv": "53781c5b44f4c72eaa39a6b9153eaab765627386c4b82bf7b01a9d62898f307d"
+  },
+  "checks": {
+    "legacy_d0122_max_abs_diff": 8.954874183472739e-05,
+    "legacy_d0122_reproduced_1e-5_outside_nan_windows": true,
+    "legacy_d0122_pearson_reproduced_all": true,
+    "dq_261240_full_rho_raw": -0.3084133977272526,
+    "dq_261240_full_rho_trim": -0.4577091299591773,
+    "rank_round_rolling_max_effect": 0.0,
+    "n_rolling_rows": 517344
+  }
+}

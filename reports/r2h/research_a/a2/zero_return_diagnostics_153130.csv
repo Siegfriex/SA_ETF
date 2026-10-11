@@ -1,0 +1,4 @@
+run_id,input_data_version,ticker,window,share_zero_mean_in_window,share_zero_max_in_window,spearman_corr_zero_share_vs_abs_rho,n_cross_pearson,n_cross_spearman,n_cross_pearson_zero_as_nan,mean_abs_diff_pearson_spearman,n_sign_disagree_pearson_spearman,n_valid,n_valid_zero_as_nan,n_eff_mean_zero_as_nan,n_eff_min_zero_as_nan,index_preserved
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,153130,30,0.168054814,0.5333333333,-0.05474424186,137,201,97,0.07277304076,296,1876,1871,25.00587921,15,True
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,153130,60,0.1685657443,0.4666666667,0.1249248472,71,110,71,0.05767871168,273,1849,1867,49.76218532,30,True
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,153130,120,0.1689895308,0.4416666667,0.3376039961,46,60,37,0.04234519215,189,1795,1832,99.22489083,60,True

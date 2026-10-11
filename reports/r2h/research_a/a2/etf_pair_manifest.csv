@@ -1,0 +1,18 @@
+run_id,input_data_version,pair_id,series_id,reference_series_id,name,asset_scope,comparison_group,session_sync,currency_hedge,reference_role,notebook
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,102110~069500,102110,069500,TIGER 200,domestic_equity,control_kospi200_brand,same_session,n/a (KRW),primary,A01
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,148070~069500,148070,069500,KIWOOM 국고채10년,bond,bond_long,same_session,n/a (KRW),primary,A01
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,153130~069500,153130,069500,KODEX 단기채권,bond,bond_short,same_session,n/a (KRW),primary,A01
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,229200~069500,229200,069500,KODEX 코스닥150,domestic_equity,domestic_equity_kosdaq,same_session,n/a (KRW),primary,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,219480~069500,219480,069500,KODEX 미국S&P500선물(H),foreign_equity,foreign_equity_us_hedged,overnight_lag,hedged (H),primary,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,133690~069500,133690,069500,TIGER 미국나스닥100,foreign_equity,foreign_equity_us_unhedged,overnight_lag,unhedged,primary,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,132030~069500,132030,069500,KODEX 골드선물(H),commodity,commodity_gold_hedged,overnight_lag,hedged (H),primary,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,261220~069500,261220,069500,KODEX WTI원유선물(H),commodity,commodity_oil_hedged,overnight_lag,hedged (H),primary,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,261240~069500,261240,069500,KODEX 미국달러선물,fx,fx_usd,same_session,n/a (USD 롱 노출이 목적),primary,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,148070~102110,148070,102110,KIWOOM 국고채10년,bond,bond_long,same_session,n/a (KRW),control_not_independent,A01
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,153130~102110,153130,102110,KODEX 단기채권,bond,bond_short,same_session,n/a (KRW),control_not_independent,A01
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,229200~102110,229200,102110,KODEX 코스닥150,domestic_equity,domestic_equity_kosdaq,same_session,n/a (KRW),control_not_independent,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,219480~102110,219480,102110,KODEX 미국S&P500선물(H),foreign_equity,foreign_equity_us_hedged,overnight_lag,hedged (H),control_not_independent,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,133690~102110,133690,102110,TIGER 미국나스닥100,foreign_equity,foreign_equity_us_unhedged,overnight_lag,unhedged,control_not_independent,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,132030~102110,132030,102110,KODEX 골드선물(H),commodity,commodity_gold_hedged,overnight_lag,hedged (H),control_not_independent,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,261220~102110,261220,102110,KODEX WTI원유선물(H),commodity,commodity_oil_hedged,overnight_lag,hedged (H),control_not_independent,A012
+A2-20261011T145943-fd9713f7,fd9713f7f985e950,261240~102110,261240,102110,KODEX 미국달러선물,fx,fx_usd,same_session,n/a (USD 롱 노출이 목적),control_not_independent,A012

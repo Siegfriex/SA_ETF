@@ -4,7 +4,7 @@
 # 판단 유보 항목은 status: unresolved / ESTIMATED 로 남기고, 사용자·교수 승인 없이 확정하지 않는다.
 
 contract_id: r2h_track_a_data_contract
-contract_version: "1.0.0"
+contract_version: "1.1.0"
 phase: A1
 created_at: "2026-10-11"
 base_commit: d5c2f792022d3c8efdbc52bdecd246b04bf32c45
@@ -179,3 +179,23 @@ reproducibility:
   report_dir: reports/r2h/research_a/
   forbidden: ["raw 수정·삭제·재수집", "기존 notebook --inplace 실행", "전체표본 quantile 을 실시간 임계값으로 사용", "DQ 관측치 임의 삭제·보간", "2019~2026 전체를 단일 검증기간으로 선언"]
   validation_periods_note: "2019~2026 은 탐색 표본이다. 검증 기간 분할은 A3 이후 승인 대상"
+
+# ---------------------------------------------------------------- A2·A3 채택 (2026-10-11, contract 1.1.0)
+adopted_A2_A3:
+  windows: [30, 60, 120]
+  windows_sensitivity: [250]
+  methods: [pearson, spearman]
+  min_periods_frac: 0.9          # 완전창(1.0)이면 261240 DQ NaN 2일이 30/60/120일 창 전체를 지운다 → 0.9, 완전창은 민감도 (min_periods_sensitivity.csv)
+  rank_policy: "rank_safe(12) 유지. rolling 창 안에서는 반올림 효과 0 (rank_policy_sensitivity.csv)"
+  null_band: "±1.96/√w — 독립·정규·비겹침 가정의 표본상관 근사 오차대. 정식 독립성 검정이 아님"
+  periods: {dev: "2019-2024", validation: "2025", observation_2026: "2026 — 기존 EDA 가 이미 탐색 → blind holdout 아님"}
+  correlation_events:
+    C1_zero_cross: "rho 부호 변경일 (raw)"
+    C2_large_change: "비겹침 창 Fisher z 차이 |z|>2.58"
+    C3_sign_regime: "히스테리시스: |rho|>band 가 persist 일 연속 → 전환. primary band 0.1 persist 10; 민감도 (0,5) (0.2,10) (0.1,20)"
+    C4_multi_window: "C3 또는 C2 가 서로 다른 창 ≥2 개에서 ±10 거래일 안 같은 방향"
+    C5_method_concordant: "C3 가 Pearson·Spearman 양쪽에서 ±5 거래일 안 같은 방향 (지시문 원문 C5 정의 누락 → A 가 정의)"
+  price_events: "src/r2h/research_a/price_events.py 모듈 docstring (P1~P5, 부호 분리, P4 사후 라벨)"
+  matching: "일대일 greedy |lag| ≤ L, L ∈ {0,5,10,20}; 근접 ≠ 인과; Ground Truth 아님"
+  null_test: "P 위치 원형 이동 (군집 보존), T = ±L 안 P 가 있는 C 수, p=(1+#)/(B+1), B=1000 (p≤0.01 은 B=20000 재추정)"
+  multiple_testing: "BH — global(검정가능 전부) + primary(C3_b0.100_k10 × candidate_at × lag 10)"

@@ -202,8 +202,13 @@ def write_table(df: pd.DataFrame, path: str | Path, run_id: str, input_version: 
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     out = df.copy()
-    out.insert(0, "input_data_version", input_version[:16])
-    out.insert(0, "run_id", run_id)
+    # 사건 표처럼 이미 run_id·data_snapshot_id 를 가진 표는 덮어쓰지 않고 맨 앞 열만 맞춘다
+    if "input_data_version" not in out:
+        out.insert(0, "input_data_version", input_version[:16])
+    if "run_id" in out:
+        out = out[["run_id"] + [c for c in out.columns if c != "run_id"]]
+    else:
+        out.insert(0, "run_id", run_id)
     out.to_csv(path, index=False, float_format="%.10g")
     return path
 
