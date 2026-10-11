@@ -1,4 +1,4 @@
 run_id,input_data_version,dq_class,affects_logret_path,n_flags,n_tickers,n_in_base_panel,n_nan_in_trim
-A1-20261011T142600-fd9713f7,fd9713f7f985e950,ohlc_close_gt_high,False,212,3,42,0
-A1-20261011T142600-fd9713f7,fd9713f7f985e950,price_anomaly_unverified,True,2,1,2,2
-A1-20261011T142600-fd9713f7,fd9713f7f985e950,spike_reversal_candidate,True,6,3,4,0
+A1-20261011T152754-fd9713f7,fd9713f7f985e950,ohlc_close_gt_high,False,212,3,42,0
+A1-20261011T152754-fd9713f7,fd9713f7f985e950,price_anomaly_unverified,True,2,1,2,2
+A1-20261011T152754-fd9713f7,fd9713f7f985e950,spike_reversal_candidate,True,6,3,4,0

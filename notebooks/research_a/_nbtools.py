@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = next(p for p in [Path.cwd(), *Path.cwd().parents] if (p / "config" / "research_a_contract.yaml").exists())
 sys.path.insert(0, str(ROOT))
 warnings.filterwarnings("ignore", category=RuntimeWarning)
+warnings.filterwarnings("ignore", message="obj.round has no effect")   # 표시용 round 가 날짜 열을 건너뛸 때의 경고 (값 영향 없음)
 
 import numpy as np
 import pandas as pd
