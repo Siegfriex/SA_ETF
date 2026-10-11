@@ -45,7 +45,7 @@ class Contract:
     @property
     def raw_dir(self) -> Path:
         i = self.spec["inputs"]
-        return self._resolve(os.environ.get(i["raw_dir_env"], i["raw_dir"]))
+        return self._resolve(os.environ.get(i["raw_dir_env"]) or i["raw_dir"])   # 빈 문자열은 미설정으로 본다
 
     @property
     def interim_dir(self) -> Path:
